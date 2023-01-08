@@ -1,7 +1,4 @@
-# Parts list, electronic schematics, PCB layouts.
-## Schematics and PCB layouts
-Schematics and PCB layouts are stored in KiCAD 6.0 format. `openautolab_2layer.kicad_pcb` is automatically routed double-layered version of the board with plated through holes aimed at having it produced by professionals.  
-`openautolab.kicad_pcb` is hand-routed single-layer version, optimized for DIY production at home. Jumper wires on signal lines could be avoided by routing some tracks between pads, but it requires better precision than toner transfer technique can provide. Two jumper wires on power lines however are a necessity.  
+# Parts to build Openautolab
 ## List of components to buy
 ### Main board
 - Arduino Nano
