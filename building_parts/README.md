@@ -1,4 +1,4 @@
-# Parts to build Openautolab
+# Parts to build OpenAutoLab
 ## List of components to buy
 ### Main board
 - Arduino Nano
@@ -8,7 +8,7 @@
 - 10 screw terminal blocks, for example Phoenix MKDS 3/ 2-5.08 1x2
 - 3 6x6mm push switches 
 - 2 12VDC relays, for example SRD-12VDC-SL-C or Finder 36.11.9.012
-- 2 darlington transistor arrays TD62064APG
+- 2 darlington transistor arrays TD62064APG or analogous
 - SPDT ON-ON (or SPST) toggle switch with 5.08mm raster, for example APEM 5026
 - 3x1 pin header for connecting servo
 - 2 4x1 socket header for connecting display and scale 
@@ -28,6 +28,6 @@ Optional:
 - Developing tank. AP developing tank is recommended
 - Beakers for chemicals
 Optional:
-Sous Vide and come water-tight container for heating the beakers with water.
+Sous Vide and some water-tight container for heating the beakers with water.
 ## Problems to solve
 1. Developing tank needs to be connected to the hose and to be somehow agitated. Those problems could be solved in a number of ways, I suggest the following way. Drill a hole in a bottom of the tank and insert a hose adapter with built-in light trap, which lets liquids through, but does not let the light in. Agitate using agitation rod attached to servo. In the `mechanics` subdirectory there are part desidns of a light-tight adapter and servo-powered agitator compatible with AP developing tank. Parts compatible with other tanks should be designed individually for each one.

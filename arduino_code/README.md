@@ -1,1 +1,1 @@
-Arduino IDE ource code for the machine
+Arduino IDE source code for the machine
