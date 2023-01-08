@@ -1,0 +1,178 @@
+
+(rules PCB openautolab_2layer
+  (snap_angle 
+    fortyfive_degree
+  )
+  (autoroute_settings
+    (fanout off)
+    (autoroute on)
+    (postroute on)
+    (vias on)
+    (via_costs 50)
+    (plane_via_costs 5)
+    (start_ripup_costs 100)
+    (start_pass_no 5)
+    (layer_rule F.Cu
+      (active on)
+      (preferred_direction horizontal)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 1.0)
+    )
+    (layer_rule B.Cu
+      (active on)
+      (preferred_direction vertical)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 1.0)
+    )
+  )
+  (rule
+    (width 250.0)
+    (clear 200.0)
+    (clear 125.0 (type smd_to_turn_gap))
+    (clear 50.0 (type smd-smd))
+  )
+  (padstack "Via[0-1]_800:400_um"
+    (shape
+      (circle F.Cu 800.0 0.0 0.0)
+    )
+    (shape
+      (circle B.Cu 800.0 0.0 0.0)
+    )
+    (attach off)
+  )
+  (padstack "Via[0-1]_1600:800_um"
+    (shape
+      (circle F.Cu 1600.0 0.0 0.0)
+    )
+    (shape
+      (circle B.Cu 1600.0 0.0 0.0)
+    )
+    (attach off)
+  )
+  (padstack "Via[0-1]_2000:1000_um"
+    (shape
+      (circle F.Cu 2000.0 0.0 0.0)
+    )
+    (shape
+      (circle B.Cu 2000.0 0.0 0.0)
+    )
+    (attach off)
+  )
+  (via 
+    "Via[0-1]_800:400_um" "Via[0-1]_800:400_um" default
+  )
+  (via 
+    "Via[0-1]_1600:800_um" "Via[0-1]_1600:800_um" default
+  )
+  (via 
+    "Via[0-1]_2000:1000_um" "Via[0-1]_2000:1000_um" default
+  )
+  (via 
+    "Via[0-1]_800:400_um-kicad_default" "Via[0-1]_800:400_um" "kicad_default"
+  )
+  (via 
+    "Via[0-1]_1600:800_um-kicad_default" "Via[0-1]_1600:800_um" "kicad_default"
+  )
+  (via 
+    "Via[0-1]_2000:1000_um-kicad_default" "Via[0-1]_2000:1000_um" "kicad_default"
+  )
+  (via 
+    "Via[0-1]_800:400_um-power" "Via[0-1]_800:400_um" power
+  )
+  (via 
+    "Via[0-1]_1600:800_um-power" "Via[0-1]_1600:800_um" power
+  )
+  (via 
+    "Via[0-1]_2000:1000_um-power" "Via[0-1]_2000:1000_um" power
+  )
+  (via 
+    "Via[0-1]_800:400_um-power_bus" "Via[0-1]_800:400_um" "power_bus"
+  )
+  (via 
+    "Via[0-1]_1600:800_um-power_bus" "Via[0-1]_1600:800_um" "power_bus"
+  )
+  (via 
+    "Via[0-1]_2000:1000_um-power_bus" "Via[0-1]_2000:1000_um" "power_bus"
+  )
+  (via 
+    "Via[0-1]_800:400_um-signal" "Via[0-1]_800:400_um" signal
+  )
+  (via 
+    "Via[0-1]_1600:800_um-signal" "Via[0-1]_1600:800_um" signal
+  )
+  (via 
+    "Via[0-1]_2000:1000_um-signal" "Via[0-1]_2000:1000_um" signal
+  )
+  (via_rule
+    default "Via[0-1]_800:400_um"
+  )
+  (via_rule
+    "kicad_default" "Via[0-1]_800:400_um-kicad_default"
+  )
+  (via_rule
+    power "Via[0-1]_1600:800_um-power"
+  )
+  (via_rule
+    "power_bus" "Via[0-1]_2000:1000_um-power_bus"
+  )
+  (via_rule
+    signal "Via[0-1]_800:400_um-signal"
+  )
+  (class default
+    (clearance_class default)
+    (via_rule default)
+    (rule
+      (width 250.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+  (class "kicad_default"
+    (clearance_class "kicad_default")
+    (via_rule "kicad_default")
+    (rule
+      (width 250.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+  (class power
+    "Net-(D1-Pad2)" "Net-(J1-Pad1)" "Net-(J6-Pad1)" "Net-(D3-Pad2)" "Net-(J2-Pad1)" "Net-(J4-Pad1)" "Net-(J7-Pad1)" "Net-(K1-PadA1)"
+    "Net-(J3-Pad1)" "Net-(K2-PadA1)" "Net-(D5-Pad2)" "Net-(J18-Pad2)" "unconnected-(SW3-Pad3)"
+    (clearance_class power)
+    (via_rule power)
+    (rule
+      (width 1000.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+  (class "power_bus"
+    GNDPWR +12V
+    (clearance_class "power_bus")
+    (via_rule "power_bus")
+    (rule
+      (width 2000.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+  (class signal
+    "unconnected-(A1-Pad1)" "unconnected-(A1-Pad2)" "unconnected-(A1-Pad3)" "Net-(A1-Pad5)" "Net-(A1-Pad6)" "Net-(A1-Pad7)" "unconnected-(A1-Pad17)" "unconnected-(A1-Pad18)"
+    "Net-(A1-Pad16)" "Net-(A1-Pad19)" "Net-(A1-Pad20)" "unconnected-(A1-Pad22)" "Net-(A1-Pad21)" "Net-(A1-Pad23)" "unconnected-(A1-Pad25)" "unconnected-(A1-Pad26)"
+    "unconnected-(A1-Pad28)" "Net-(A1-Pad15)" "unconnected-(A1-Pad30)" "Net-(A1-Pad24)" "Net-(A1-Pad14)" "Net-(A1-Pad13)" "Net-(A1-Pad12)" "Net-(A1-Pad11)"
+    "Net-(A1-Pad9)" "Net-(A1-Pad10)" "Net-(A1-Pad8)" GND +5V
+    (clearance_class signal)
+    (via_rule signal)
+    (rule
+      (width 250.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+)
