@@ -1,50 +1,26 @@
-#include <TM1637Display.h>
+#include <LiquidCrystal_I2C.h>
 #include <Servo.h>
 #include <HX711.h>
-/*t B01111000
-a B01110111
-n B01010100
-1 B00000110
-2 B01011011
-3 B01001111
-w B01111110
-s B01101101
-h B01110110
-d B01011110
-e B01111001
-v B00011100 */
-const uint8_t tan1[] ={B01111000,B01110111,B01010100,B00000110};
-const uint8_t tan2[] ={B01111000,B01110111,B01010100,B01011011};
-const uint8_t tan3[] ={B01111000,B01110111,B01010100,B01001111};
-const uint8_t wash[] ={B01111110,B01110111,B01101101,B01110110};
-const uint8_t dev[] ={B01011110,B01111001,B00011100,B00000000};
-const uint8_t devh[] ={B01011110,B01111001,B00011100,B01110110};
-const uint8_t heat[] ={B01110110,B01111001,B01110111,B01111000};
 unsigned long int t0; // here time of start will be stored
 unsigned long int secs; // here number of seconds on display will be stored
-const byte motorplus =12; //positive pole of pump motor
-const byte motorminus=11; //negative pole of pump motor
-const byte valve1=10; //pins
-const byte valve2=9; //of
-const byte valve3=8; //valves
-const byte valve4=7;
-const byte valve5=6;
-const byte heater=5; //pin of heater
-const byte therm=A6; //pin of thermometer
-const byte servo=A0; //servo pin
-const byte scaleclk=3; //pins of
-const byte scaledat=2; //scale
-const byte buzzer=4; //buzzer pin
+const byte motorplus =5; //positive pole of pump motor
+const byte motorminus=6; //negative pole of pump motor
+const byte valve1=11; //pins
+const byte valve2=12; //of
+const byte valve3=10; //valves
+const byte valve4=9;
+const byte valve5=7;
+const byte valve6=8;
+const byte servo=4; //servo pin
+const byte scaleclk=2; //pins of
+const byte scaledat=3; //scale
+const byte buzzer=13; //buzzer pin
 const byte displayclk=A4; //pins of
 const byte displaydio=A5; //display
-const byte button1=A1; //buttons
-const byte button2=A2;
-const byte button3=A3;
-volatile float curtemp=20.0;
-float temperature=0.0; //goal temperature for heater
-float tolerance=0.2; //temperature tolerance for hysteresis
-byte dvlpr=4; //developer index
-float dev_temp[]={20,20,30,38,20}; //corresponding developing temperature
+const byte button1=A0; //buttons
+const byte button2=A1;
+const byte button3=A2;
+byte dvlpr=0; //developer index
 byte k=0; //state index
 byte container; //pin corresponding to current valve
 unsigned long int airpump=10000UL; //number of milliseconds pumping without liquid tolerated   
@@ -52,10 +28,8 @@ bool error=false; //if something sent wrong machine beeps
 TM1637Display display = TM1637Display(displayclk, displaydio);
 Servo mixer;
 HX711 scale;
-ISR(TIMER2_OVF_vect){  //here we check thermometer value and turn on and off heating
-  curtemp=0.99*curtemp+0.01*(((((float) analogRead(therm))+0.5)*1.1/1024.0-0.5)*100.0); //averaging
-  if (curtemp<temperature-tolerance) digitalWrite(heater,LOW);
-  if (curtemp>temperature+tolerance) digitalWrite(heater,HIGH);
+LiquidCrystal_I2C lcd(0x3F,16,2);
+struct stage_description{float init, intvl,agit,devt;};
 }
 void agitation(float a, float b, float c, float d) {
 unsigned long int init=1000.0 * a; //duration of one unit of first agitation, 1sec
