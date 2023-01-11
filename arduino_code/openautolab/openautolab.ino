@@ -1,7 +1,7 @@
 #include <LiquidCrystal_I2C.h>
 #include <Servo.h>
 #include <HX711.h>
-unsigned long int t0; // here time of start will be stored
+volatile unsigned long int t0; // here time of start will be stored
 unsigned long int secs; // here number of seconds on display will be stored
 const byte motorplus =5; //positive pole of pump motor
 const byte motorminus=6; //negative pole of pump motor
@@ -28,6 +28,7 @@ bool error=false; //if something sent wrong machine beeps
 Servo mixer;
 HX711 scale;
 LiquidCrystal_I2C lcd(0x27,16,2);
+bool keypressed=false;
 void agitation(float a, float b, float c, float d) {
 unsigned long int init=1000.0 * a; //duration of one unit of first agitation, 1sec
 unsigned long int intvl=1000.0 * b; //agitation every unit of time, 1sec
@@ -284,113 +285,148 @@ lcd.backlight();
 }
 void loop() {
   switch(k){
-    case 0: 
-      //display.setSegments(tan1);
-      lcd.setCursor(3, 0);
-//      lcd.clear();
-      lcd.print("tan1");
-      if(digitalRead(button1)==LOW) {k=6; delay(200);}
-      if(digitalRead(button2)==LOW) {k++; delay(200);}
-      if(digitalRead(button3)==LOW) {
-        digitalWrite(valve1,LOW);
-        digitalWrite(motorplus,LOW);
-//        digitalWrite(motorminus,LOW);
+    case 0: //main menu
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print(" 60/ 30/  5  300");
+      lcd.setCursor(0,1);
+      lcd.print("B&W   C41   SET.");
+      keypressed=false;
+      while (not keypressed) {
+        if(digitalRead(button1)==LOW) {k=1; delay(200); keypressed=true;}
+        if(digitalRead(button2)==LOW) {k=3; delay(200); keypressed=true;}
+        if(digitalRead(button3)==LOW) {k=4; delay(200); keypressed=true;}
       }
-      if(digitalRead(button3)==HIGH) {
-        digitalWrite(motorplus,HIGH);
-//        digitalWrite(motorminus,HIGH);
-        digitalWrite(valve1,HIGH);
-      }
+      keypressed=false;
       break;
-    case 1:
-      //display.setSegments(tan2);
-      lcd.setCursor(3, 0);
-//      lcd.clear();
-      lcd.print("tan2");
-      if(digitalRead(button1)==LOW) {k--; delay(200);}
-      if(digitalRead(button2)==LOW) {k++; delay(200);}
-      if(digitalRead(button3)==LOW) {
-        digitalWrite(valve2,LOW);
-        digitalWrite(motorplus,LOW);
-//        digitalWrite(motorminus,LOW);
+    case 1: //bw develop time
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Develop     7:00");
+      lcd.setCursor(0,1);
+      lcd.print("-     +     Next");
+      keypressed=false;
+      while (not keypressed) {
+        if(digitalRead(button1)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button2)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button3)==LOW) {k=2; delay(200); keypressed=true;}
       }
-      if(digitalRead(button3)==HIGH) {
-        digitalWrite(motorplus,HIGH);
-//        digitalWrite(motorminus,HIGH);
-        digitalWrite(valve2,HIGH);
-      }
+      keypressed=false;
       break;
-    case 2: 
-      //display.setSegments(tan3);
-      lcd.setCursor(3, 0);
-//      lcd.clear();
-      lcd.print("tan3");
-      if(digitalRead(button1)==LOW) {k--; delay(200);}
-      if(digitalRead(button2)==LOW) {k++; delay(200);}
-      if(digitalRead(button3)==LOW) {
-        digitalWrite(valve3,LOW);
-        digitalWrite(motorplus,LOW);
-//        digitalWrite(motorminus,LOW);
+    case 2: //bw fix time
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Fix         7:00");
+      lcd.setCursor(0,1);
+      lcd.print("-     +     Next");
+      keypressed=false;
+      while (not keypressed) {
+        if(digitalRead(button1)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button2)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button3)==LOW) {lcd.clear(); bip(); delay(200); keypressed=true;}
       }
-      if(digitalRead(button3)==HIGH) {
-        digitalWrite(motorplus,HIGH);
-//        digitalWrite(motorminus,HIGH);
-        digitalWrite(valve3,HIGH);
+      keypressed=false;
+      break;
+    case 3: //c41
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Film count     5");
+      lcd.setCursor(0,1);
+      lcd.print("Reset   +   Next");
+      keypressed=false;
+      while (not keypressed) {
+        if(digitalRead(button1)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button2)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button3)==LOW) {lcd.clear(); bip(); delay(200); keypressed=true;}
       }
+      keypressed=false;
       break;
-    case 3: 
-      //display.setSegments(wash);
-      lcd.setCursor(3, 0);
-//      lcd.clear();
-      lcd.print("wash");
-      if(digitalRead(button1)==LOW) {k--; delay(200);}
-      if(digitalRead(button2)==LOW) {k++; delay(200);}
-      if(digitalRead(button3)==LOW) {
-        stage(4,1,0,1,0,0);
-        stage(4,2,0,1,0,0);
-        stage(4,3,0,1,0,0);
-        stage(1,5,0,1,0,0);
-        stage(2,5,0,1,0,0);
-        stage(3,5,0,1,0,0);
-        beep();
+    case 4: //Fotoflo apply
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Fotoflo      Yes");
+      lcd.setCursor(0,1);
+      lcd.print("No    Yes   Next");
+      keypressed=false;
+      while (not keypressed) {
+        if(digitalRead(button1)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button2)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button3)==LOW) {k=5; delay(200); keypressed=true;}
       }
+      keypressed=false;
       break;
-    case 4:
-      //display.setSegments(dev);
-      lcd.setCursor(3, 0);
-//      lcd.clear();
-      lcd.print("dev");
-      if(digitalRead(button1)==LOW) {k--; delay(200);}
-      if(digitalRead(button2)==LOW) {k++; delay(200);}
-      if(digitalRead(button3)==LOW) {
-        develop();
-        beep();
-        }
-        break;
-    case 5: 
-      //display.setSegments(devh);
-      lcd.setCursor(3, 0);
-//      lcd.clear();
-      lcd.print("devh");
-      if(digitalRead(button1)==LOW) {k--; delay(200);}
-      if(digitalRead(button2)==LOW) {k++; delay(200);}
-      if(digitalRead(button3)==LOW) {
-        wait(10.0);
-        develop();
-        beep();
-      }      
-      break;
-    case 6: 
-      //display.setSegments(heat);
-      lcd.setCursor(3, 0);
-//      lcd.clear();
-      lcd.print("heat");
-      if(digitalRead(button1)==LOW) {k--; delay(200);}
-      if(digitalRead(button2)==LOW) {k=0; delay(200);}
-      if(digitalRead(button3)==LOW) {
-        beep();
+    case 5: //Initial Agitation
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Initial 42:00:00");
+      lcd.setCursor(0,1);
+      lcd.print("-     +     Next");
+      keypressed=false;
+      while (not keypressed) {
+        if(digitalRead(button1)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button2)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button3)==LOW) {k=6; delay(200); keypressed=true;}
       }
+      keypressed=false;
       break;
+    case 6: //agitation period
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Interv. 42:00:00");
+      lcd.setCursor(0,1);
+      lcd.print("-     +     Next");
+      keypressed=false;
+      while (not keypressed) {
+        if(digitalRead(button1)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button2)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button3)==LOW) {k=7; delay(200); keypressed=true;}
+      }
+      keypressed=false;
+      break;
+    case 7: //agitation duration
+          lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("A. dur. 42:00:00");
+      lcd.setCursor(0,1);
+      lcd.print("-     +     Next");
+      keypressed=false;
+      while (not keypressed) {
+        if(digitalRead(button1)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button2)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button3)==LOW) {k=8; delay(200); keypressed=true;}
+      }
+      keypressed=false;
+      break;
+    case 8: //Tank "volume" in grams
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Tank weight 1000");
+      lcd.setCursor(0,1);
+      lcd.print("-     +     Next");
+      keypressed=false;
+      while (not keypressed) {
+        if(digitalRead(button1)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button2)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button3)==LOW) {k=9; delay(200); keypressed=true;}
+      }
+      keypressed=false;
+      break;
+    case 9: //Scale fine tuning
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Scale tune 1000g");
+      lcd.setCursor(0,1);
+      lcd.print("0    300g   Next");
+      keypressed=false;
+      while (not keypressed) {
+        if(digitalRead(button1)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button2)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button3)==LOW) {lcd.clear(); bip(); delay(200); keypressed=true;}
+      }
+      keypressed=false;
+
+
+
   }
 }
 
