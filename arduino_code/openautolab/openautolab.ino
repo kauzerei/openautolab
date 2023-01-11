@@ -27,7 +27,7 @@ unsigned long int airpump=10000UL; //number of milliseconds pumping without liqu
 bool error=false; //if something sent wrong machine beeps
 Servo mixer;
 HX711 scale;
-LiquidCrystal_I2C lcd(0x3F,16,2);
+LiquidCrystal_I2C lcd(0x27,16,2);
 void agitation(float a, float b, float c, float d) {
 unsigned long int init=1000.0 * a; //duration of one unit of first agitation, 1sec
 unsigned long int intvl=1000.0 * b; //agitation every unit of time, 1sec
@@ -279,19 +279,16 @@ mixer.attach(servo);
 //display.clear();
 scale.begin(scaledat,scaleclk);
 scale.set_scale(1850);
-TCCR2A = 0; // Timer/counter 2 Control Register A
-TCCR2B = 0; // Timer/counter 2 Control Register B
-TCCR2B |= (1 << CS20);
-TCCR2B |= (1 << CS21);
-TCCR2B |= (1 << CS22); //timer prescaler 1024, see atmega 328 datasheet 17.11.2
-TIMSK2 |= (1 <<  TOIE2); //timer overflow interrupt see atmega 328 datasheet 17.11.6
-sei();
-
+lcd.init();
+lcd.backlight();
 }
 void loop() {
   switch(k){
     case 0: 
       //display.setSegments(tan1);
+      lcd.setCursor(3, 0);
+//      lcd.clear();
+      lcd.print("tan1");
       if(digitalRead(button1)==LOW) {k=6; delay(200);}
       if(digitalRead(button2)==LOW) {k++; delay(200);}
       if(digitalRead(button3)==LOW) {
@@ -307,6 +304,9 @@ void loop() {
       break;
     case 1:
       //display.setSegments(tan2);
+      lcd.setCursor(3, 0);
+//      lcd.clear();
+      lcd.print("tan2");
       if(digitalRead(button1)==LOW) {k--; delay(200);}
       if(digitalRead(button2)==LOW) {k++; delay(200);}
       if(digitalRead(button3)==LOW) {
@@ -322,6 +322,9 @@ void loop() {
       break;
     case 2: 
       //display.setSegments(tan3);
+      lcd.setCursor(3, 0);
+//      lcd.clear();
+      lcd.print("tan3");
       if(digitalRead(button1)==LOW) {k--; delay(200);}
       if(digitalRead(button2)==LOW) {k++; delay(200);}
       if(digitalRead(button3)==LOW) {
@@ -337,6 +340,9 @@ void loop() {
       break;
     case 3: 
       //display.setSegments(wash);
+      lcd.setCursor(3, 0);
+//      lcd.clear();
+      lcd.print("wash");
       if(digitalRead(button1)==LOW) {k--; delay(200);}
       if(digitalRead(button2)==LOW) {k++; delay(200);}
       if(digitalRead(button3)==LOW) {
@@ -351,6 +357,9 @@ void loop() {
       break;
     case 4:
       //display.setSegments(dev);
+      lcd.setCursor(3, 0);
+//      lcd.clear();
+      lcd.print("dev");
       if(digitalRead(button1)==LOW) {k--; delay(200);}
       if(digitalRead(button2)==LOW) {k++; delay(200);}
       if(digitalRead(button3)==LOW) {
@@ -360,6 +369,9 @@ void loop() {
         break;
     case 5: 
       //display.setSegments(devh);
+      lcd.setCursor(3, 0);
+//      lcd.clear();
+      lcd.print("devh");
       if(digitalRead(button1)==LOW) {k--; delay(200);}
       if(digitalRead(button2)==LOW) {k++; delay(200);}
       if(digitalRead(button3)==LOW) {
@@ -370,6 +382,9 @@ void loop() {
       break;
     case 6: 
       //display.setSegments(heat);
+      lcd.setCursor(3, 0);
+//      lcd.clear();
+      lcd.print("heat");
       if(digitalRead(button1)==LOW) {k--; delay(200);}
       if(digitalRead(button2)==LOW) {k=0; delay(200);}
       if(digitalRead(button3)==LOW) {
