@@ -25,12 +25,9 @@ byte k=0; //state index
 byte container; //pin corresponding to current valve
 unsigned long int airpump=10000UL; //number of milliseconds pumping without liquid tolerated   
 bool error=false; //if something sent wrong machine beeps
-TM1637Display display = TM1637Display(displayclk, displaydio);
 Servo mixer;
 HX711 scale;
 LiquidCrystal_I2C lcd(0x3F,16,2);
-struct stage_description{float init, intvl,agit,devt;};
-}
 void agitation(float a, float b, float c, float d) {
 unsigned long int init=1000.0 * a; //duration of one unit of first agitation, 1sec
 unsigned long int intvl=1000.0 * b; //agitation every unit of time, 1sec
@@ -43,7 +40,7 @@ while ((millis()-t0)<devt) {
     else mixer.write(0);
   }
   secs=(t0+devt-millis())/1000UL;
-  display.showNumberDecEx((secs/60UL)*100UL+(secs%60UL), 0b01000000, false);
+  //display.showNumberDecEx((secs/60UL)*100UL+(secs%60UL), 0b01000000, false);
 }
 }
 
@@ -85,7 +82,7 @@ void intank(int tank) {
      container=valve5;
      break;
   }
-  display.clear();
+  //display.clear();
   int i=0;
   float measurements[10];
   scale.tare();
@@ -95,7 +92,7 @@ void intank(int tank) {
   while (1) {
     delay(100);
     measurements[i]=scale.get_units();
-    display.showNumberDecEx((int) measurements[i], 0b00000000, false);
+    //display.showNumberDecEx((int) measurements[i], 0b00000000, false);
     if(measurements[i]>300) {error=false; break;}
     i=(i+1)%10;
     float maximum=measurements[0];
@@ -130,7 +127,7 @@ void outtank(int tank) {
      container=valve5;
      break;
   }
-  display.clear();
+  //display.clear();
   int i=0;
   float measurements[10];
   scale.tare();
@@ -140,7 +137,7 @@ void outtank(int tank) {
   while (1) {
     delay(100);
     measurements[i]=scale.get_units();
-    display.showNumberDecEx((int) measurements[i], 0b00000000, false);
+    //display.showNumberDecEx((int) measurements[i], 0b00000000, false);
     i=(i+1)%10;
     float maximum=measurements[0];
     float minimum=measurements[0];
@@ -250,16 +247,8 @@ void wait(float waittime) {
   t0=millis();
   while ((millis()-t0)<devt) {
     secs=(t0+devt-millis())/1000UL;
-    display.showNumberDecEx((secs/60UL)*100UL+(secs%60UL), 0b01000000, false);
+    //display.showNumberDecEx((secs/60UL)*100UL+(secs%60UL), 0b01000000, false);
   }
-}
-
-void heat_overshoot(float goaltemp) {
-  temperature=2*goaltemp-curtemp;
-  if (temperature>60) temperature=60;
-  while(curtemp<temperature) display.showNumberDecEx((int) (curtemp*10.0), 0b00000000, true);
-  temperature=goaltemp;
-  while(curtemp>temperature) display.showNumberDecEx((int) (curtemp*10.0), 0b00000000, false); 
 }
 
 void setup() {
@@ -271,23 +260,23 @@ pinMode(valve2,OUTPUT);
 pinMode(valve3,OUTPUT);
 pinMode(valve4,OUTPUT);
 pinMode(valve5,OUTPUT);
-pinMode(heater,OUTPUT);
+pinMode(valve6,OUTPUT);
 pinMode(buzzer,OUTPUT);
 pinMode(button1,INPUT_PULLUP);
 pinMode(button2,INPUT_PULLUP);
 pinMode(button3,INPUT_PULLUP);
-digitalWrite(valve1,HIGH);
-digitalWrite(valve2,HIGH);
-digitalWrite(valve3,HIGH);
-digitalWrite(valve4,HIGH);
-digitalWrite(valve5,HIGH);
-digitalWrite(heater,HIGH);
-digitalWrite(motorplus,HIGH);
-digitalWrite(motorminus,HIGH);
+digitalWrite(valve1,LOW);
+digitalWrite(valve2,LOW);
+digitalWrite(valve3,LOW);
+digitalWrite(valve4,LOW);
+digitalWrite(valve5,LOW);
+digitalWrite(valve6,LOW);
+digitalWrite(motorplus,LOW);
+digitalWrite(motorminus,LOW);
 digitalWrite(buzzer,LOW);
 mixer.attach(servo);
-display.setBrightness(7);
-display.clear();
+//display.setBrightness(7);
+//display.clear();
 scale.begin(scaledat,scaleclk);
 scale.set_scale(1850);
 TCCR2A = 0; // Timer/counter 2 Control Register A
@@ -302,7 +291,7 @@ sei();
 void loop() {
   switch(k){
     case 0: 
-      display.setSegments(tan1);
+      //display.setSegments(tan1);
       if(digitalRead(button1)==LOW) {k=6; delay(200);}
       if(digitalRead(button2)==LOW) {k++; delay(200);}
       if(digitalRead(button3)==LOW) {
@@ -317,7 +306,7 @@ void loop() {
       }
       break;
     case 1:
-      display.setSegments(tan2);
+      //display.setSegments(tan2);
       if(digitalRead(button1)==LOW) {k--; delay(200);}
       if(digitalRead(button2)==LOW) {k++; delay(200);}
       if(digitalRead(button3)==LOW) {
@@ -332,7 +321,7 @@ void loop() {
       }
       break;
     case 2: 
-      display.setSegments(tan3);
+      //display.setSegments(tan3);
       if(digitalRead(button1)==LOW) {k--; delay(200);}
       if(digitalRead(button2)==LOW) {k++; delay(200);}
       if(digitalRead(button3)==LOW) {
@@ -347,7 +336,7 @@ void loop() {
       }
       break;
     case 3: 
-      display.setSegments(wash);
+      //display.setSegments(wash);
       if(digitalRead(button1)==LOW) {k--; delay(200);}
       if(digitalRead(button2)==LOW) {k++; delay(200);}
       if(digitalRead(button3)==LOW) {
@@ -361,7 +350,7 @@ void loop() {
       }
       break;
     case 4:
-      display.setSegments(dev);
+      //display.setSegments(dev);
       if(digitalRead(button1)==LOW) {k--; delay(200);}
       if(digitalRead(button2)==LOW) {k++; delay(200);}
       if(digitalRead(button3)==LOW) {
@@ -370,22 +359,20 @@ void loop() {
         }
         break;
     case 5: 
-      display.setSegments(devh);
+      //display.setSegments(devh);
       if(digitalRead(button1)==LOW) {k--; delay(200);}
       if(digitalRead(button2)==LOW) {k++; delay(200);}
       if(digitalRead(button3)==LOW) {
-        heat_overshoot(dev_temp[dvlpr]);
         wait(10.0);
         develop();
         beep();
       }      
       break;
     case 6: 
-      display.setSegments(heat);
+      //display.setSegments(heat);
       if(digitalRead(button1)==LOW) {k--; delay(200);}
       if(digitalRead(button2)==LOW) {k=0; delay(200);}
       if(digitalRead(button3)==LOW) {
-        heat_overshoot(dev_temp[dvlpr]);
         beep();
       }
       break;
