@@ -1,0 +1,13 @@
+{
+    "parameterSets": {
+        "design default values": {
+            "magnet_diameter": "15",
+            "magnet_height": "5",
+            "part": "Inner",
+            "pitch": "3",
+            "printer_tolerance": "0.4",
+            "wall_thickness": "1.5"
+        }
+    },
+    "fileFormatVersion": "1"
+}

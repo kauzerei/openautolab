@@ -1,1 +1,3 @@
 electronics/openautolab-backups/*
+*.stl
+*.json
