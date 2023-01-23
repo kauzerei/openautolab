@@ -28,13 +28,26 @@ module inner() {
 }
 module outer() {
   difference(){
-    translate([0,0,-magnet_height-wall_thickness]){cylinder(magnet_height+pitch*2+wall_thickness,(magnet_diameter+pitch+3+printer_tolerance)/2,(magnet_diameter+pitch+3+printer_tolerance)/2);}
+    translate([0,0,-magnet_height-wall_thickness]){cylinder(magnet_height+pitch*2+wall_thickness,(magnet_diameter+pitch+3+printer_tolerance)/2,(magnet_diameter+pitch+3+printer_tolerance)/2);
+  }
  translate([0,0,-magnet_height]){metric_thread(magnet_diameter+2*0.541*pitch+2* printer_tolerance,pitch,magnet_height+pitch*2,internal=true);}
   }
 }
-module hollow_screw(){sphere(10);}
-module main_body(){sphere(1);}
-module main_magnet_cover(){sphere(5);}
+module hollow_screw(){}
+
+module main_body(){
+    difference(){
+       union(){cylinder(d=main_part_holes+2*seal_length,h=seal_length+main_part_holes/2+hose_outer_diameter/2+2);
+           translate([0,-hose_outer_diameter/2-2,0]) cube([seal_length+main_part_holes/2, hose_outer_diameter+4,seal_length+main_part_holes/2+hose_outer_diameter/2+2]);
+ *          translate([0,0,seal_length+main_part_holes/2+hose_outer_diameter/2+2]) metric_thread(magnet_diameter+2*0.541*thread_pitch,thread_pitch,thread_pitch*2);
+           }
+        cylinder(d=main_part_holes,h=seal_length+main_part_holes/2);
+           translate([0,0,seal_length+main_part_holes/2])rotate([0,90,0])cylinder(d=main_part_holes, h=seal_length+main_part_holes/2);
+           translate([0,0,seal_length+main_part_holes/2])intersection(){cylinder(d=main_part_holes, h=main_part_holes,center=true);rotate([0,90,0])cylinder(d=main_part_holes, h=main_part_holes,center=true);}
+    }
+
+    }
+module main_magnet_cover(){}
 module hose_adapter(){}
 module hose_sleeve(){}
 module magnetic_holder(){}
