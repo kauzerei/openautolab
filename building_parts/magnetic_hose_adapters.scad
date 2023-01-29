@@ -86,9 +86,13 @@ module hose_sleeve(){
     }
     }
 module magnetic_holder(){
-    translate([0,0,-10])cylinder(d=10,h=10);
-    thr=10+2*3*(5.3/8)/(2*tan(30));
-    metric_thread(thr,3,6);
+    difference(){
+    diameter_to_hold=magnet_diameter+2*0.541*thread_pitch+thread_expand+3;
+    height_to_hold=magnet_height+thread_pitch*2+wall_between_magnets;
+    metric_thread(2+3+diameter_to_hold+2*0.541*thread_pitch,thread_pitch,height_to_hold+wall_between_magnets);
+    translate([0,0,wall_between_magnets])cylinder(d=diameter_to_hold+2,h=height_to_hold);
+    translate([0,0,height_to_hold+wall_between_magnets-1])cube([2,6+diameter_to_hold+2*0.541*thread_pitch,2],center=true);
+        }    
     }
 module holder_magnet_cover(){}
 if (part=="Hollow_screw") {

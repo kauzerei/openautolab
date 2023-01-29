@@ -426,6 +426,4 @@ module thread_polyhedron (radius, pitch, internal, n_starts, thread_size,
       }
    }
 }
-metric_thread(10,3,6);
-
 
