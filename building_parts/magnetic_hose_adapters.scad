@@ -21,38 +21,25 @@ screw_inner_diameter=4;
 offset=0;
 $fn= $preview ? 32 : 64;
 
-module inner() {
-  metric_thread(magnet_diameter+2*0.541*pitch-2* printer_tolerance,pitch,pitch*2);
-    translate([0,0,6]){
-        cylinder(6,(magnet_diameter+pitch+3+printer_tolerance)/2,(magnet_diameter+pitch+3+printer_tolerance)/2);}
-}
-module outer() {
-  difference(){
-    translate([0,0,-magnet_height-wall_thickness]){cylinder(magnet_height+pitch*2+wall_thickness,(magnet_diameter+pitch+3+printer_tolerance)/2,(magnet_diameter+pitch+3+printer_tolerance)/2);
-  }
- translate([0,0,-magnet_height]){metric_thread(magnet_diameter+2*0.541*pitch+2* printer_tolerance,pitch,magnet_height+pitch*2,internal=true);}
-  }
-}
 module hollow_screw(){}
 
 module main_body(){
-
     coeff=  (adapter_shape == "Round") ? 1:(adapter_shape == "Square") ? 1.42:1.16;
     if (light_trap==false)
     difference(){
-       union(){cylinder(d=max(main_part_holes+2*seal_length,magnet_diameter),h=seal_length+main_part_holes/2+hose_outer_diameter/2+2);
-           translate([0,-hose_outer_diameter/2-2,0]) cube([seal_length+main_part_holes/2, hose_outer_diameter+4,seal_length+main_part_holes/2+hose_outer_diameter/2+2]);
-*           translate([0,0,seal_length+main_part_holes/2+hose_outer_diameter/2+2]) metric_thread(magnet_diameter+2*0.541*thread_pitch,thread_pitch,thread_pitch*2);
-           }
-        cylinder(d=main_part_holes,h=seal_length+main_part_holes/2);
-           translate([0,0,seal_length+main_part_holes/2])rotate([0,90,0])cylinder(d=main_part_holes, h=seal_length+main_part_holes/2);
-           translate([0,0,seal_length+main_part_holes/2])intersection(){cylinder(d=main_part_holes, h=main_part_holes,center=true);rotate([0,90,0])cylinder(d=main_part_holes, h=main_part_holes,center=true);}
+      union(){cylinder(d=max(main_part_holes+2*seal_length,magnet_diameter+2*0.541*thread_pitch),h=seal_length+main_part_holes/2+hose_outer_diameter/2+2);
+      translate([0,-hose_outer_diameter/2-2,0]) cube([seal_length+main_part_holes/2, hose_outer_diameter+4,seal_length+main_part_holes/2+hose_outer_diameter/2+2]);
+   translate([0,0,seal_length+main_part_holes/2+hose_outer_diameter/2+2]) metric_thread(magnet_diameter+2*0.541*thread_pitch,thread_pitch,thread_pitch*2);
+      }
+      cylinder(d=main_part_holes,h=seal_length+main_part_holes/2);
+      translate([0,0,seal_length+main_part_holes/2])rotate([0,90,0])cylinder(d=main_part_holes, h=seal_length+main_part_holes/2);
+      translate([0,0,seal_length+main_part_holes/2])intersection(){cylinder(d=main_part_holes, h=main_part_holes,center=true);rotate([0,90,0])cylinder(d=main_part_holes, h=main_part_holes,center=true);}
     }
-else
+else //light trap
         difference(){
-       union(){cylinder(d=max(main_part_holes+2*seal_length,magnet_diameter),h=(hose_outer_diameter/2+2)*coeff+2*main_part_holes+2);
-           translate([0,-max(main_part_holes+2*seal_length,magnet_diameter)/2,0]) cube([offset+magnet_diameter/2,max(main_part_holes+2*seal_length,magnet_diameter),(hose_outer_diameter/2+2)*coeff+2*main_part_holes+2]);
-*           translate([offset,0,(hose_outer_diameter/2+2)*coeff+2*main_part_holes+2]) metric_thread(magnet_diameter+2*0.541*thread_pitch,thread_pitch,thread_pitch*2);
+       union(){cylinder(d=max(main_part_holes+2*seal_length,magnet_diameter+2*0.541*thread_pitch),h=(hose_outer_diameter/2+2)*coeff+2*main_part_holes+2);
+           translate([0,-max(main_part_holes+2*seal_length,magnet_diameter+2*0.541*thread_pitch)/2,0]) cube([max(offset+(magnet_diameter+2*0.541*thread_pitch)/2,2.5*main_part_holes+seal_length),max(main_part_holes+2*seal_length,magnet_diameter+2*0.541*thread_pitch),(hose_outer_diameter/2+2)*coeff+2*main_part_holes+2]);
+     translate([offset,0,(hose_outer_diameter/2+2)*coeff+2*main_part_holes+2]) metric_thread(magnet_diameter+2*0.541*thread_pitch,thread_pitch,thread_pitch*2);
            }
       cylinder(d=main_part_holes,h=coeff*hose_outer_diameter/2+2*main_part_holes);
       
@@ -60,7 +47,7 @@ else
            
       translate([2*main_part_holes,0,coeff*hose_outer_diameter/2])cylinder(d=main_part_holes,h=2*main_part_holes);
           
-       translate([2*main_part_holes,0,coeff*hose_outer_diameter/2])rotate([0,90,0])cylinder(d=main_part_holes,h=offset+magnet_diameter/2); 
+       translate([2*main_part_holes,0,coeff*hose_outer_diameter/2])rotate([0,90,0])cylinder(d=main_part_holes,h=offset+magnet_diameter/2+0.541*thread_pitch+seal_length); 
       
            translate([0,0,coeff*hose_outer_diameter/2+2*main_part_holes])intersection(){cylinder(d=main_part_holes, h=main_part_holes,center=true);rotate([0,90,0])cylinder(d=main_part_holes, h=main_part_holes,center=true);}
             translate([2*main_part_holes,0,coeff*hose_outer_diameter/2+2*main_part_holes])intersection(){cylinder(d=main_part_holes, h=main_part_holes,center=true);rotate([0,90,0])cylinder(d=main_part_holes, h=main_part_holes,center=true);}
