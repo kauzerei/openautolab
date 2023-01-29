@@ -30,6 +30,8 @@ module hollow_screw(){
             cylinder(seal_length*0.7,screw_inner_diameter*0.6,screw_inner_diameter*0.5, $fn=6);
         }
     }
+    diameter_to_hold=magnet_diameter+2*0.541*thread_pitch+thread_expand+3;
+    height_to_hold=magnet_height+thread_pitch*2+wall_between_magnets;
 module main_body(){
     coeff=  (adapter_shape == "Round") ? 1:(adapter_shape == "Square") ? 1.42:1.16;
     if (light_trap==false)
@@ -85,16 +87,19 @@ module hose_sleeve(){
         cylinder(h=seal_length+4,d=hose_outer_diameter);
     }
     }
-module magnetic_holder(){
+module holder_magnet_cover(){
     difference(){
-    diameter_to_hold=magnet_diameter+2*0.541*thread_pitch+thread_expand+3;
-    height_to_hold=magnet_height+thread_pitch*2+wall_between_magnets;
     metric_thread(2+3+diameter_to_hold+2*0.541*thread_pitch,thread_pitch,height_to_hold+wall_between_magnets);
     translate([0,0,wall_between_magnets])cylinder(d=diameter_to_hold+2,h=height_to_hold);
     translate([0,0,height_to_hold+wall_between_magnets-1])cube([2,6+diameter_to_hold+2*0.541*thread_pitch,2],center=true);
         }    
     }
-module holder_magnet_cover(){}
+module magnetic_holder(){
+    difference(){
+        cylinder(h=2+magnet_height+wall_between_magnets+height_to_hold, d=2+3+diameter_to_hold+2*0.541*thread_pitch+3);
+        translate([0,0,2])cylinder(h=magnet_height,d=magnet_diameter+2);
+        translate([0,0,2+magnet_height])metric_thread(2+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand,thread_pitch,height_to_hold+wall_between_magnets,internal=true);
+        }}
 if (part=="Hollow_screw") {
     hollow_screw();
 }
@@ -117,11 +122,13 @@ if (part=="Holder_magnet_cover") {
     holder_magnet_cover();
 }
 if (part=="All") {
-color("red")translate([10,0,0])hollow_screw();
-color("green")translate([0,10,0])main_body();
-color("blue")translate([0,0,10])main_magnet_cover();
-hose_adapter();
-hose_sleeve();
-magnetic_holder();
+    color("green")magnetic_holder();
+    color("red")translate([0,0,2+magnet_height])holder_magnet_cover();
+    color("blue")translate([0,0,2+magnet_height+wall_between_magnets+height_to_hold])main_magnet_cover();
+color("green")translate([0,0,2+magnet_height+2*wall_between_magnets+height_to_hold])main_body();
+//color("red")translate([0,0,0])hollow_screw();
+//hose_adapter();
+//hose_sleeve();
+
 holder_magnet_cover();
 }
