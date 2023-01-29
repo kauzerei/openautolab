@@ -32,8 +32,9 @@ module hollow_screw(){
     }
     diameter_to_hold=magnet_diameter+2*0.541*thread_pitch+thread_expand+3;
     height_to_hold=magnet_height+thread_pitch*2+wall_between_magnets;
+        coeff=  (adapter_shape == "Round") ? 1:(adapter_shape == "Square") ? 1.42:1.16;
+    body_move=(light_trap)?(hose_outer_diameter/2+4)*coeff+2*main_part_holes+2:seal_length+main_part_holes/2+hose_outer_diameter/2+2;
 module main_body(){
-    coeff=  (adapter_shape == "Round") ? 1:(adapter_shape == "Square") ? 1.42:1.16;
     if (light_trap==false)
     difference(){
       union(){cylinder(d=max(main_part_holes+2*seal_length,magnet_diameter+2*0.541*thread_pitch),h=seal_length+main_part_holes/2+hose_outer_diameter/2+2);
@@ -124,8 +125,8 @@ if (part=="Holder_magnet_cover") {
 if (part=="All") {
     color("green")magnetic_holder();
     color("red")translate([0,0,2+magnet_height])holder_magnet_cover();
-    color("blue")translate([0,0,2+magnet_height+wall_between_magnets+height_to_hold])main_magnet_cover();
-color("green")translate([0,0,2+magnet_height+2*wall_between_magnets+height_to_hold])main_body();
+    color("blue")translate([0,0,2+magnet_height+wall_between_magnets])main_magnet_cover();
+color("green")translate([0,0,2+magnet_height+wall_between_magnets+height_to_hold+body_move+])rotate([180,0,0])main_body();
 //color("red")translate([0,0,0])hollow_screw();
 //hose_adapter();
 //hose_sleeve();
