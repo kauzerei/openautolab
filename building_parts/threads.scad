@@ -143,7 +143,7 @@ module metric_thread (diameter=8, pitch=1, length=1, internal=false, n_starts=1,
             } else {
 
                // External thread.
-               cylinder (r1=diameter/2 - h*h_fac2, r2=tapered_diameter/2 - h*h_fac2,
+              cylinder (r1=diameter/2 - h*h_fac2, r2=tapered_diameter/2 - h*h_fac2,
                          h=length, $fn=n_segments);
             }
 
@@ -426,6 +426,6 @@ module thread_polyhedron (radius, pitch, internal, n_starts, thread_size,
       }
    }
 }
-
+metric_thread(10,3,6);
 
 
