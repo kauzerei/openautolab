@@ -21,8 +21,15 @@ screw_inner_diameter=4;
 offset=0;
 $fn= $preview ? 32 : 64;
 
-module hollow_screw(){}
-
+module hollow_screw(){
+    difference(){
+        union(){
+            cylinder(h=1.5,d=screw_diameter+4);
+            translate([0,0,1.5])cylinder(h=seal_length,d=screw_diameter);}
+            cylinder(d=screw_inner_diameter,h=seal_length+2);
+            cylinder(seal_length*0.7,screw_inner_diameter*0.6,screw_inner_diameter*0.5, $fn=6);
+        }
+    }
 module main_body(){
     coeff=  (adapter_shape == "Round") ? 1:(adapter_shape == "Square") ? 1.42:1.16;
     if (light_trap==false)
@@ -54,7 +61,12 @@ else //light trap
             translate([2*main_part_holes,0,coeff*hose_outer_diameter/2])intersection(){cylinder(d=main_part_holes, h=main_part_holes,center=true);rotate([0,90,0])cylinder(d=main_part_holes, h=main_part_holes,center=true);}
     }
     }
-module main_magnet_cover(){}
+module main_magnet_cover(){
+  difference(){
+   cylinder(d=magnet_diameter+2*0.541*thread_pitch+thread_expand+3,h=magnet_height+thread_pitch*2+wall_between_magnets);
+       translate([0,0,wall_between_magnets]){metric_thread(magnet_diameter+2*0.541*thread_pitch+thread_expand,thread_pitch,magnet_height+thread_pitch*2,internal=true);}
+  }
+}
 module hose_adapter(){}
 module hose_sleeve(){}
 module magnetic_holder(){}
