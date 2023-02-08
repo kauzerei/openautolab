@@ -32,6 +32,7 @@ module hollow_screw(){
     }
     diameter_to_hold=magnet_diameter+2*0.541*thread_pitch+thread_expand+3;
     height_to_hold=magnet_height+thread_pitch*2+wall_between_magnets;
+        shape=(adapter_shape=="Round")?64:(adapter_shape=="Square")?4:6;
         coeff=  (adapter_shape == "Round") ? 1:(adapter_shape == "Square") ? 1.42:1.16;
     body_move=(light_trap)?(hose_outer_diameter/2+4)*coeff+2*main_part_holes+2:seal_length+main_part_holes/2+hose_outer_diameter/2+2;
 module main_body(){
@@ -74,18 +75,17 @@ module hose_adapter(){
     difference(){
         union(){
             cylinder(h=seal_length,d=insert_diameter);
-            translate([0,0,seal_length])cylinder(h=4,d=hose_outer_diameter);
+            translate([0,0,seal_length])cylinder(h=4,d=(hose_outer_diameter+1)*coeff,$fn=shape);
             translate([0,0,seal_length+4])cylinder(h=seal_length,d=hose_inner_diameter);
             }
             cylinder(d=adapter_inner_diameter,h=4+2*seal_length);
         }
     }
 module hose_sleeve(){
-    shape=(adapter_shape=="Round")?64:(adapter_shape=="Square")?4:6;
-    coeff=  (adapter_shape == "Round") ? 1:(adapter_shape == "Square") ? 1.42:1.16;
     difference(){
         cylinder(h=seal_length+4,d=coeff*(hose_outer_diameter+4),$fn=shape);
         cylinder(h=seal_length+4,d=hose_outer_diameter);
+        translate([0,0,seal_length])cylinder(h=4,d=(hose_outer_diameter+2)*coeff,$fn=shape);
     }
     }
 module holder_magnet_cover(){
