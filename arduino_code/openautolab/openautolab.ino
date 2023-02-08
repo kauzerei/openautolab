@@ -29,6 +29,7 @@ Servo mixer;
 HX711 scale;
 LiquidCrystal_I2C lcd(0x27,16,2);
 bool keypressed=false;
+byte testbyte=1;
 void agitation(float a, float b, float c, float d) {
 unsigned long int init=1000.0 * a; //duration of one unit of first agitation, 1sec
 unsigned long int intvl=1000.0 * b; //agitation every unit of time, 1sec
@@ -251,6 +252,37 @@ void wait(float waittime) {
     //display.showNumberDecEx((secs/60UL)*100UL+(secs%60UL), 0b01000000, false);
   }
 }
+char* const threechars(byte)
+{
+  static char pr[4]="pro";
+  return pr;
+  }
+unsigned long int toseconds(byte t)
+{
+  if (t<=120) return 5UL*t;
+  else if (t<=140) return 30ul*(unsigned long int)(t)-3000ul;
+  else if (t<=160) return 60ul*(unsigned long int)(t)-7200ul;
+  else if (t<=170) return 300ul*(unsigned long int)(t)-45600ul;
+  else if (t<=233) return 600ul*(unsigned long int)(t)-96600ul;
+  else if (t<=245) return 3600ul*(unsigned long int)(t)-795600ul;
+  else if (t<=254) return 7200ul*(unsigned long int)(t)-1677600ul;
+  else return 999999999;
+}
+char* const tohms(unsigned long int s)
+{
+  static char hms[9]="";
+  unsigned long int seconds=s%60;
+  unsigned long int minutestotal=(unsigned long int)((s-seconds)/60ul);
+  unsigned long int minutes=minutestotal%60ul;
+  unsigned long int hours=(unsigned long int)((minutestotal-minutes)/60ul);
+  if (hours<10) strcat(hms," ");
+  if (hours==0) strcat(hms,"   ");
+  else {strcat(hms,hours); strcat(hms,":");}
+  if (hours==0 && minutes<10) strcat(hms,"    ");
+  if (hours==0) {strcat(hms,minutes); strcat(hms,":");strcat(hms,seconds);}
+  else {strcat(hms,minutes); strcat(hms,":");strcat(hms,seconds);}
+  return hms;
+  }
 
 void setup() {
 analogReference(INTERNAL);
@@ -302,13 +334,16 @@ void loop() {
     case 1: //bw develop time
       lcd.clear();
       lcd.setCursor(0,0);
-      lcd.print("Develop     7:00");
+//      lcd.print("Develop     7:00");
+      lcd.print(tohms(testbyte));
       lcd.setCursor(0,1);
-      lcd.print("-     +     Next");
+      lcd.print("-     + ");
+      lcd.print((int)testbyte);
+//      lcd.print("-     +     Next");
       keypressed=false;
       while (not keypressed) {
-        if(digitalRead(button1)==LOW) {delay(200); keypressed=true;}
-        if(digitalRead(button2)==LOW) {delay(200); keypressed=true;}
+        if(digitalRead(button1)==LOW) {testbyte--; delay(100); keypressed=true;}
+        if(digitalRead(button2)==LOW) {testbyte++; delay(100); keypressed=true;}
         if(digitalRead(button3)==LOW) {k=2; delay(200); keypressed=true;}
       }
       keypressed=false;
