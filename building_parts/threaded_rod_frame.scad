@@ -1,9 +1,13 @@
 part = "bottom_corner"; // [bottom_corner, bottom_corner_mirrored,top_corner]
-h=8.0;
-d=8.0;
-w=18.0;
+nut_width_with_margin=18;
+nut_height_with_margin=8;
+rod_diameter=8;
+angle_of_inclanation=10;
+h=nut_height_with_margin;
+w=nut_width_with_margin;
+d=rod_diameter;
 width=150.0;
-a=15.0;
+a=angle_of_inclanation;
 
 module bottom_corner(){
     difference(){
@@ -51,3 +55,12 @@ if (part=="bottom_corner_mirrored") {
 if (part=="top_corner") {
     top_corner();
 }
+dw=Bx/2;
+dh1=2*w-(w*tan(a)+w-w*sin(a)-h*cos(a))/2;
+dh2=Hy-By/2;
+h0=((width-2*h-w)/2-dw)/tan(a);
+height=h0+dh1+dh2;
+echo("-----------------------------");
+echo(str("Machine height = ", height,"mm"));
+echo(str("Rod length = ",2*h+w+h0/cos(a),"mm"));
+echo("-----------------------------");
