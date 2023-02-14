@@ -1,4 +1,4 @@
-part = "bottom_corner"; // [bottom_corner, bottom_corner_mirrored,top_corner]
+part = "bottom_corner"; // [bottom_corner, bottom_corner_mirrored,top_corner,all]
 nut_width_with_margin=18;
 nut_height_with_margin=8;
 rod_diameter=8;
@@ -7,6 +7,7 @@ h=nut_height_with_margin;
 w=nut_width_with_margin;
 d=rod_diameter;
 width=150.0;
+length=400;
 a=angle_of_inclanation;
 
 module bottom_corner(){
@@ -28,22 +29,21 @@ module bottom_corner(){
     By=Ay+w*sin(a);
     Cx=Dx+w*cos(a);
     Cy=Dy+w*sin(a);
+    dw=(Cx+Ax)/2;
 $fn=36;
 Hy=By+h*cos(a);
+dh1=2*w-(w*tan(a)+w-w*sin(a)-h*cos(a))/2;
+dh2=Hy-By/2;
+h0=((width-2*h-w)/2-dw)/tan(a);
+height=h0+dh1+dh2;
+td=(w-w*sin(a)-h*cos(a))*cos(a);
+rl=2*h+h0/cos(a)+0.5*w/cos(a)+td/2;
 module top_corner(){
-    Ax=h*sin(a);
-    Ay=w;
-    Dy=0;
-    Dx=(h+w/cos(a))*sin(a);
-    Bx=Ax+w*cos(a);
-    By=Ay+w*sin(a);
-    Cx=Dx+w*cos(a);
-    Cy=Dy+w*sin(a);
      difference(){
     linear_extrude(w)polygon([[Ax,Ay],[Bx,By],[Cx,Cy],[Dx,Dy],[-Dx,Dy],[-Cx,Cy],[-Bx,By],[-Ax,Ay]]);
     translate([0,w/2,-1])cylinder(h=w+2, d=d);
-    translate([(Ax+Cx)/2,(Ay+Cy)/2,w/2])rotate([90,0,a])cylinder(h=w+2, d=d,center=true);    
-    translate([(-Ax-Cx)/2,(Ay+Cy)/2,w/2])rotate([90,0,-a])cylinder(h=w+2, d=d,center=true);
+    translate([(Ax+Cx)/2,(Ay+Cy)/2,w/2])rotate([90,0,a])cylinder(h=w/cos(a)+2, d=d,center=true);    
+    translate([(-Ax-Cx)/2,(Ay+Cy)/2,w/2])rotate([90,0,-a])cylinder(h=w/cos(a)+2, d=d,center=true);
      }
 }
 if (part=="bottom_corner") {
@@ -55,12 +55,33 @@ if (part=="bottom_corner_mirrored") {
 if (part=="top_corner") {
     top_corner();
 }
-dw=Bx/2;
-dh1=2*w-(w*tan(a)+w-w*sin(a)-h*cos(a))/2;
-dh2=Hy-By/2;
-h0=((width-2*h-w)/2-dw)/tan(a);
-height=h0+dh1+dh2;
+if (part=="all")
+{
+    mirror([0,1,1])bottom_corner();
+    translate([width-2*h,0,0])mirror([1,0,0])mirror([0,1,1])bottom_corner();
+    translate([0,length,0])mirror([0,1,0])mirror([0,1,1])bottom_corner();
+    translate([width-2*h,length,0])mirror([0,1,0])mirror([1,0,0])mirror([0,1,1])bottom_corner();
+    translate([width/2-h,0,h0-By/2-(w*tan(a)+w-w*sin(a)-h*cos(a))/2])rotate([90,0,0])top_corner();
+    translate([width/2-h,length+w,h0-By/2-(w*tan(a)+w-w*sin(a)-h*cos(a))/2])rotate([90,0,0])top_corner();
+    color("blue")
+    {
+        translate([w/2,-h,-1.5*w])rotate([-90,0,0])cylinder(d=d,h=length+2*h);
+        translate([width-2*h-w/2,-h,-1.5*w])rotate([-90,0,0])cylinder(d=d,h=length+2*h);
+        translate([width/2-h,-h-w,w/2+h0-By/2-(w*tan(a)+w-w*sin(a)-h*cos(a))/2])rotate([-90,0,0])cylinder(d=d,h=length+2*w+2*h);
+        translate([-h,w/2,-w/2])rotate([0,90,0])cylinder(d=d,h=width);
+        translate([-h,length-w/2,-w/2])rotate([0,90,0])cylinder(d=d,h=width);
+        translate([w/2,-w/2,-(w*tan(a)+w-w*sin(a)-h*cos(a))/2])rotate([0,a,0])translate([0,0,-h-0.5*td])cylinder(d=d,h=rl);
+        
+        translate([width-2*h,0,0])mirror([1,0,0])translate([w/2,-w/2,-(w*tan(a)+w-w*sin(a)-h*cos(a))/2])rotate([0,a,0])translate([0,0,-h-cos(a)*(w-w*sin(a)-h*cos(a))/2])cylinder(d=d,h=rl);
+        
+        translate([0,length,0])mirror([0,1,0])translate([w/2,-w/2,-(w*tan(a)+w-w*sin(a)-h*cos(a))/2])rotate([0,a,0])translate([0,0,-h-cos(a)*(w-w*sin(a)-h*cos(a))/2])cylinder(d=d,h=rl);
+        
+        translate([width-2*h,length,0])mirror([0,1,0])mirror([1,0,0])translate([w/2,-w/2,-(w*tan(a)+w-w*sin(a)-h*cos(a))/2])rotate([0,a,0])translate([0,0,-h-cos(a)*(w-w*sin(a)-h*cos(a))/2])cylinder(d=d,h=rl);
+
+        }
+    }
+
 echo("-----------------------------");
 echo(str("Machine height = ", height,"mm"));
-echo(str("Rod length = ",2*h+w+h0/cos(a),"mm"));
+echo(str("Rod length = ",rl,"mm"));
 echo("-----------------------------");
