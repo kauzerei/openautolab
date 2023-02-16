@@ -1,7 +1,7 @@
 part = "all"; // [bigger,smaller,all]
 rod_diameter=8;
-rods_distance=60;
-offset=3;
+rods_distance=62;
+offset=7;
 mount_hole=5;
 mount_hole_distance=24;
 part_width=15;

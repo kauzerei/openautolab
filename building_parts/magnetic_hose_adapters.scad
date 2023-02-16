@@ -19,6 +19,9 @@ thread_expand=2.0;
 adapter_inner_diameter=4;
 screw_inner_diameter=4;
 offset=0;
+rod_mount=false;
+nut_width=16;
+mount_hole=8;
 $fn= $preview ? 32 : 64;
 
 module hollow_screw(){
@@ -97,9 +100,14 @@ module holder_magnet_cover(){
     }
 module magnetic_holder(){
     difference(){
+        union(){
         cylinder(h=2+magnet_height+wall_between_magnets+height_to_hold, d=1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+3);
+          if(rod_mount) translate([0,0,nut_width/2]) cube([1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+2*nut_width,nut_width,nut_width],center=true);
+        }
         translate([0,0,2])cylinder(h=magnet_height,d=magnet_diameter+2);
         translate([0,0,2+magnet_height])metric_thread(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand,thread_pitch,height_to_hold+wall_between_magnets,internal=true);
+       translate([-(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)/2,0,nut_width/2])rotate([90,0,0])cylinder(h=nut_width+2,d=mount_hole,center=true);
+        translate([(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)/2,0,nut_width/2])rotate([90,0,0])cylinder(h=nut_width+2,d=mount_hole,center=true);
         }}
 if (part=="Hollow_screw") {
     hollow_screw();
@@ -133,3 +141,4 @@ color("green")translate([0,0,2+magnet_height+wall_between_magnets+height_to_hold
 
 holder_magnet_cover();
 }
+echo(str("distance between rods ",(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)));
