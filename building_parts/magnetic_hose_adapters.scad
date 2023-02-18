@@ -1,7 +1,7 @@
 // OpenSCAD Threads
 // http://dkprojects.net/openscad-threads/
 include <threads.scad>;
-part = "Hollow_screw"; // [Hollow_screw, Main_body, Main_magnet_cover, Hose_adapter, Hose_sleeve,Magnetic_holder, Holder_magnet_cover,All]
+part = "Hollow_screw"; // [Hollow_screw, Main_body, Main_magnet_cover, Hose_adapter, Hose_sleeve,Magnetic_holder, Holder_magnet_cover,Instrument,All]
 screw_shape="Allen"; //[Allen,Square,Hexagonal]
 adapter_shape="Hexagonal"; //[Round,Square,Hexagonal]
 light_trap=false;
@@ -109,6 +109,29 @@ module magnetic_holder(){
        translate([-(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)/2,0,nut_width/2])rotate([90,0,0])cylinder(h=nut_width+2,d=mount_hole,center=true);
         translate([(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)/2,0,nut_width/2])rotate([90,0,0])cylinder(h=nut_width+2,d=mount_hole,center=true);
         }}
+module instrument(){
+    leader_length=10;
+    tap_length=30;
+    leader_diameter=7;
+    tap_diameter=8;
+    air_gap=0.5;
+    holding_depth=3;
+    instrument_length=leader_length+tap_length+holding_depth;
+       difference(){
+           union(){
+    cylinder(h=instrument_length, d=max(main_part_holes+2*seal_length,magnet_diameter+2*0.541*thread_pitch)+2*air_gap+4);
+           translate([-(2*seal_length+main_part_holes+2*air_gap+4)/2,-(hose_outer_diameter+4+2*air_gap+4)/2,0])cube([2*seal_length+main_part_holes+2*air_gap+4, hose_outer_diameter+4+2*air_gap+4,instrument_length]);
+         translate([-(2*seal_length+main_part_holes+2*air_gap+4)/2,0,0])cylinder(d=hose_outer_diameter+4+2*air_gap+4,h=instrument_length);
+    translate([(2*seal_length+main_part_holes+2*air_gap+4)/2,0,0])cylinder(d=hose_outer_diameter+4+2*air_gap+4,h=instrument_length);
+           }
+      translate([0,0,instrument_length-holding_depth]){cylinder(d=max(main_part_holes+2*seal_length,magnet_diameter+2*0.541*thread_pitch)+2*air_gap,h=holding_depth+1);
+      translate([0,-hose_outer_diameter/2-2-air_gap,0]) cube([seal_length+main_part_holes/2+air_gap, hose_outer_diameter+4+2*air_gap,holding_depth+1]);
+       }
+       translate([0,0,-1])cylinder(d=leader_diameter,h=leader_length+1);
+       translate([0,0,leader_length-1])cylinder(d=tap_diameter,h=tap_length+2);
+    }
+    }
+
 if (part=="Hollow_screw") {
     hollow_screw();
 }
@@ -130,6 +153,10 @@ if (part=="Magnetic_holder") {
 if (part=="Holder_magnet_cover") {
     holder_magnet_cover();
 }
+if (part=="Instrument")
+{
+    instrument();
+    }
 if (part=="All") {
     color("green")magnetic_holder();
     color("red")translate([0,0,2+magnet_height])holder_magnet_cover();
