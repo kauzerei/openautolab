@@ -116,7 +116,7 @@ module instrument(){
     tap_diameter=8;
     air_gap=0.5;
     holding_depth=3;
-    instrument_length=leader_length+tap_length+holding_depth;
+    instrument_length=leader_length+tap_length+2*holding_depth;
        difference(){
            union(){
     cylinder(h=instrument_length, d=max(main_part_holes+2*seal_length,magnet_diameter+2*0.541*thread_pitch)+2*air_gap+4);
@@ -124,9 +124,14 @@ module instrument(){
          translate([-(2*seal_length+main_part_holes+2*air_gap+4)/2,0,0])cylinder(d=hose_outer_diameter+4+2*air_gap+4,h=instrument_length);
     translate([(2*seal_length+main_part_holes+2*air_gap+4)/2,0,0])cylinder(d=hose_outer_diameter+4+2*air_gap+4,h=instrument_length);
            }
-      translate([0,0,instrument_length-holding_depth]){cylinder(d=max(main_part_holes+2*seal_length,magnet_diameter+2*0.541*thread_pitch)+2*air_gap,h=holding_depth+1);
+      //top holder
+           translate([0,0,instrument_length-holding_depth]){cylinder(d=max(main_part_holes+2*seal_length,magnet_diameter+2*0.541*thread_pitch)+2*air_gap,h=holding_depth+1);
       translate([0,-hose_outer_diameter/2-2-air_gap,0]) cube([seal_length+main_part_holes/2+air_gap, hose_outer_diameter+4+2*air_gap,holding_depth+1]);
        }
+    //side holder
+   
+      #translate([-(seal_length+main_part_holes/2),0,instrument_length-2*holding_depth])rotate([0,90,0])translate([-(seal_length+main_part_holes/2),0,0]){cylinder(d=max(main_part_holes+2*seal_length,magnet_diameter+2*0.541*thread_pitch),h=seal_length+main_part_holes/2+hose_outer_diameter/2+2);
+      translate([0,-hose_outer_diameter/2-2,0]) cube([seal_length+main_part_holes/2, hose_outer_diameter+4,seal_length+main_part_holes/2+hose_outer_diameter/2+2]);} //translate([0,0,instrument_length-2*holding_depth])cube([10,10,10]);   
        translate([0,0,-1])cylinder(d=leader_diameter,h=leader_length+1);
        translate([0,0,leader_length-1])cylinder(d=tap_diameter,h=tap_length+2);
     }
