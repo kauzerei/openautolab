@@ -1,35 +1,45 @@
 // OpenSCAD Threads
 // http://dkprojects.net/openscad-threads/
 include <threads.scad>;
-part = "Hollow_screw"; // [Hollow_screw, Main_body, Main_magnet_cover, Hose_adapter, Hose_sleeve,Magnetic_holder, Holder_magnet_cover,Instrument,All]
-screw_shape="Allen"; //[Allen,Square,Hexagonal]
-adapter_shape="Hexagonal"; //[Round,Square,Hexagonal]
+part = "Hollow_screw"; // [Hollow_screw, Main_body, Main_magnet_cover, Hose_adapter, Hose_sleeve,Magnetic_holder, Holder_magnet_cover,OPTIONAL_ Tap_helping_tool]
+
+/* [Main body options] */
 light_trap=false;
-hose_inner_diameter=6;
-hose_outer_diameter=9;
 main_part_holes=7;
-insert_diameter=8;
-screw_diameter=8;
 seal_length=8;
+offset=0;
+
+/* [Printed thread and magnet options] */
+thread_pitch=3;
+thread_expand=2.0;
 magnet_diameter=15;
 magnet_height=5;
 wall_between_magnets=1;
-thread_pitch=3;
-thread_expand=2.0;
+
+/* [Hose adapter and hollow screw options] */
+screw_shape="Allen"; //[Allen,Square,Hexagonal]
+adapter_shape="Hexagonal"; //[Round,Square,Hexagonal]
+hose_inner_diameter=6;
+hose_outer_diameter=9;
+insert_diameter=8;
+screw_diameter=8;
 adapter_inner_diameter=4;
 screw_inner_diameter=4;
-offset=0;
+
+/* [Magnetic holder options] */
 rod_mount=false;
 nut_width=16;
 mount_hole=8;
-$fn= $preview ? 32 : 64;
-leader_length=10;
-tap_length=30;
+
+/* [Tap helper options] */
+onside=false;
+leader_length=5;
+tap_length=22;
 leader_diameter=7;
-tap_diameter=8;
+tap_diameter=10;
 air_gap=0.5;
 holding_depth=3;
-onside=false;
+$fn= $preview ? 32 : 64;
 degre=onside?90:0;
 shape=(adapter_shape=="Round")?64:(adapter_shape=="Square")?4:6;
         coeff=  (adapter_shape == "Round") ? 1:(adapter_shape == "Square") ? 1.42:1.16;
@@ -123,19 +133,6 @@ module magnetic_holder(nothread=false){
        translate([-(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)/2,0,nut_width/2])rotate([90,0,0])cylinder(h=nut_width+2,d=mount_hole,center=true);
         translate([(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)/2,0,nut_width/2])rotate([90,0,0])cylinder(h=nut_width+2,d=mount_hole,center=true);
         }}
-/*
-module instrument()
-        {
-          difference()
-            {
-            linear_extrude(instrument_length)minkowski()
-            {projection(cut=true)main_body(nothread=true);
-                circle(air_gap*2+holding_depth*2);
-                
-            }
-        }
-    }
-    */
 
 module instrument()
         {
@@ -156,7 +153,9 @@ module instrument()
     }  
     shift=onside?shiftz:shiftx;
   translate([shift,0,0]){translate([0,0,-1])cylinder(d=leader_diameter,h=leader_length+2);
-  translate([0,0,leader_length])cylinder(d=tap_diameter,h=instrument_length);}              }
+  translate([0,0,leader_length])cylinder(d=tap_diameter,h=instrument_length);
+      translate([-(shift/abs(shift))*(3+tap_diameter/2),0,4])rotate([90,0,0])cylinder(d=4,h=500,center=true);}
+      }
             }
             
 if (part=="Hollow_screw") {
@@ -180,19 +179,9 @@ if (part=="Magnetic_holder") {
 if (part=="Holder_magnet_cover") {
     holder_magnet_cover();
 }
-if (part=="Instrument")
+if (part=="OPTIONAL_ Tap_helping_tool")
 {
 instrument(); 
 }
-if (part=="All") {
-    color("green")magnetic_holder();
-    color("red")translate([0,0,2+magnet_height])holder_magnet_cover();
-    color("blue")translate([0,0,2+magnet_height+wall_between_magnets])main_magnet_cover();
-color("green")translate([0,0,2+magnet_height+wall_between_magnets+height_to_hold+body_move])rotate([180,0,0])main_body();
-//color("red")translate([0,0,0])hollow_screw();
-//hose_adapter();
-//hose_sleeve();
 
-holder_magnet_cover();
-}
 echo(str("distance between rods ",(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)));
