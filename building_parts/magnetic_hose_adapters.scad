@@ -17,7 +17,7 @@ magnet_height=5;
 wall_between_magnets=1;
 
 /* [Hose adapter and hollow screw options] */
-screw_shape="Allen"; //[Allen,Square,Hexagonal]
+screw_shape="Hexagonal"; //[Allen,Hexagonal]
 adapter_shape="Hexagonal"; //[Round,Square,Hexagonal]
 hose_inner_diameter=6;
 hose_outer_diameter=9;
@@ -50,9 +50,9 @@ instrument_length=leader_length+tap_length+holding_depth;
 module hollow_screw(){
     difference(){
         union(){
-            cylinder(h=1.5,d=screw_diameter+4);
-            translate([0,0,1.5])cylinder(h=seal_length,d=screw_diameter);}
-            cylinder(d=screw_inner_diameter,h=seal_length+2);
+            cylinder(h=1.5,d=(screw_shape=="Hexagonal")?(screw_diameter+4)*1.16:screw_diameter+4,$fn=(screw_shape=="Hexagonal")?6:32);
+            translate([0,0,1.5])cylinder(h=seal_length+4,d=screw_diameter);}
+            cylinder(d=screw_inner_diameter,h=seal_length+6);
             cylinder(seal_length*0.7,screw_inner_diameter*0.6,screw_inner_diameter*0.5, $fn=6);
         }
     }
@@ -126,7 +126,7 @@ module magnetic_holder(nothread=false){
     difference(){
         union(){
         cylinder(h=2+magnet_height+wall_between_magnets+height_to_hold, d=1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+3);
-          if(rod_mount) translate([0,0,nut_width/2]) cube([1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+2*nut_width,nut_width,nut_width],center=true);
+          if(rod_mount) translate([0,0,min(nut_width,2+magnet_height+wall_between_magnets+height_to_hold)/2]) cube([1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+2*nut_width,nut_width,min(nut_width,2+magnet_height+wall_between_magnets+height_to_hold)],center=true);
         }
         translate([0,0,2])cylinder(h=magnet_height,d=magnet_diameter+2);
         translate([0,0,2+magnet_height])metric_thread(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand,thread_pitch,height_to_hold+wall_between_magnets,internal=true,test=nothread);
