@@ -18,15 +18,15 @@ thread_pitch=3;
 thread_expand=2.0;
 adapter_inner_diameter=4;
 screw_inner_diameter=4;
-offset=0;
+offset=20;
 rod_mount=false;
 nut_width=16;
 mount_hole=8;
 $fn= $preview ? 32 : 64;
 leader_length=10;
-tap_length=30;
+tap_length=22;
 leader_diameter=7;
-tap_diameter=8;
+tap_diameter=10;
 air_gap=0.5;
 holding_depth=3;
 onside=false;
@@ -123,19 +123,6 @@ module magnetic_holder(nothread=false){
        translate([-(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)/2,0,nut_width/2])rotate([90,0,0])cylinder(h=nut_width+2,d=mount_hole,center=true);
         translate([(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)/2,0,nut_width/2])rotate([90,0,0])cylinder(h=nut_width+2,d=mount_hole,center=true);
         }}
-/*
-module instrument()
-        {
-          difference()
-            {
-            linear_extrude(instrument_length)minkowski()
-            {projection(cut=true)main_body(nothread=true);
-                circle(air_gap*2+holding_depth*2);
-                
-            }
-        }
-    }
-    */
 
 module instrument()
         {
