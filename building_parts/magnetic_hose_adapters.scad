@@ -7,7 +7,7 @@ part = "Hollow_screw"; // [Hollow_screw, Main_body, Main_magnet_cover, Hose_adap
 light_trap=false;
 main_part_holes=7;
 seal_length=8;
-offset=0;
+offset=20;
 
 /* [Printed thread and magnet options] */
 thread_pitch=3;
@@ -58,7 +58,7 @@ module hollow_screw(){
     }
     diameter_to_hold=magnet_diameter+2*0.541*thread_pitch+thread_expand+3;
     height_to_hold=magnet_height+thread_pitch*2+wall_between_magnets;
-        
+
 module main_body(nothread=false){
     if (light_trap==false)
     rotate([0,degre,0])translate([shiftx,0,0])difference(){
@@ -74,19 +74,19 @@ else //light trap
         rotate([0,degre,0])translate([shiftx,0,0])difference(){
        union(){
            cylinder(d=hose_outer_diameter+4,h=(hose_outer_diameter/2+4)*coeff+2*main_part_holes+2);
-           
+
            translate([offset,0,0])cylinder(d=magnet_diameter+2*0.541*thread_pitch,h=(hose_outer_diameter/2+4)*coeff+2*main_part_holes+2);
            translate([0,-hose_outer_diameter/2-2,0]) cube([max(offset+(magnet_diameter+2*0.541*thread_pitch)/2,2.5*main_part_holes+seal_length),hose_outer_diameter+4,(hose_outer_diameter/2+4)*coeff+2*main_part_holes+2]);
      translate([offset,0,(hose_outer_diameter/2+4)*coeff+2*main_part_holes+2]) metric_thread(magnet_diameter+2*0.541*thread_pitch,thread_pitch,thread_pitch*2,test=nothread);
            }
       translate([0,0,-1])cylinder(d=main_part_holes,h=coeff*(hose_outer_diameter+4)/2+2*main_part_holes+1);
-      
-       translate([0,0,coeff*(hose_outer_diameter+4)/2+2*main_part_holes])rotate([0,90,0])cylinder(d=main_part_holes,h=2*main_part_holes);     
-           
+
+       translate([0,0,coeff*(hose_outer_diameter+4)/2+2*main_part_holes])rotate([0,90,0])cylinder(d=main_part_holes,h=2*main_part_holes);
+
       translate([2*main_part_holes,0,coeff*(hose_outer_diameter+4)/2])cylinder(d=main_part_holes,h=2*main_part_holes);
-          
-     translate([2*main_part_holes,0,coeff*(hose_outer_diameter+4)/2])rotate([0,90,0])cylinder(d=main_part_holes,h=offset+magnet_diameter/2+0.541*thread_pitch+seal_length); 
-      
+
+     translate([2*main_part_holes,0,coeff*(hose_outer_diameter+4)/2])rotate([0,90,0])cylinder(d=main_part_holes,h=offset+magnet_diameter/2+0.541*thread_pitch+seal_length);
+
            translate([0,0,coeff*(hose_outer_diameter+4)/2+2*main_part_holes])intersection(){cylinder(d=main_part_holes, h=main_part_holes,center=true);rotate([0,90,0])cylinder(d=main_part_holes, h=main_part_holes,center=true);}
             translate([2*main_part_holes,0,coeff*(hose_outer_diameter+4)/2+2*main_part_holes])intersection(){cylinder(d=main_part_holes, h=main_part_holes,center=true);rotate([0,90,0])cylinder(d=main_part_holes, h=main_part_holes,center=true);}
             translate([2*main_part_holes,0,coeff*(hose_outer_diameter+4)/2])intersection(){cylinder(d=main_part_holes, h=main_part_holes,center=true);rotate([0,90,0])cylinder(d=main_part_holes, h=main_part_holes,center=true);}
@@ -120,7 +120,7 @@ module holder_magnet_cover(nothread=false){
     metric_thread(1+3+diameter_to_hold+2*0.541*thread_pitch,thread_pitch,height_to_hold+wall_between_magnets,test=nothread);
     translate([0,0,wall_between_magnets])cylinder(d=diameter_to_hold+1,h=height_to_hold);
     translate([0,0,height_to_hold+wall_between_magnets-1])cube([2,6+diameter_to_hold+2*0.541*thread_pitch,2],center=true);
-        }    
+        }
     }
 module magnetic_holder(nothread=false){
     difference(){
@@ -150,14 +150,14 @@ module instrument()
         main_body(nothread=true);
         cylinder(d=500,h=holding_depth);
         }
-    }  
+    }
     shift=onside?shiftz:shiftx;
   translate([shift,0,0]){translate([0,0,-1])cylinder(d=leader_diameter,h=leader_length+2);
   translate([0,0,leader_length])cylinder(d=tap_diameter,h=instrument_length);
       translate([-(shift/abs(shift))*(3+tap_diameter/2),0,4])rotate([90,0,0])cylinder(d=4,h=500,center=true);}
       }
             }
-            
+
 if (part=="Hollow_screw") {
     hollow_screw();
 }
@@ -181,7 +181,7 @@ if (part=="Holder_magnet_cover") {
 }
 if (part=="OPTIONAL_ Tap_helping_tool")
 {
-instrument(); 
+instrument();
 }
 
 echo(str("distance between rods ",(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)));

@@ -1,11 +1,11 @@
 part = "all"; // [bigger,smaller,all]
 rod_diameter=8;
 rods_distance=62;
-offset=7;
+offset=8;
 mount_hole=5;
-mount_hole_distance=24;
-part_width=15;
-part_thickness=2.5;
+mount_hole_distance=38;
+part_width=10;
+part_thickness=3;
 air_gap=1;
 $fn=64;
 module whole(){
