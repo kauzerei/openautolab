@@ -123,22 +123,31 @@ module magnetic_holder(nothread=false){
        translate([-(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)/2,0,nut_width/2])rotate([90,0,0])cylinder(h=nut_width+2,d=mount_hole,center=true);
         translate([(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)/2,0,nut_width/2])rotate([90,0,0])cylinder(h=nut_width+2,d=mount_hole,center=true);
         }}
-module instrument(thingie)
+/*
+module instrument()
         {
-     $fn=16;
-    difference(){
-    scale([1,1,instrument_length])minkowski()
-    {
-        translate([-holding_depth-air_gap,-holding_depth-air_gap,0])cube([2*holding_depth+2*air_gap,2*holding_depth+2*air_gap,0.01]);
-        intersection()
-        {
-        main_body(nothread=true);
-        cylinder(d=500,h=0.99);
+          difference()
+            {
+            linear_extrude(instrument_length)minkowski()
+            {projection(cut=true)main_body(nothread=true);
+                circle(air_gap*2+holding_depth*2);
+                
+            }
         }
     }
+    */
+
+module instrument()
+        {
+     //$fn=16;
+    difference(){
+                linear_extrude(instrument_length)minkowski()
+            {projection(cut=true)main_body(nothread=true);
+                circle(air_gap+holding_depth);
+            }
     translate([0,0,instrument_length-holding_depth])minkowski()
     {
-        cube(air_gap,center=true);
+        cube(2*air_gap,center=true);
         intersection()
         {
         main_body(nothread=true);
@@ -149,6 +158,7 @@ module instrument(thingie)
   translate([shift,0,0]){translate([0,0,-1])cylinder(d=leader_diameter,h=leader_length+2);
   translate([0,0,leader_length])cylinder(d=tap_diameter,h=instrument_length);}              }
             }
+            
 if (part=="Hollow_screw") {
     hollow_screw();
 }
