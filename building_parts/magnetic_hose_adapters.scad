@@ -4,7 +4,7 @@
 // OpenSCAD Threads
 // http://dkprojects.net/openscad-threads/
 include <threads.scad>;
-part = "Hollow_screw"; // [Hollow_screw, Main_body, Main_magnet_cover, Hose_adapter, Hose_sleeve,Magnetic_holder, Holder_magnet_cover,OPTIONAL_Tapping_tool,OPTIONAL_Threading_tool]
+part = "Hollow_screw"; // [Hollow_screw, Main_body, Main_magnet_cover, Hose_adapter, Hose_sleeve,Magnetic_holder, Holder_magnet_cover,OPTIONAL_Tapping_tool,OPTIONAL_Threading_tool,OPTIONAL_adapter_wrench,OPTIONAL_hollow_screw_wrench]
 
 /* [Main body options] */
 light_trap=false;
@@ -20,7 +20,7 @@ magnet_height=5;
 wall_between_magnets=1;
 
 /* [Hose adapter and hollow screw options] */
-screw_shape="Hexagonal"; //[Allen,Hexagonal]
+screw_shape="Hexagonal"; //[Allen,Hexagonal,Square]
 adapter_shape="Hexagonal"; //[Round,Square,Hexagonal]
 hose_inner_diameter=6;
 hose_outer_diameter=9;
@@ -66,7 +66,7 @@ height_to_hold=magnet_height+thread_pitch*2+wall_between_magnets;
 module hollow_screw(){
   difference(){
     union(){
-      cylinder(h=1.5,d=(screw_shape=="Hexagonal")?(screw_diameter+4)*1.16:screw_diameter+4,$fn=(screw_shape=="Hexagonal")?6:32);
+      cylinder(h=1.5,d=(screw_shape=="Hexagonal")?(screw_diameter+4)*1.16:(screw_shape=="Square")?(screw_diameter+4)*1.42:screw_diameter+4,$fn=(screw_shape=="Hexagonal")?6:(screw_shape=="Square")?4:32);
       translate([0,0,1.5])cylinder(h=seal_length+4,d=screw_diameter);}
       cylinder(d=screw_inner_diameter,h=seal_length+6);
       cylinder(seal_length*0.7,screw_inner_diameter*0.6,screw_inner_diameter*0.5, $fn=6);
@@ -192,6 +192,60 @@ module dieholder(){
   rotate([0,0,45])translate([0,die_diameter/2,10])cylinder(d=2,h=die_height);
 }
 
+module wrench(){
+  difference(){
+   union(){
+     translate([0,0,handle_thickness/2])cube([handle_thickness,handle_length,handle_thickness],center=true);
+     translate([0,handle_length/2,0])cylinder(h=handle_thickness,d=handle_thickness);
+     translate([0,-handle_length/2,0])cylinder(h=handle_thickness,d=handle_thickness);
+     cylinder(h=die_height+10,d=die_diameter+2*holding_depth);}
+  }
+}
+
+module hswrench() {
+  difference() {
+    union(){
+      translate([0,0,handle_thickness/2])cube([handle_thickness,handle_length,handle_thickness],center=true);
+      translate([0,handle_length/2,0])cylinder(h=handle_thickness,d=handle_thickness);
+      translate([0,-handle_length/2,0])cylinder(h=handle_thickness,d=handle_thickness);
+      cylinder(h=seal_length+6+2+2,d=die_diameter+2*holding_depth);
+    }
+    linear_extrude(seal_length+6)minkowski() {
+      projection(cut=true)hollow_screw();
+      circle(air_gap);
+    }
+    translate([0,0,seal_length+6+2])linear_extrude(2)minkowski() {
+      projection(cut=true)hollow_screw();
+      circle(air_gap);
+    }
+    cylinder(h=seal_length+6+2+2,d=screw_inner_diameter);
+  }
+}
+
+module hawrench() {
+  difference() {
+    union(){
+      translate([0,0,handle_thickness/2])cube([handle_thickness,handle_length,handle_thickness],center=true);
+      translate([0,handle_length/2,0])cylinder(h=handle_thickness,d=handle_thickness);
+      translate([0,-handle_length/2,0])cylinder(h=handle_thickness,d=handle_thickness);
+      cylinder(h=seal_length+6+2+2,d=die_diameter+2*holding_depth);
+    }
+    linear_extrude(seal_length+6)minkowski() {
+      projection(cut=true)translate([0,0,-seal_length])hose_adapter();
+      circle(air_gap);
+    }
+    translate([0,0,seal_length+6])linear_extrude(2)minkowski() {
+      projection(cut=true)translate([0,0,-seal_length-4.1])hose_adapter();
+      circle(air_gap);
+    }
+    translate([0,0,seal_length+6+2])linear_extrude(2)minkowski() {
+      projection(cut=true)translate([0,0,-seal_length])hose_adapter();
+      circle(air_gap);
+    }
+    cylinder(h=seal_length+6+2+2,d=insert_diameter);
+  }
+}
+
 if (part=="Hollow_screw") {
   hollow_screw();
 }
@@ -213,12 +267,16 @@ if (part=="Magnetic_holder") {
 if (part=="Holder_magnet_cover") {
   holder_magnet_cover();
 }
-if (part=="OPTIONAL_Tapping_tool")
-{
+if (part=="OPTIONAL_Tapping_tool") {
   instrument();
 }
-if (part=="OPTIONAL_Threading_tool")
-{
+if (part=="OPTIONAL_Threading_tool") {
   dieholder();
+}
+if (part=="OPTIONAL_hollow_screw_wrench") {
+  hswrench();    
+}
+if (part=="OPTIONAL_adapter_wrench") {
+  hawrench();    
 }
 echo(str("distance between rods ",(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)));
