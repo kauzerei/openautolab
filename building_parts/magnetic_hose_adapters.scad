@@ -4,7 +4,7 @@
 // OpenSCAD Threads
 // http://dkprojects.net/openscad-threads/
 include <threads.scad>;
-part = "Hollow_screw"; // [Hollow_screw, Main_body, Main_magnet_cover, Hose_adapter, Hose_sleeve,Magnetic_holder, Holder_magnet_cover,OPTIONAL_Tap_helping_tool]
+part = "Hollow_screw"; // [Hollow_screw, Main_body, Main_magnet_cover, Hose_adapter, Hose_sleeve,Magnetic_holder, Holder_magnet_cover,OPTIONAL_Tapping_tool,OPTIONAL_Threading_tool]
 
 /* [Main body options] */
 light_trap=false;
@@ -34,7 +34,7 @@ rod_mount=false;
 nut_width=16;
 mount_hole=8;
 
-/* [Tap helper options] */
+/* [Thread cutting helpers options] */
 onside=false;
 leader_length=5;
 tap_length=22;
@@ -42,6 +42,10 @@ leader_diameter=7;
 tap_diameter=10;
 air_gap=0.5;
 holding_depth=3;
+die_diameter=25;
+die_height=9;
+handle_length=50;
+handle_thickness=10;
 
 $fn= $preview ? 32 : 64;
 degre=onside?90:0;
@@ -160,6 +164,21 @@ module instrument(){
   }
 }
 
+module dieholder(){
+  difference(){
+   union(){
+     translate([0,0,handle_thickness/2])cube([handle_thickness,handle_length,handle_thickness],center=true);
+     translate([0,handle_length/2,0])cylinder(h=handle_thickness,d=handle_thickness);
+     translate([0,-handle_length/2,0])cylinder(h=handle_thickness,d=handle_thickness);
+     cylinder(h=die_height+10,d=die_diameter+2*holding_depth);}
+    translate([0,0,10])cylinder(d=die_diameter,h=die_height+1);
+    translate([0,0,5])cylinder(d=die_diameter-2*holding_depth,h=6); 
+    translate([0,0,-1])cylinder(h=7,d=screw_inner_diameter);
+    translate([0,0,10+die_height/2])rotate([0,90,0])cylinder(d=3,h=die_diameter+holding_depth*2+2,center=true);
+  }
+  rotate([0,0,45])translate([0,die_diameter/2,10])cylinder(d=2,h=die_height);
+}
+
 if (part=="Hollow_screw") {
   hollow_screw();
 }
@@ -181,9 +200,12 @@ if (part=="Magnetic_holder") {
 if (part=="Holder_magnet_cover") {
   holder_magnet_cover();
 }
-if (part=="OPTIONAL_Tap_helping_tool")
+if (part=="OPTIONAL_Tapping_tool")
 {
   instrument();
 }
-
+if (part=="OPTIONAL_Threading_tool")
+{
+  dieholder();
+}
 echo(str("distance between rods ",(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)));
