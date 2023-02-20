@@ -33,6 +33,11 @@ screw_inner_diameter=4;
 rod_mount=false;
 nut_width=16;
 mount_hole=8;
+weight_gauge_mount=false;
+wg_hole_size=4;
+wg_hole_distance=15;
+wg_height=13;
+wg_width=13;
 
 /* [Thread cutting helpers options] */
 onside=false;
@@ -140,6 +145,14 @@ module magnetic_holder(nothread=false){
     translate([0,0,2+magnet_height])metric_thread(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand,thread_pitch,height_to_hold+wall_between_magnets,internal=true,test=nothread);
     translate([-(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)/2,0,nut_width/2])rotate([90,0,0])cylinder(h=nut_width+2,d=mount_hole,center=true);
     translate([(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)/2,0,nut_width/2])rotate([90,0,0])cylinder(h=nut_width+2,d=mount_hole,center=true);
+  }
+  if (weight_gauge_mount) {
+    difference(){
+      translate([0,0,-wg_height-2])cylinder(h=wg_height+2,d=1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+3);
+      translate([0,0,-wg_height/2])cube([wg_width,1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+3+1,wg_height], center=true);
+      translate([0,wg_hole_distance/2,-wg_height])cylinder(d=wg_hole_size,h=6,center=true);
+      translate([0,-wg_hole_distance/2,-wg_height])cylinder(d=wg_hole_size,h=6,center=true);
+    }
   }
 }
 
