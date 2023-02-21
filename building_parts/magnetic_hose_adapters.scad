@@ -4,7 +4,7 @@
 // OpenSCAD Threads
 // http://dkprojects.net/openscad-threads/
 include <threads.scad>;
-part = "Hollow_screw"; // [Hollow_screw, Main_body, Main_magnet_cover, Hose_adapter, Hose_sleeve,Magnetic_holder, Holder_magnet_cover,OPTIONAL_Tapping_tool,OPTIONAL_Threading_tool,OPTIONAL_adapter_wrench,OPTIONAL_hollow_screw_wrench]
+part = "Hollow_screw"; // [Hollow_screw, Main_body, Main_magnet_cover, Hose_adapter, Hose_sleeve,Magnetic_holder, Holder_magnet_cover,Weight_gauge_mount,OPTIONAL_Tapping_tool,OPTIONAL_Threading_tool,OPTIONAL_adapter_wrench,OPTIONAL_hollow_screw_wrench]
 
 /* [Main body options] */
 light_trap=false;
@@ -34,10 +34,15 @@ rod_mount=false;
 nut_width=16;
 mount_hole=8;
 weight_gauge_mount=false;
+
+/* [Weight gauge measurements] */
 wg_hole_size=4;
 wg_hole_distance=15;
+wg_ms_hole_size=6;
+wg_ms_hole_distance=15;
 wg_height=13;
 wg_width=13;
+
 
 /* [Thread cutting helpers options] */
 onside=false;
@@ -62,6 +67,7 @@ shift=onside?shiftz:shiftx;
 instrument_length=leader_length+tap_length+holding_depth;
 diameter_to_hold=magnet_diameter+2*0.541*thread_pitch+thread_expand+3;
 height_to_hold=magnet_height+thread_pitch*2+wall_between_magnets;
+dbr=1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width;
 
 module hollow_screw(){
   difference(){
@@ -153,6 +159,21 @@ module magnetic_holder(nothread=false){
       translate([0,wg_hole_distance/2,-wg_height])cylinder(d=wg_hole_size,h=6,center=true);
       translate([0,-wg_hole_distance/2,-wg_height])cylinder(d=wg_hole_size,h=6,center=true);
     }
+  }
+}
+
+module wg_holder() {
+  difference() {
+    union() {
+      cube([wg_ms_hole_distance+wg_width,dbr,nut_width],center=true);
+      translate([0,dbr/2,0])rotate([0,90,0])cylinder(d=nut_width, h=wg_ms_hole_distance+wg_width, center=true);
+      translate([0,-dbr/2,0])rotate([0,90,0])cylinder(d=nut_width, h=wg_ms_hole_distance+wg_width, center=true);
+    }
+    translate([0,dbr/2,0])rotate([0,90,0])cylinder(d=mount_hole, h=wg_ms_hole_distance+wg_width+2, center=true);
+    translate([0,-dbr/2,0])rotate([0,90,0])cylinder(d=mount_hole, h=wg_ms_hole_distance+wg_width+2, center=true);
+    translate([wg_ms_hole_distance/2,0,0])cylinder(h=nut_width+2,d=wg_ms_hole_size, center=true);
+    translate([-wg_ms_hole_distance/2,0,0])cylinder(h=nut_width+2,d=wg_ms_hole_size,center=true);
+    translate([0,0,-nut_width/4-0.5])cube([wg_ms_hole_distance+wg_width+2,dbr+nut_width+2,nut_width/2+1],center=true);
   }
 }
 
@@ -266,6 +287,9 @@ if (part=="Magnetic_holder") {
 }
 if (part=="Holder_magnet_cover") {
   holder_magnet_cover();
+}
+if (part=="Weight_gauge_mount") {
+  rotate([0,90,0])wg_holder();
 }
 if (part=="OPTIONAL_Tapping_tool") {
   instrument();
