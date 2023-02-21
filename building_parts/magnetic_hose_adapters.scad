@@ -40,9 +40,8 @@ wg_hole_size=4;
 wg_hole_distance=15;
 wg_ms_hole_size=6;
 wg_ms_hole_distance=15;
-wg_height=13;
-wg_width=13;
-
+wg_height=13.5;
+wg_width=13.5;
 
 /* [Thread cutting helpers options] */
 onside=false;
@@ -52,7 +51,7 @@ leader_diameter=7;
 tap_diameter=10;
 air_gap=0.5;
 holding_depth=3;
-die_diameter=25;
+die_diameter=25.5;
 die_height=9;
 handle_length=50;
 handle_thickness=10;
@@ -206,7 +205,7 @@ module dieholder(){
      translate([0,-handle_length/2,0])cylinder(h=handle_thickness,d=handle_thickness);
      cylinder(h=die_height+10,d=die_diameter+2*holding_depth);}
     translate([0,0,10])cylinder(d=die_diameter,h=die_height+1);
-    translate([0,0,5])cylinder(d=die_diameter-2*holding_depth,h=6); 
+    translate([0,0,5])cylinder(d=die_diameter-2*holding_depth,h=6);
     translate([0,0,-1])cylinder(h=7,d=screw_inner_diameter);
     translate([0,0,10+die_height/2])rotate([0,90,0])cylinder(d=3,h=die_diameter+holding_depth*2+2,center=true);
   }
@@ -239,7 +238,7 @@ module hswrench() {
       projection(cut=true)hollow_screw();
       circle(air_gap);
     }
-    cylinder(h=seal_length+6+2+2,d=screw_inner_diameter);
+    cylinder(h=seal_length+6+2+2,d=screw_inner_diameter+air_gap*2);
   }
 }
 
@@ -298,9 +297,9 @@ if (part=="OPTIONAL_Threading_tool") {
   dieholder();
 }
 if (part=="OPTIONAL_hollow_screw_wrench") {
-  hswrench();    
+  hswrench();
 }
 if (part=="OPTIONAL_adapter_wrench") {
-  hawrench();    
+  hawrench();
 }
 echo(str("distance between rods ",(1+3+diameter_to_hold+2*0.541*thread_pitch+thread_expand+nut_width)));
