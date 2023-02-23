@@ -55,6 +55,7 @@ die_diameter=25.5;
 die_height=9;
 handle_length=50;
 handle_thickness=10;
+rounded_handle=false;
 $fn= $preview ? 32 : 64;
 degre=onside?90:0;
 shape=(adapter_shape=="Round")?64:(adapter_shape=="Square")?4:6;
@@ -78,7 +79,7 @@ module hollow_screw(){
   }
 
 module main_body(nothread=false){
-  if (light_trap==false) translate([shiftx,0,0])difference(){
+  if (light_trap==false) difference(){
     union(){
       cylinder(d=max(main_part_holes+2*seal_length,magnet_diameter+2*0.541*thread_pitch),h=seal_length+main_part_holes/2+hose_outer_diameter/2+2);
       translate([0,-hose_outer_diameter/2-2,0]) cube([seal_length+main_part_holes/2, hose_outer_diameter+4,seal_length+main_part_holes/2+hose_outer_diameter/2+2]);
@@ -88,7 +89,7 @@ module main_body(nothread=false){
     translate([0,0,seal_length+main_part_holes/2])rotate([0,90,0])cylinder(d=main_part_holes, h=seal_length+main_part_holes/2+1);
     translate([0,0,seal_length+main_part_holes/2])intersection(){cylinder(d=main_part_holes, h=main_part_holes,center=true);rotate([0,90,0])cylinder(d=main_part_holes, h=main_part_holes,center=true);}
   }
-  else translate([shiftx,0,0])difference(){
+  else difference(){
     union(){
       cylinder(d=hose_outer_diameter+4,h=(hose_outer_diameter/2+4)*coeff+2*main_part_holes+2);
       translate([offset,0,0])cylinder(d=magnet_diameter+2*0.541*thread_pitch,h=(hose_outer_diameter/2+4)*coeff+2*main_part_holes+2);
@@ -177,22 +178,22 @@ module wg_holder() {
 
 module instrument(){
   difference(){
-    linear_extrude(instrument_length)minkowski(){
-      projection(cut=true)rotate([0,degre,0])main_body(nothread=true);
-      circle(air_gap+holding_depth);
+    union() {
+      handle();
+      translate([-shift,0,0])linear_extrude(instrument_length)minkowski(){
+        projection(cut=true)rotate([0,degre,0])translate([shiftx,0,0])main_body(nothread=true);
+        circle(air_gap+holding_depth);
+      }
     }
-    translate([0,0,instrument_length-holding_depth])minkowski(){
+    translate([-shift,0,instrument_length-holding_depth])minkowski(){
       cube(2*air_gap,center=true);
       intersection(){
-        rotate([0,degre,0])main_body(nothread=true);
+        rotate([0,degre,0])translate([shiftx,0,0])main_body(nothread=true);
         cylinder(d=500,h=holding_depth);
       }
     }
-    translate([shift,0,0]){
-      translate([0,0,-1])cylinder(d=leader_diameter,h=leader_length+2);
-      translate([0,0,leader_length])cylinder(d=tap_diameter,h=instrument_length);
-      if(!onside)translate([(3+tap_diameter/2),0,4])rotate([90,0,0])cylinder(d=4,h=500,center=true);
-    }
+    translate([0,0,-1])cylinder(d=leader_diameter,h=leader_length+2);
+    translate([0,0,leader_length])cylinder(d=tap_diameter,h=instrument_length);
   }
 }
 
@@ -211,23 +212,23 @@ module dieholder(){
   rotate([0,0,45])translate([0,die_diameter/2,10])cylinder(d=2,h=die_height);
 }
 
-module wrench(){
-  difference(){
-   union(){
-     translate([0,0,handle_thickness/2])cube([handle_thickness,handle_length,handle_thickness],center=true);
-     translate([0,handle_length/2,0])cylinder(h=handle_thickness,d=handle_thickness);
-     translate([0,-handle_length/2,0])cylinder(h=handle_thickness,d=handle_thickness);
-     cylinder(h=die_height+10,d=die_diameter+2*holding_depth);}
+module handle() {
+  if(rounded_handle)hull() {
+    translate([0,-handle_length/2,handle_thickness/2])sphere(d=handle_thickness);
+    translate([0,handle_length/2,handle_thickness/2])sphere(d=handle_thickness);
+  }
+  else {
+    translate([0,0,handle_thickness/2])cube([handle_thickness,handle_length,handle_thickness],center=true);
+    translate([0,handle_length/2,0])cylinder(h=handle_thickness,d=handle_thickness);
+    translate([0,-handle_length/2,0])cylinder(h=handle_thickness,d=handle_thickness);
   }
 }
 
 module wrench() {
   difference() {
     union(){
-      translate([0,0,handle_thickness/2])cube([handle_thickness,handle_length,handle_thickness],center=true);
-      translate([0,handle_length/2,0])cylinder(h=handle_thickness,d=handle_thickness);
-      translate([0,-handle_length/2,0])cylinder(h=handle_thickness,d=handle_thickness);
-      cylinder(h=handle_thickness,d=die_diameter+2*holding_depth);
+        handle();
+        cylinder(h=handle_thickness,d=die_diameter+2*holding_depth);
     }
     translate([0,0,-1])linear_extrude(handle_thickness/3+1)minkowski() {
       projection(cut=true)translate([0,0,-seal_length])hose_adapter();

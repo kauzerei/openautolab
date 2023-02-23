@@ -1,3 +1,4 @@
+$fn= $preview ? 32 : 64;
 part = "bottom_corner"; // [bottom_corner, bottom_corner_mirrored,top_corner,mounting_block,rail_mount,all]
 nut_width_with_margin=18;
 nut_height_with_margin=8;
@@ -20,6 +21,7 @@ module bottom_corner(){
     translate([w/2,1.5*w,-w-1])cylinder(h=w+2,d=d);
     translate([-1,w/2,-w/2])rotate([0,90,0])cylinder(h=w+2,d=d);
     translate([w/2,(w*tan(a)+w-w*sin(a)-h*cos(a))/2,w/2])rotate([90,0,a])cylinder(h=2*w,d=d,center=true);
+    *mirror([0,0,1])cube([h,w,w]);
 }
 }
     Ax=h*sin(a);
@@ -31,7 +33,6 @@ module bottom_corner(){
     Cx=Dx+w*cos(a);
     Cy=Dy+w*sin(a);
     dw=(Cx+Ax)/2;
-$fn=36;
 Hy=By+h*cos(a);
 dh1=2*w-(w*tan(a)+w-w*sin(a)-h*cos(a))/2;
 dh2=Hy-By/2;
@@ -69,7 +70,7 @@ module rail_mount()
             }
         }
 if (part=="bottom_corner") {
-    rotate([0,-90,0])bottom_corner();
+    rotate([0,90,0])bottom_corner();
 }
 if (part=="bottom_corner_mirrored") {
     mirror([1,0,0])rotate([0,-90,0])bottom_corner();
