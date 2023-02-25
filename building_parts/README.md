@@ -36,11 +36,11 @@ Optional:
 STL files for all mentioned parts can be generated using script, that calls OpenSCAD or downloaded from Thingiverse. STL don't belong in github.  
 ### Frame
 To build the frame composed of threaded rods you need vertices that hold it together and mounts that hold other parts. Those are generated from threaded_rod_frame.scad and can be customized to build a higher or lower machine or to use different threaded rod diameter. STL files are available at Thingiverse.  
-- 2x bottom_corner
-- 2x bottom_corner_mirrored
-- 2x top_corner
-- 1x mounting_block - to hold front plate with PCB
-- 6x rail_mount - to hold extra rods for mounting valves, vessels and developing tank
+- 4x lower_vertex
+- 2x upper_vertex
+- 2x upper_rail_holder - to hold extra rods for mounting valves
+- 4x lower_rail_holder - to hold extra rods for mounting vessels and developing tank
+- 2x pcb_holder - to hold front plate with PCB
 ### Vessel and tank interfaces and mounts
 To connect the vessels and the developing tank to valves and the pump you need magnetic hose interfaces, and magnetic holders to attach those interfaces to the frame. The interface for the tank has also a light-trap that prevents fogging the film through the hole, to which the hose is connected. Magnetic holder for the tank is mounted to the weight gauge for measuring amount of fluid in it. All of those parts are generated from magnetic_hose_adapters.scad and can be customized to fit magnets of different size and force.  
 - 4x hollow_screw - to mount hose interface to vessels and tank through a hole.
