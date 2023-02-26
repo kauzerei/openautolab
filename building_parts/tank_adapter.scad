@@ -1,5 +1,5 @@
-$fn=64;
-part="Cap"; //[Cap,Rod,all]
+$fn= $preview ? 32 : 64;
+part="Cap"; //[Cap,Rod,OPTIONAL_servo_gauge,all]
 outer_diameter= 72;
 outer_depth=20;
 extra_lip_width=0.5;
@@ -52,4 +52,14 @@ if (part=="Cap") {
   }
   if (part=="Rod") {
   rod();
+  }
+  if (part=="OPTIONAL_servo_gauge") {
+    difference() {
+      translate([0,0,2.5])cube([70,10,5],center=true);
+      for (i=[-3:1:3]) {
+        translate([i*10,0,2])cylinder(d=5+i*0.25,h=4);
+        translate([i*10,0,-1])cylinder(d=3,h=7);
+        translate([i*10,-5,2.5])rotate([90,0,0])linear_extrude(2,center=true)text(str(5+i*0.25),size=2,halign="center",valign="center",font="OPTIEdgarBold\\-Extended:style=Bold");
+      }
+    }
   }
