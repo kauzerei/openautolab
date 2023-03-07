@@ -446,7 +446,10 @@
     "meta": {
       "version": 2
     },
-    "net_colors": null
+    "net_colors": {
+      "+12V": "rgb(0, 0, 0)",
+      "+5V": "rgb(99, 119, 255)"
+    }
   },
   "pcbnew": {
     "last_paths": {

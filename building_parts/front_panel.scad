@@ -1,29 +1,33 @@
 tolerance=0.5;
-pcb_width=161;
-pcb_height=120;
-pcb_standoff=10;
+pcb_width=157.5;
+pcb_height=124.5;
+pcb_offset=10;
 walls=1;
-screen_offset=[50,38];
-button1_offset=[18,10];
-button2_offset=[48.5,10];
-button3_offset=[79,10];
-button_height=5;
-switch_offset=[127,19];
-switch_diameter=10;
+buttons_pos=[[18,115],[48,115],[79,115]];
+buttons_outer=10;
+buttons_inner=5;
+buttons_height=5;
+connectors_pos=[[13,16],[32,16],[51,16],[70,16],[89,16],[108,16],[127,16],[146,16],[144,96],[144,111]];
+switches_pos=[[126,103]];
+switches_diameter=7;
+screen_pos=[50,86];
+screen_mount=[75,32];
+screen_mount_holes=4;
+screen_rect=[72,25];
 module front() {
 difference() {
 union() {
 translate([-2*tolerance-2*walls,-2*tolerance-2*walls,0])cube([pcb_width+4*tolerance+4*walls,pcb_height+4*tolerance+4*walls,walls]);
-translate([button1_offset[0],button1_offset[1],walls])cylinder(d=10,h=pcb_standoff-button_height);
-translate([button2_offset[0],button2_offset[1],walls])cylinder(d=10,h=pcb_standoff-button_height);
-translate([button3_offset[0],button3_offset[1],walls])cylinder(d=10,h=pcb_standoff-button_height);
+for (tr = buttons_pos) translate(tr) cylinder(d=buttons_outer,h=pcb_offset+walls);
 }
-translate(button1_offset)cylinder(d=5,h=pcb_standoff-button_height+walls);
-translate(button2_offset)cylinder(d=5,h=pcb_standoff-button_height+walls);
-translate(button3_offset)cylinder(d=5,h=pcb_standoff-button_height+walls);
-translate(switch_offset)cylinder(d=10,h=walls);
-
-
+for(tr=buttons_pos) translate(tr) cylinder(d=buttons_inner,h=pcb_offset+walls);
+for(tr=switches_pos) translate(tr) cylinder(d=switches_diameter,h=walls);
+for (i=[[[1,0],[0,1]],[[-1,0],[0,1]],[[1,0],[0,-1]],[[-1,0],[0,-1]]])translate(screen_pos)translate(i*screen_mount/2)cylinder(d=screen_mount_holes,h=walls);
+translate(screen_pos-screen_rect/2)cube([screen_rect[0],screen_rect[1],walls]);
+}
+difference(){
+translate([-walls-tolerance,-walls-tolerance])cube([pcb_width+2*tolerance+2*walls,pcb_height+2*tolerance+2*walls,20]);
+translate([-tolerance,-tolerance])cube([pcb_width+2*tolerance,pcb_height+2*tolerance,20]);
 }
 }
 front();
