@@ -1,5 +1,5 @@
 $fn= $preview ? 32 : 64;
-part = "bottom_corner"; // [bottom_corner, bottom_corner_mirrored,top_corner,mounting_block,rail_mount,all]
+part = "bottom_corner"; // [bottom_corner, bottom_corner_mirrored,top_corner,mounting_block,rail_mount,top_hook,all]
 nut_width_with_margin=18;
 nut_height_with_margin=8;
 rod_diameter=8;
@@ -51,6 +51,18 @@ module top_corner(){
     translate([(Cx+Bx)/2,(Cy+By)/2,w/2])rotate([-a,90,0])cylinder(h=w,d=mounting_hole,center=true);
      }
 }
+module top_hook(){
+     difference(){
+    linear_extrude(w)polygon([[Ax,Ay],[Bx,By],[Cx,Cy],[Dx,Dy],[-Dx,Dy],[-nut_width_with_margin/2,Dy],[-nut_width_with_margin/2,Ay],[-Ax,Ay]]);
+    hull(){
+    translate([0,w/2,-1])cylinder(h=w+2, d=d);
+    translate([0,0,-1])cylinder(h=w+2, d=d);
+    }
+    translate([(Ax+Cx)/2,(Ay+Cy)/2,w/2])rotate([90,0,a])cylinder(h=w/cos(a)+2, d=d,center=true);    
+    *translate([(-Ax-Cx)/2,(Ay+Cy)/2,w/2])rotate([90,0,-a])cylinder(h=w/cos(a)+2, d=d,center=true);
+    translate([(Cx+Bx)/2,(Cy+By)/2,w/2])rotate([-a,90,0])cylinder(h=w,d=mounting_hole,center=true);
+     }
+}
 module mounting_block()
 {
     difference()
@@ -83,6 +95,9 @@ if (part=="mounting_block") {
 }
 if (part=="rail_mount") {
     rail_mount();
+}
+if (part=="top_hook") {
+    top_hook();
 }
 if (part=="all")
 {
