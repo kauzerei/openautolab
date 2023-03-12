@@ -1,3 +1,4 @@
+$fn=64;
 tolerance=0.5;
 pcb_width=157.5;
 pcb_height=124.5;
@@ -46,9 +47,14 @@ difference(){
 translate([-2*walls-2*tolerance,-2*walls-2*tolerance])cube([pcb_width+4*tolerance+4*walls,pcb_height+4*tolerance+4*walls,pcb_offset+pcb_thickness]);
 translate([-2*tolerance-walls,-2*tolerance-walls])cube([pcb_width+4*tolerance+2*walls,pcb_height+4*tolerance+2*walls,pcb_offset+pcb_thickness]);
 }
-}
 #for (i=[[-18,-3],[159,-3],[-18,111],[159,111]])translate(i)difference() {
 cube([16,16,walls]);
 translate([8,8,0])cylinder(d=4,h=walls);
 }
-back();
+}
+
+module buttons() {
+cylinder(d=buttons_outer,h=2);
+translate([0,0,2])cylinder(d=buttons_inner-2*tolerance,h=buttons_height+3);
+}
+buttons();
