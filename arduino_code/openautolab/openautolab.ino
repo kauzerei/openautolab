@@ -1,8 +1,8 @@
 #include <LiquidCrystal_I2C.h>
 #include <Servo.h>
 #include <HX711.h>
-volatile unsigned long int t0; // here time of start will be stored
-unsigned long int secs; // here number of seconds on display will be stored
+
+//pin numbers
 const byte motorplus =5; //positive pole of pump motor
 const byte motorminus=6; //negative pole of pump motor
 const byte valve1=11; //pins
@@ -20,11 +20,28 @@ const byte displaydio=A5; //display
 const byte button1=A0; //buttons
 const byte button2=A1;
 const byte button3=A2;
+
+//global variables, which store settings
+byte bw_dev_time=0;
+byte bw_fix_time=0;
+byte c41_film_count=0;
+byte fotoflo=0;
+byte init_agit=0;
+byte agit_period=0;
+byte agit_duration=0;
+int tank_cap=0;
+
+
+//global variables, which store values during work
+byte k=0; //state machine state index
+volatile unsigned long int t0; // here time of start will be stored
+ 
+
+unsigned long int secs; // here number of seconds on display will be stored
 byte dvlpr=0; //developer index
-byte k=0; //state index
 byte container; //pin corresponding to current valve
 unsigned long int airpump=10000UL; //number of milliseconds pumping without liquid tolerated   
-bool error=false; //if something sent wrong machine beeps
+bool error=false; //if something went wrong machine beeps
 Servo mixer;
 HX711 scale;
 LiquidCrystal_I2C lcd(0x27,16,2);
@@ -432,7 +449,7 @@ void loop() {
       }
       keypressed=false;
       break;
-    case 8: //Tank "volume" in grams
+    case 8: //Tank capacity in grams
       lcd.clear();
       lcd.setCursor(0,0);
       lcd.print("Tank weight 1000");
