@@ -1,7 +1,8 @@
 #include <LiquidCrystal_I2C.h>
 #include <Servo.h>
 #include <HX711.h>
-
+#include <EEPROM.h>
+int ess=0; //EEPROM starting address, change to ess+12 if settings saving becomes unstable
 //pin numbers
 const byte motorplus =5; //positive pole of pump motor
 const byte motorminus=6; //negative pole of pump motor
@@ -22,18 +23,18 @@ const byte button2=A1;
 const byte button3=A2;
 
 //global variables, which store settings
-byte bw_dev_time=0;
-byte bw_fix_time=0;
-byte bw_film_count=1;
-byte c41_film_count=1;
-byte washes_count=3;
-byte washes_duration=0;
-byte fotoflo=0;
-byte init_agit=0;
-byte agit_period=0;
-byte agit_duration=0;
-byte tank_cap=0;
-byte oneshot=0;
+byte bw_dev_time=EEPROM.read(ess+0);
+byte bw_fix_time=EEPROM.read(ess+1);
+byte bw_film_count=EEPROM.read(ess+2);
+byte c41_film_count=EEPROM.read(ess+3);
+byte washes_count=EEPROM.read(ess+4);
+byte washes_duration=EEPROM.read(ess+5);
+byte fotoflo=EEPROM.read(ess+6);
+byte init_agit=EEPROM.read(ess+7);
+byte agit_period=EEPROM.read(ess+8);
+byte agit_duration=EEPROM.read(ess+9);
+byte tank_cap=EEPROM.read(ess+10);
+byte oneshot=EEPROM.read(ess+11);
 
 
 //global variables, which store values during work
@@ -445,7 +446,7 @@ void loop() {
     while (not keypressed) {
       if(digitalRead(button1)==LOW) {bw_film_count=1; keypressed=true;delay(300);}
       if(digitalRead(button2)==LOW) {bw_film_count++; keypressed=true;keydelay();}
-      if(digitalRead(button3)==LOW) {k=2; keypressed=true;delay(300);}
+      if(digitalRead(button3)==LOW) {k=2; EEPROM.update(ess+2,bw_film_count); keypressed=true;delay(300);}
     }
     keypressed=false;
     break;
@@ -463,7 +464,7 @@ void loop() {
     while (not keypressed) {
       if(digitalRead(button1)==LOW) {bw_dev_time--;keypressed=true;keydelay();}
       if(digitalRead(button2)==LOW) {bw_dev_time++;keypressed=true;keydelay();}
-      if(digitalRead(button3)==LOW) {k=3; keypressed=true;delay(300);}
+      if(digitalRead(button3)==LOW) {k=3; EEPROM.update(ess+0,bw_dev_time); keypressed=true;delay(300);}
     }
     keypressed=false;
     break;
@@ -473,7 +474,7 @@ void loop() {
     lcd.setCursor(0,0);
     lcd.print("Fixing time:");
     lcd.setCursor(0,1);
-    lcd.print("tohms(toseconds(bw_fix_time))");
+    lcd.print(tohms(toseconds(bw_fix_time)));
     lcd.setCursor(0,3);
     lcd.print("-      +       Start");
 
@@ -481,7 +482,7 @@ void loop() {
     while (not keypressed) {
       if(digitalRead(button1)==LOW) {bw_fix_time--;keypressed=true;keydelay();}
       if(digitalRead(button2)==LOW) {bw_fix_time++;keypressed=true;keydelay();}
-      if(digitalRead(button3)==LOW) {k=16; keypressed=true;delay(300);}
+      if(digitalRead(button3)==LOW) {k=16; EEPROM.update(ess+1,bw_fix_time); keypressed=true;delay(300);}
     }
     keypressed=false;
     break;
@@ -500,7 +501,7 @@ void loop() {
     while (not keypressed) {
       if(digitalRead(button1)==LOW) {c41_film_count=1;keypressed=true;delay(300);}
       if(digitalRead(button2)==LOW) {c41_film_count++;keypressed=true;keydelay();}
-      if(digitalRead(button3)==LOW) {k=17; keypressed=true;delay(300);}
+      if(digitalRead(button3)==LOW) {k=17; EEPROM.update(ess+3,c41_film_count); keypressed=true; delay(300);}
     }
     keypressed=false;
     break;
@@ -518,9 +519,9 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {washes_duration--;keypressed=true;keydelay();}
-      if(digitalRead(button2)==LOW) {washes_duration++;keypressed=true;keydelay();}
-      if(digitalRead(button3)==LOW) {k=6; keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {washes_duration--; keypressed=true; keydelay();}
+      if(digitalRead(button2)==LOW) {washes_duration++; keypressed=true; keydelay();}
+      if(digitalRead(button3)==LOW) {k=6; EEPROM.update(ess+5,washes_duration); keypressed=true; delay(300);}
     }
     keypressed=false;
     break;
@@ -538,9 +539,9 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {washes_count--;keypressed=true;keydelay();}
-      if(digitalRead(button2)==LOW) {washes_count++;keypressed=true;keydelay();}
-      if(digitalRead(button3)==LOW) {k=7;keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {washes_count--; keypressed=true; keydelay();}
+      if(digitalRead(button2)==LOW) {washes_count++; keypressed=true; keydelay();}
+      if(digitalRead(button3)==LOW) {k=7; EEPROM.update(ess+4,washes_count); keypressed=true; delay(300);}
     }
     keypressed=false;
     break;
@@ -559,9 +560,9 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {fotoflo=0;keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {fotoflo=1;keypressed=true;delay(300);}
-      if(digitalRead(button3)==LOW) {k=8;keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {fotoflo=0; keypressed=true; delay(300);}
+      if(digitalRead(button2)==LOW) {fotoflo=1; keypressed=true; delay(300);}
+      if(digitalRead(button3)==LOW) {k=8; EEPROM.update(ess+6,fotoflo); keypressed=true; delay(300);}
     }
     keypressed=false;
     break;
@@ -579,9 +580,9 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {init_agit--;keypressed=true;keydelay();}
-      if(digitalRead(button2)==LOW) {init_agit++;keypressed=true;keydelay();}
-      if(digitalRead(button3)==LOW) {k=9;keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {init_agit--; keypressed=true; keydelay();}
+      if(digitalRead(button2)==LOW) {init_agit++; keypressed=true; keydelay();}
+      if(digitalRead(button3)==LOW) {k=9; EEPROM.update(ess+7,init_agit); keypressed=true; delay(300);}
     }
     keypressed=false;
     break;
@@ -599,9 +600,9 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {agit_period--;keypressed=true;keydelay();}
-      if(digitalRead(button2)==LOW) {agit_period++;keypressed=true;keydelay();}
-      if(digitalRead(button3)==LOW) {k=10;keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {agit_period--; keypressed=true; keydelay();}
+      if(digitalRead(button2)==LOW) {agit_period++; keypressed=true; keydelay();}
+      if(digitalRead(button3)==LOW) {k=10; EEPROM.update(ess+8,agit_period); keypressed=true; delay(300);}
     }
     keypressed=false;
     break;
@@ -620,9 +621,9 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {agit_duration--;keypressed=true;keydelay();}
-      if(digitalRead(button2)==LOW) {agit_duration++;keypressed=true;keydelay();}
-      if(digitalRead(button3)==LOW) {k=11;keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {agit_duration--; keypressed=true; keydelay();}
+      if(digitalRead(button2)==LOW) {agit_duration++; keypressed=true; keydelay();}
+      if(digitalRead(button3)==LOW) {k=11; EEPROM.update(ess+9,agit_duration); keypressed=true; delay(300);}
     }
     keypressed=false;
     break;
@@ -642,9 +643,9 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {tank_cap--;keypressed=true;keydelay();}
-      if(digitalRead(button2)==LOW) {tank_cap++;keypressed=true;keydelay();}
-      if(digitalRead(button3)==LOW) {k=12;keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {tank_cap--; keypressed=true; keydelay();}
+      if(digitalRead(button2)==LOW) {tank_cap++; keypressed=true; keydelay();}
+      if(digitalRead(button3)==LOW) {k=12; EEPROM.update(ess+10,tank_cap); keypressed=true; delay(300);}
     }
     keypressed=false;
     break;
@@ -663,8 +664,8 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW && digitalRead(button2)==LOW) {k=13;keypressed=true;delay(300);}
-      if(digitalRead(button3)==LOW) {k=0;keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW && digitalRead(button2)==LOW) {k=13; keypressed=true; delay(300);}
+      if(digitalRead(button3)==LOW) {k=0; keypressed=true; delay(300);}
     }
     keypressed=false;
     break;
@@ -684,9 +685,9 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {keypressed=true;delay(300);}
-      if(digitalRead(button3)==LOW) {k=14;keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {keypressed=true; delay(300);}
+      if(digitalRead(button2)==LOW) {keypressed=true; delay(300);}
+      if(digitalRead(button3)==LOW) {k=14; keypressed=true; delay(300);}
     }
     keypressed=false;
     break;
@@ -707,9 +708,9 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {oneshot=1;keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {oneshot=0;keypressed=true;delay(300);}
-      if(digitalRead(button3)==LOW) {k=0;keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {oneshot=1; keypressed=true; delay(300);}
+      if(digitalRead(button2)==LOW) {oneshot=0; keypressed=true; delay(300);}
+      if(digitalRead(button3)==LOW) {k=0; EEPROM.update(ess+11,oneshot); keypressed=true; delay(300);}
     }
     keypressed=false;
     break;
@@ -727,9 +728,9 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {keypressed=true;delay(300);}
-      if(digitalRead(button3)==LOW) {keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {keypressed=true; delay(300);}
+      if(digitalRead(button2)==LOW) {keypressed=true; delay(300);}
+      if(digitalRead(button3)==LOW) {keypressed=true; delay(300);}
     }
     keypressed=false;
     break;

@@ -1,12 +1,14 @@
-byte bw_dev_time=0;
-byte bw_fix_time=0;
-byte bw_film_count=0;
-byte c41_film_count=0;
-byte washes_count=0;
-byte washes_duration=0;
-byte fotoflo=0;
-byte init_agit=0;
-byte agit_period=0;
-byte agit_duration=0;
-byte tank_cap=0;
-byte oneshot=0;
+byte bw_dev_time=EEPROM.read(ess+0);
+byte bw_fix_time=EEPROM.read(ess+1);
+byte bw_film_count=EEPROM.read(ess+2);
+byte c41_film_count=EEPROM.read(ess+3);
+byte washes_count=EEPROM.read(ess+4);
+byte washes_duration=EEPROM.read(ess+5);
+byte fotoflo=EEPROM.read(ess+6);
+byte init_agit=EEPROM.read(ess+7);
+byte agit_period=EEPROM.read(ess+8);
+byte agit_duration=EEPROM.read(ess+9);
+byte tank_cap=EEPROM.read(ess+10);
+byte oneshot=EEPROM.read(ess+11);
+
+EEPROM.update(ess+,);
