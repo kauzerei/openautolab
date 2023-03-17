@@ -1,0 +1,129 @@
+k==0:
+┌────────────────────┐
+ Agitate: 60/30/5    
+ Wash: 5 x 5m + WA
+ B&W: 1shot C41: #14      
+ B&W   C41   Settings
+└────────────────────┘
+k=1?2    k=4    k=5    //depending if developer is one shot
+
+k==1
+┌────────────────────┐
+ B&W developing
+ Film count: 5
+ 
+ Reset    +    Next >
+└────────────────────┘
+                k=2
+k==2: 
+┌────────────────────┐
+ Developing time:
+ 16:30:00
+ 
+ -      +      Next >
+└────────────────────┘
+                k=3
+
+k==3:
+┌────────────────────┐ 
+ Fixing time:
+ 6:30:00
+ 
+ -      +       Start
+└────────────────────┘
+                 k=16
+k==4                
+┌────────────────────┐
+ C41 color developing
+ Film count: 5
+ 
+ Reset    +     Start
+└────────────────────┘
+                 k=17
+k==5:
+┌────────────────────┐
+ Settings         1/8
+ Final wash duration:
+ 5:00
+ -      +      Next >
+└────────────────────┘
+                  k=6
+k==6:
+┌────────────────────┐
+ Settings         2/8
+ Final washes number:
+ 3
+ -      +      Next >
+└────────────────────┘
+                  k=7
+k==7:
+┌────────────────────┐
+ Settings         3/8
+ Apply wetting agent?
+                  Yes
+ No     Yes    Next >
+└────────────────────┘
+                  k=8
+k==8
+┌────────────────────┐
+ Settings         4/8
+ Initial agitation:
+ 60s
+ -      +      Next >
+└────────────────────┘
+                  k=9
+k==9  
+┌────────────────────┐
+ Settings         5/8
+ Agitations period: 
+ 30s
+ -      +      Next >
+└────────────────────┘
+                 k=10
+k==10
+┌────────────────────┐
+ Settings         6/8
+ Agitation duration:
+ 5s
+ -      +      Next >
+└────────────────────┘
+                 k=11
+k==11
+┌────────────────────┐
+ Settings         7/8
+ Tank capacity:
+ 300g
+ -      +      Next >
+└────────────────────┘
+                 k=12
+k==12
+┌────────────────────┐
+ Settings         8/8
+ Press two buttons to
+ enter advanced opts
+ Yes     Yes       No
+└────────────────────┘
+     k=13         k=0
+k==13
+┌────────────────────┐
+ Advanced         1/2
+ Weight sensor tuning
+ Current: 297g
+ Set:0  Set:300g    >
+└────────────────────┘
+                 k=14
+k==14
+┌────────────────────┐
+ Advanced         2/2
+ Discard B&W dev
+ after use.       Yes
+ Yes     No      Done
+└────────────────────┘
+                 k=0
+k==16
+┌────────────────────┐
+ B&W develop     1/7
+ Developer pump in
+ 276g      1:23:59:59
+ 1:23:53:15      left
+└────────────────────┘

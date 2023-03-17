@@ -25,11 +25,14 @@ const byte button3=A2;
 byte bw_dev_time=0;
 byte bw_fix_time=0;
 byte c41_film_count=0;
+byte washes_count=0;
+byte washes_duration=0;
 byte fotoflo=0;
 byte init_agit=0;
 byte agit_period=0;
 byte agit_duration=0;
-int tank_cap=0;
+byte tank_cap=0;
+byte oneshot=0;
 
 
 //global variables, which store values during work
@@ -269,10 +272,49 @@ void wait(float waittime) {
     //display.showNumberDecEx((secs/60UL)*100UL+(secs%60UL), 0b01000000, false);
   }
 }
-char* const threechars(byte)
+char* const threechars(unsigned long int s)
 {
-  static char pr[4]="pro";
-  return pr;
+  static char tc[4];
+  tc[0] = '\0';
+  char h[2]=" ";
+  char m[2]=" ";
+  char c[2]=" ";
+  unsigned long int seconds=s%60;
+  unsigned long int minutestotal=(unsigned long int)((s-seconds)/60ul);
+  unsigned long int minutes=minutestotal%60ul;
+  unsigned long int hours=(unsigned long int)((minutestotal-minutes)/60ul);
+  if (hours==0) {
+    if (minutes==0) {
+      itoa(seconds,c,10);
+      strcat(tc, c);
+      strcat(tc, "s");
+      }
+    else if (minutes<10) {
+      itoa(minutes,m,10);
+      strcat(tc, m);
+      strcat(tc, "m");
+      itoa(seconds/10ul,c,10);
+      strcat(tc, c);
+    }
+    else { 
+      itoa(minutes,m,10);
+      strcat(tc, m);
+      strcat(tc, "m");
+      }
+    }
+  else if (hours<10) {
+    itoa(hours,h,10);
+    strcat(tc, h);
+    strcat(tc, "h");
+    itoa(minutes/10ul,m,10);
+    strcat(tc, m);
+    }
+  else { 
+    itoa(hours,h,10);
+    strcat(tc, h);
+    strcat(tc, "h");
+      }
+    return tc;
   }
 unsigned long int toseconds(byte t)
 {
@@ -287,17 +329,27 @@ unsigned long int toseconds(byte t)
 }
 char* const tohms(unsigned long int s)
 {
-  static char hms[9]="";
+  static char hms[20];
+  hms[0] = '\0';
+  char h[3]=" ";
+  char m[3]=" ";
+  char c[3]=" ";
   unsigned long int seconds=s%60;
   unsigned long int minutestotal=(unsigned long int)((s-seconds)/60ul);
   unsigned long int minutes=minutestotal%60ul;
   unsigned long int hours=(unsigned long int)((minutestotal-minutes)/60ul);
-  if (hours<10) strcat(hms," ");
-  if (hours==0) strcat(hms,"   ");
-  else {strcat(hms,hours); strcat(hms,":");}
-  if (hours==0 && minutes<10) strcat(hms,"    ");
-  if (hours==0) {strcat(hms,minutes); strcat(hms,":");strcat(hms,seconds);}
-  else {strcat(hms,minutes); strcat(hms,":");strcat(hms,seconds);}
+  itoa(hours,h,10);
+  itoa(minutes,m,10);
+  itoa(seconds,c,10);
+  if (hours>0) {
+    strcat(hms,h);
+    strcat(hms,":");
+    if (minutes<10) strcat(hms,"0");
+  }
+  strcat(hms,m);
+  strcat(hms,":");
+  if (seconds<10) strcat(hms,"0");
+  strcat(hms,c);
   return hms;
   }
 
@@ -335,16 +387,32 @@ lcd.backlight();
 void loop() {
   switch(k){
     case 0: //main menu
-      lcd.clear();
-      lcd.setCursor(0,0);
-      lcd.print(" 60/ 30/  5  300");
-      lcd.setCursor(0,1);
-      lcd.print("B&W   C41   SET.");
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("Agitate:");
+        lcd.print(threechars(toseconds(init_agit)));
+        lcd.print("/");
+        lcd.print(threechars(toseconds(agit_period)));
+        lcd.print("/");
+        lcd.print(threechars(toseconds(agit_duration)));
+        lcd.setCursor(0,1);
+        lcd.print("Wash:");
+        lcd.print(washes_count);
+        lcd.print(" x ");
+        lcd.print(threechars(toseconds(washes_duration)));
+        if (fotoflo!=0) lcd.print(" + WA");
+        lcd.setCursor(0,2);
+        lcd.print("B&W:       C41: #");
+        lcd.setCursor(0,3);
+        lcd.print("B&W   C41   Settings");
+        lcd.setCursor(9,0);
+        lcd.print("/");
+        
       keypressed=false;
       while (not keypressed) {
-        if(digitalRead(button1)==LOW) {k=1; delay(200); keypressed=true;}
-        if(digitalRead(button2)==LOW) {k=3; delay(200); keypressed=true;}
-        if(digitalRead(button3)==LOW) {k=4; delay(200); keypressed=true;}
+        if(digitalRead(button1)==LOW) {if (oneshot==0) k=1; else k=2; delay(200); keypressed=true;}
+        if(digitalRead(button2)==LOW) {k=4; delay(200); keypressed=true;}
+        if(digitalRead(button3)==LOW) {k=5; delay(200); keypressed=true;}
       }
       keypressed=false;
       break;
@@ -352,7 +420,7 @@ void loop() {
       lcd.clear();
       lcd.setCursor(0,0);
 //      lcd.print("Develop     7:00");
-      lcd.print(tohms(testbyte));
+      lcd.print(tohms(toseconds(testbyte)));
       lcd.setCursor(0,1);
       lcd.print("-     + ");
       lcd.print((int)testbyte);
@@ -361,7 +429,7 @@ void loop() {
       while (not keypressed) {
         if(digitalRead(button1)==LOW) {testbyte--; delay(100); keypressed=true;}
         if(digitalRead(button2)==LOW) {testbyte++; delay(100); keypressed=true;}
-        if(digitalRead(button3)==LOW) {k=2; delay(200); keypressed=true;}
+        if(digitalRead(button3)==LOW) {k=1; delay(200); keypressed=true;}
       }
       keypressed=false;
       break;
