@@ -24,9 +24,9 @@ const byte button3=A2;
 //global variables, which store settings
 byte bw_dev_time=0;
 byte bw_fix_time=0;
-byte bw_film_count=0;
-byte c41_film_count=0;
-byte washes_count=0;
+byte bw_film_count=1;
+byte c41_film_count=1;
+byte washes_count=3;
 byte washes_duration=0;
 byte fotoflo=0;
 byte init_agit=0;
@@ -68,8 +68,8 @@ void agitation(float a, float b, float c, float d) {
   }
 }
 void keydelay() {
-  if(millis()-tk>100) delay (200);
-  else delay (50);
+  if(millis()-tk>200) delay (200);
+//  else delay (50);
   tk=millis();
 }
 void beep() {
@@ -678,7 +678,7 @@ void loop() {
     lcd.setCursor(0,2);
     lcd.print("Current: 297g");
     lcd.setCursor(0,3);
-    lcd.print("Set:0  Set:
+    lcd.print("Set:0  Set:");
     lcd.print(tank_cap*10);
     lcd.print("g    >");
 
