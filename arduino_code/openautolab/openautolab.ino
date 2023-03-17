@@ -414,7 +414,12 @@ void loop() {
     lcd.print(threechars(toseconds(washes_duration)));
     if (fotoflo!=0) lcd.print(" + WA");
     lcd.setCursor(0,2);
-    lcd.print("B&W:       C41: #");
+    lcd.print("B&W: ");
+    if (oneshot) lcd.print("1shot");
+    else lcd.print(bw_film_count);
+    lcd.setCursor(11,2);
+    lcd.print("C41: #");
+    lcd.print(bw_film_count);
     lcd.setCursor(0,3);
     lcd.print("B&W   C41   Settings");
 
@@ -439,7 +444,7 @@ void loop() {
     keypressed=false;
     while (not keypressed) {
       if(digitalRead(button1)==LOW) {bw_film_count=1; keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {bw_film_count++; keypressed=true;delay(300);}
+      if(digitalRead(button2)==LOW) {bw_film_count++; keypressed=true;keydelay();}
       if(digitalRead(button3)==LOW) {k=2; keypressed=true;delay(300);}
     }
     keypressed=false;
@@ -456,8 +461,8 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {bw_dev_time--;keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {bw_dev_time++;keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {bw_dev_time--;keypressed=true;keydelay();}
+      if(digitalRead(button2)==LOW) {bw_dev_time++;keypressed=true;keydelay();}
       if(digitalRead(button3)==LOW) {k=3; keypressed=true;delay(300);}
     }
     keypressed=false;
@@ -474,8 +479,8 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {bw_fix_time--;keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {bw_fix_time++;keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {bw_fix_time--;keypressed=true;keydelay();}
+      if(digitalRead(button2)==LOW) {bw_fix_time++;keypressed=true;keydelay();}
       if(digitalRead(button3)==LOW) {k=16; keypressed=true;delay(300);}
     }
     keypressed=false;
@@ -494,7 +499,7 @@ void loop() {
     keypressed=false;
     while (not keypressed) {
       if(digitalRead(button1)==LOW) {c41_film_count=1;keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {c41_film_count++;keypressed=true;delay(300);}
+      if(digitalRead(button2)==LOW) {c41_film_count++;keypressed=true;keydelay();}
       if(digitalRead(button3)==LOW) {k=17; keypressed=true;delay(300);}
     }
     keypressed=false;
@@ -513,8 +518,8 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {washes_duration--;keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {washes_duration++;keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {washes_duration--;keypressed=true;keydelay();}
+      if(digitalRead(button2)==LOW) {washes_duration++;keypressed=true;keydelay();}
       if(digitalRead(button3)==LOW) {k=6; keypressed=true;delay(300);}
     }
     keypressed=false;
@@ -533,8 +538,8 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {washes_count--;keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {washes_count++;keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {washes_count--;keypressed=true;keydelay();}
+      if(digitalRead(button2)==LOW) {washes_count++;keypressed=true;keydelay();}
       if(digitalRead(button3)==LOW) {k=7;keypressed=true;delay(300);}
     }
     keypressed=false;
@@ -574,8 +579,8 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {init_agit--;keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {init_agit++;keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {init_agit--;keypressed=true;keydelay();}
+      if(digitalRead(button2)==LOW) {init_agit++;keypressed=true;keydelay();}
       if(digitalRead(button3)==LOW) {k=9;keypressed=true;delay(300);}
     }
     keypressed=false;
@@ -594,8 +599,8 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {agit_period--;keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {agit_period++;keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {agit_period--;keypressed=true;keydelay();}
+      if(digitalRead(button2)==LOW) {agit_period++;keypressed=true;keydelay();}
       if(digitalRead(button3)==LOW) {k=10;keypressed=true;delay(300);}
     }
     keypressed=false;
@@ -615,8 +620,8 @@ void loop() {
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {agit_duration--;keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {agit_duration++;keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {agit_duration--;keypressed=true;keydelay();}
+      if(digitalRead(button2)==LOW) {agit_duration++;keypressed=true;keydelay();}
       if(digitalRead(button3)==LOW) {k=11;keypressed=true;delay(300);}
     }
     keypressed=false;
@@ -630,14 +635,15 @@ void loop() {
     lcd.setCursor(0,1);
     lcd.print("Tank capacity:");
     lcd.setCursor(0,2);
-    lcd.print("300g");
+    lcd.print(tank_cap*10);
+    lcd.print("g");
     lcd.setCursor(0,3);
     lcd.print("-      +      Next >");
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {keypressed=true;delay(300);}
+      if(digitalRead(button1)==LOW) {tank_cap--;keypressed=true;keydelay();}
+      if(digitalRead(button2)==LOW) {tank_cap++;keypressed=true;keydelay();}
       if(digitalRead(button3)==LOW) {k=12;keypressed=true;delay(300);}
     }
     keypressed=false;
@@ -672,7 +678,9 @@ void loop() {
     lcd.setCursor(0,2);
     lcd.print("Current: 297g");
     lcd.setCursor(0,3);
-    lcd.print("Set:0  Set:300g    >");
+    lcd.print("Set:0  Set:
+    lcd.print(tank_cap*10);
+    lcd.print("g    >");
 
     keypressed=false;
     while (not keypressed) {
