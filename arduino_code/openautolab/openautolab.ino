@@ -1,8 +1,10 @@
+int ess=0; //EEPROM starting address, change to ess+12 if settings saving becomes unstable
+
 #include <LiquidCrystal_I2C.h>
 #include <Servo.h>
 #include <HX711.h>
 #include <EEPROM.h>
-int ess=0; //EEPROM starting address, change to ess+12 if settings saving becomes unstable
+
 //pin numbers
 const byte motorplus =5; //positive pole of pump motor
 const byte motorminus=6; //negative pole of pump motor
@@ -22,7 +24,7 @@ const byte button1=A0; //buttons
 const byte button2=A1;
 const byte button3=A2;
 
-//global variables, which store settings
+//global variables and EEPROM adresses, which store settings
 byte bw_dev_time=EEPROM.read(ess+0);
 byte bw_fix_time=EEPROM.read(ess+1);
 byte bw_film_count=EEPROM.read(ess+2);
@@ -38,52 +40,23 @@ byte oneshot=EEPROM.read(ess+11);
 
 
 //global variables, which store values during work
-byte k=0; //state machine state index
-volatile unsigned long int t0; // here time of start will is stored
-volatile unsigned long int tk; // here time of key press is stored
-bool update_display=true;
+byte k=0; //main menu state machine state index
+volatile unsigned long int tstart; // start of development time
+volatile unsigned long int t0; // start of intermediate process
+volatile unsigned long int tk; // last key press time
+bool keypressed=false;
 
-unsigned long int secs; // here number of seconds on display will be stored
-byte dvlpr=0; //developer index
-byte container; //pin corresponding to current valve
-unsigned long int airpump=10000UL; //number of milliseconds pumping without liquid tolerated
-bool error=false; //if something went wrong machine beeps
 Servo mixer;
 HX711 scale;
 LiquidCrystal_I2C lcd(0x27,20,4);
-bool keypressed=false;
-byte testbyte=0;
-void agitation(float a, float b, float c, float d) {
-  unsigned long int init=1000.0 * a; //duration of one unit of first agitation, 1sec
-  unsigned long int intvl=1000.0 * b; //agitation every unit of time, 1sec
-  unsigned long int agit=1000.0 * c; //substequent agitations duration unit, 1sec
-  unsigned long int devt=60000.0 * d; //overall development time unit, 1min
-  t0=millis();
-  while ((millis()-t0)<devt) {
-    if (((millis()-t0)%intvl)<agit || (millis()-t0)<init) {
-      if (((millis()-t0)%2000UL)<1000UL) mixer.write(180);
-      else mixer.write(0);
-    }
-    secs=(t0+devt-millis())/1000UL;
-    //display.showNumberDecEx((secs/60UL)*100UL+(secs%60UL), 0b01000000, false);
-  }
-}
+
 void keydelay() {
   if(millis()-tk>200) delay (200);
 //  else delay (50);
   tk=millis();
 }
-void beep() {
-  t0=millis();
-  while (1) {
-    if((millis()-t0)%1000UL<500UL) digitalWrite(buzzer,HIGH);
-    else digitalWrite(buzzer,LOW);
-    if(millis()-t0>5000) {digitalWrite(buzzer,LOW); break;} //here be time of beepeng on error
-    if(digitalRead(button3)==LOW) {digitalWrite(buzzer,LOW); break;} //here be interrupt beeping and continuing
-  }
-}
 
-void bip() {
+void beep() {
   t0=millis();
   while (1) {
     if((millis()-t0)%500UL<250UL) digitalWrite(buzzer,HIGH);
@@ -93,192 +66,6 @@ void bip() {
   }
 }
 
-void intank(int tank) {
-  switch(tank) {
-    case 1:
-    container=valve1;
-    break;
-    case 2:
-    container=valve2;
-    break;
-    case 3:
-    container=valve3;
-    break;
-    case 4:
-    container=valve4;
-    break;
-    case 5:
-    container=valve5;
-    break;
-  }
-  //display.clear();
-  int i=0;
-  float measurements[10];
-  scale.tare();
-  digitalWrite(container,LOW);
-  digitalWrite(motorminus,LOW);
-  t0=millis();
-  while (1) {
-    delay(100);
-    measurements[i]=scale.get_units();
-    //display.showNumberDecEx((int) measurements[i], 0b00000000, false);
-    if(measurements[i]>300) {error=false; break;}
-    i=(i+1)%10;
-    float maximum=measurements[0];
-    float minimum=measurements[0];
-    for(int j=0;j<10;j++) {
-      if(measurements[j]<minimum) minimum=measurements[j];
-      if(measurements[j]>maximum) maximum=measurements[j];
-    }
-    if(maximum-minimum<3.0 && millis()-t0>airpump) {error=true; break;}
-  }
-  digitalWrite(motorminus,HIGH);
-  //  delay(500);
-  digitalWrite(container,HIGH);
-  //  delay(500);
-}
-
-void outtank(int tank) {
-  switch(tank) {
-    case 1:
-    container=valve1;
-    break;
-    case 2:
-    container=valve2;
-    break;
-    case 3:
-    container=valve3;
-    break;
-    case 4:
-    container=valve4;
-    break;
-    case 5:
-    container=valve5;
-    break;
-  }
-  //display.clear();
-  int i=0;
-  float measurements[10];
-  scale.tare();
-  digitalWrite(container,LOW);
-  digitalWrite(motorplus,LOW);
-  t0=millis();
-  while (1) {
-    delay(100);
-    measurements[i]=scale.get_units();
-    //display.showNumberDecEx((int) measurements[i], 0b00000000, false);
-    i=(i+1)%10;
-    float maximum=measurements[0];
-    float minimum=measurements[0];
-    for(int j=0;j<10;j++) {
-      if(measurements[j]<minimum) minimum=measurements[j];
-      if(measurements[j]>maximum) maximum=measurements[j];
-    }
-    if(maximum-minimum<3.0 && millis()-t0>airpump) break;
-  }
-  digitalWrite(motorplus,HIGH);
-  //  delay(500);
-  digitalWrite(container,HIGH);
-  //  delay(500);
-}
-
-void stage(int in, int out, float a, float b, float c, float d) {
-  intank(in);
-  if(error) beep();
-  agitation(a,b,c,d);
-  outtank(out);
-}
-void develop() {
-  switch (dvlpr){
-    case 0: //r09 + foma 400
-    //              init int- agit devel
-    //              agit erv  durat time
-    stage(1,5, 60,  30,  5,   11); //develop in rodinal 1+50
-    stage(4,5, 30,  60,  10,   1); //in-between wash
-    stage(2,2, 30,  30,  5,    6);  //fix
-    stage(4,5,  5,  30,  5,    5);   //wash1
-    stage(4,5,  5,  30,  5,    5);   //wash2
-    stage(4,5,  5,  30,  5,    5);   //wash3
-    break;
-    case 1: //lqn
-    //              init int- agit devel
-    //              agit erv  durat time
-    stage(1,1, 30,  60,  10,  9);   //develop in lqn
-    stage(4,5, 30,  60,  10,  1);   //in-between wash
-    stage(2,2, 30,  30,   5,  6);   //fix
-    stage(4,5,  5,  30,   5,  5);   //wash1
-    stage(4,5,  5,  30,   5,  5);   //wash2
-    stage(4,5,  5,  30,   5,  5);   //wash3
-    break;
-    case 2: //tetenal 30
-    //              init int- agit devel
-    //              agit erv  durat time
-    stage(4,5, 15,  15,   5,  5);   //pre-heat
-    stage(1,1, 15,  15,   5,  9);   //colour developer
-    stage(2,2, 15,  15,   5,  8);   //bleach fix
-    stage(4,5, 15,  15,   5,  2);   //rinse
-    stage(4,5, 15,  15,   5,  2);   //rinse
-    stage(4,5, 15,  15,   5,  2);   //rinse
-    stage(3,3, 15,  15,   5,  1);   //stab
-    break;
-    case 3: //tetenal 38
-    //              init int- agit devel
-    //              agit erv  durat time
-    stage(4,5, 15,  15,   5,  5);   //pre-heat
-    stage(1,1, 15,  15,   5,  3.5); //colour developer
-    stage(2,2, 15,  15,   5,  6);   //bleach fix
-    stage(4,5, 15,  15,   5,  1.5); //rinse
-    stage(4,5, 15,  15,   5,  1.5); //rinse
-    stage(3,3, 15,  15,   5,  1);   //stab
-    break;
-    case 4: //rollei+fuji super hr
-
-    //              init int- agit devel
-    //              agit erv  durat time
-    stage(1,1, 10,  60,  5,   7);   //develop
-    stage(4,5, 30,  60,  10,  1);   //in-between wash
-    stage(2,2, 30,  30,   5,  6);   //fix
-    stage(4,5,  5,  30,   5,  5);   //wash1
-    stage(4,5,  5,  30,   5,  5);   //wash2
-    bip();                          //add wetting agent
-    stage(4,5,  5,  30,   5,  5);   //wash3
-    break;
-
-    case 5: //r09+foma100
-
-    //              init int- agit devel
-    //              agit erv  durat time
-    stage(1,5, 10,  60,  5,   9);   //develop
-    stage(4,5, 30,  60,  10,  1);   //in-between wash
-    stage(2,2, 30,  30,   5,  6);   //fix
-    stage(4,5,  5,  30,   5,  5);   //wash1
-    stage(4,5,  5,  30,   5,  5);   //wash2
-    bip();                          //add wetting agent
-    stage(4,5,  5,  30,   5,  5);   //wash3
-    break;
-
-    case 6: //r09+fuji
-
-    //              init int- agit devel
-    //              agit erv  durat time
-    stage(1,5, 10,  60,  5,   8);   //develop
-    stage(4,5, 30,  60,  10,  1);   //in-between wash
-    stage(2,2, 30,  30,   5,  6);   //fix
-    stage(4,5,  5,  30,   5,  5);   //wash1
-    stage(4,5,  5,  30,   5,  5);   //wash2
-    bip();                          //add wetting agent
-    stage(4,5,  5,  30,   5,  5);   //wash3
-    break;
-  }
-}
-void wait(float waittime) {
-  unsigned long int devt=(int) (60000.0*waittime);
-  t0=millis();
-  while ((millis()-t0)<devt) {
-    secs=(t0+devt-millis())/1000UL;
-    //display.showNumberDecEx((secs/60UL)*100UL+(secs%60UL), 0b01000000, false);
-  }
-}
 char* const threechars(unsigned long int s)
 {
   static char tc[4];
@@ -365,6 +152,77 @@ char* const tohms(unsigned long int s)
   strcat(hms,c);
   return hms;
 }
+    
+void pump(boolean direction, byte vessel) {
+  delay(2000);
+  }
+
+void agitate(unsigned long stage_duration, unsigned long init_agit, unsigned long agit_period, unsigned long agit_duration) {
+  delay(2000);
+  }
+
+struct Stage {
+  char display_name[12];
+  unsigned long duration;
+  unsigned long init_agit;
+  unsigned long agit_period;
+  unsigned long agit_duration;
+  byte fromvessel;
+  byte tovessel;
+  };
+
+
+void do_stage(struct Stage stage) {
+    pump(true,stage.fromvessel);
+    agitate(stage.duration, stage.init_agit, stage.agit_period, stage.agit_duration);
+    pump(false,stage.tovessel);
+  }
+
+struct Process {
+  char display_name[16];
+  byte stages_count; //unknown on compile time
+  struct Stage stages[];
+  };
+
+void do_process (struct Process process) {
+  for (byte i=0; i<process.stages_count;i++) {
+    lcd.setCursor(0,0);
+    lcd.print(process.display_name);
+    lcd.print(" ");
+    lcd.print(i+1);
+    lcd.print("/");
+    lcd.print(process.stages_count);
+    do_stage(process.stages[i]);
+    }
+  }
+
+void display_progress(byte stage, byte stages_count, const char * stage_name, byte wash_index) {
+  lcd.setCursor(15,0);
+  lcd.print(stage);
+  lcd.print("/");
+  lcd.print(stages_count);
+  lcd.setCursor(0,1);
+  lcd.print(stage_name);
+  }
+
+void d76() {
+  byte stages_count=3;
+  stages_count+=fotoflo;
+  stages_count+=washes_count;
+  byte stage=1;
+  lcd.setCursor(0,0);
+  lcd.print("B&W develop");
+  display_progress(1,stages_count,"Develop",0);
+  do_stage((Stage){"Develop",0,0,0,0,1,1});
+  display_progress(2,stages_count,"Dev rinse",0);
+  do_stage((Stage){"Dev rinse",0,0,0,0,1,1});
+  display_progress(3,stages_count,"Fix",0);
+  do_stage((Stage){"Fix",0,0,0,0,1,1});
+  for (byte i=1;i<washes_count;i++) {
+    display_progress(3+i,stages_count,"Wash ",i);
+    do_stage((Stage){"Fix",0,0,0,0,1,1});
+    }
+  }
 
 void setup() {
   analogReference(INTERNAL);
