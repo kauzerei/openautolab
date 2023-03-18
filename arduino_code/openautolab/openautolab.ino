@@ -52,7 +52,7 @@ LiquidCrystal_I2C lcd(0x27,20,4);
 
 void keydelay() {
   if(millis()-tk>200) delay (200);
-//  else delay (50);
+  //  else delay (50);
   tk=millis();
 }
 
@@ -152,20 +152,20 @@ char* const tohms(unsigned long int s)
   strcat(hms,c);
   return hms;
 }
-    
+
 void pump(boolean direction, byte vessel) {
   lcd.setCursor(12,1);
   lcd.print("pump ");
-  if (direction) lcd.print("in");
+  if (direction) lcd.print("in ");
   else lcd.print("out");
   delay(1000);
-  }
+}
 
 void agitate(unsigned long stage_duration, unsigned long init_agit, unsigned long agit_period, unsigned long agit_duration) {
   lcd.setCursor(12,1);
   lcd.print("process ");
   delay(1000);
-  }
+}
 
 struct Stage {
   const char display_name[12];
@@ -175,67 +175,62 @@ struct Stage {
   unsigned long agit_duration;
   byte fromvessel;
   byte tovessel;
-  byte index;
   byte repeat;
-  };
+};
 
 
 void do_stage(struct Stage stage) {
-    lcd.setCursor(0,1);
-    lcd.print(stage.display_name);
-    if (stage.index!=0) lcd.print(stage.index);
-    pump(true,stage.fromvessel);
-    agitate(stage.duration, stage.init_agit, stage.agit_period, stage.agit_duration);
-    pump(false,stage.tovessel);
-  }
+  pump(true,stage.fromvessel);
+  agitate(stage.duration, stage.init_agit, stage.agit_period, stage.agit_duration);
+  pump(false,stage.tovessel);
+}
 
 struct Process {
-  char display_name[16];
-  byte stages_count; //unknown on compile time
-  struct Stage stages[];
-  };
+  const char display_name[16];
+  struct Stage stages[7];
+};
 
 void do_process (struct Process process) {
-  for (byte i=0; i<process.stages_count;i++) {
-    lcd.setCursor(0,0);
-    lcd.print(process.display_name);
-    lcd.print(" ");
-    lcd.print(i+1);
-    lcd.print("/");
-    lcd.print(process.stages_count);
-    do_stage(process.stages[i]);
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("               "); //clear that part of display
+  lcd.setCursor(0,0);
+  lcd.print(process.display_name);
+  byte stages_count=sizeof(process.stages)/sizeof(process.stages[0]);
+  byte substages_count=0;
+  byte substage=1;
+  for (byte i=0;i<stages_count;i++) substages_count+=process.stages[i].repeat;
+  for (byte i=0;i<stages_count;i++) {
+    for (byte j=0;j<process.stages[i].repeat;j++) {
+      lcd.setCursor(0,1);
+      lcd.print("           "); //clear that part of display
+      lcd.setCursor(0,1);
+      lcd.print(process.stages[i].display_name);
+      if (process.stages[i].repeat>1) lcd.print(j+1);
+      lcd.setCursor(15,0);
+      lcd.print("     "); // new values should never be shorter than older, but just in case clear part of display
+      lcd.setCursor(15,0);
+      lcd.print(substage);
+      lcd.print("/");
+      lcd.print(substages_count);
+      do_stage(process.stages[i]);
+      substage++;
     }
   }
+  lcd.setCursor(0,1);
+  lcd.print("        Done.       "); //clear that part of display
 
-void display_progress(byte stage, byte stages_count) {
-  lcd.setCursor(15,0);
-  lcd.print(stage);
-  lcd.print("/");
-  lcd.print(stages_count);
-  }
+}
 
 void d76() {
-  byte stages_count=3;
-  stages_count+=fotoflo;
-  stages_count+=washes_count;
-  byte stage=1;
-  lcd.setCursor(0,0);
-  lcd.print("B&W develop");
-  display_progress(1,stages_count);
-  do_stage((Stage){"Develop    ",0,0,0,0,1,1,0});
-  display_progress(2,stages_count);
-  do_stage((Stage){"Dev rinse  ",0,0,0,0,1,1,0});
-  display_progress(3,stages_count);
-  do_stage((Stage){"Fix        ",0,0,0,0,1,1,0});
-  for (byte i=1;i<=washes_count;i++) {
-    display_progress(3+i,stages_count);
-    do_stage((Stage){"Wash ",0,0,0,0,1,1,i});
-    }
-  if(fotoflo!=0) {
-    display_progress(stages_count,stages_count);
-    do_stage((Stage){"Fotoflo",0,0,0,0,1,1,0});
-    }
-  }
+  do_process((Process){"B&W develop", {
+    (Stage){"Developer",toseconds(bw_dev_time),init_agit,agit_period,agit_duration,1,2,1},
+    (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,1,2,1},
+    (Stage){"Fixer",toseconds(bw_fix_time),init_agit,agit_period,agit_duration,1,2,1},
+    (Stage){"Wash ",toseconds(washes_duration),init_agit,agit_period,agit_duration,1,2,washes_count},
+    (Stage){"Wet agent",toseconds(washes_duration),init_agit,agit_period,agit_duration,1,2,fotoflo}
+  }});
+}
 
 void setup() {
   analogReference(INTERNAL);
