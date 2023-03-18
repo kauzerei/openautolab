@@ -154,25 +154,36 @@ char* const tohms(unsigned long int s)
 }
     
 void pump(boolean direction, byte vessel) {
-  delay(2000);
+  lcd.setCursor(12,1);
+  lcd.print("pump ");
+  if (direction) lcd.print("in");
+  else lcd.print("out");
+  delay(1000);
   }
 
 void agitate(unsigned long stage_duration, unsigned long init_agit, unsigned long agit_period, unsigned long agit_duration) {
-  delay(2000);
+  lcd.setCursor(12,1);
+  lcd.print("process ");
+  delay(1000);
   }
 
 struct Stage {
-  char display_name[12];
+  const char display_name[12];
   unsigned long duration;
   unsigned long init_agit;
   unsigned long agit_period;
   unsigned long agit_duration;
   byte fromvessel;
   byte tovessel;
+  byte index;
+  byte repeat;
   };
 
 
 void do_stage(struct Stage stage) {
+    lcd.setCursor(0,1);
+    lcd.print(stage.display_name);
+    if (stage.index!=0) lcd.print(stage.index);
     pump(true,stage.fromvessel);
     agitate(stage.duration, stage.init_agit, stage.agit_period, stage.agit_duration);
     pump(false,stage.tovessel);
@@ -196,13 +207,11 @@ void do_process (struct Process process) {
     }
   }
 
-void display_progress(byte stage, byte stages_count, const char * stage_name, byte wash_index) {
+void display_progress(byte stage, byte stages_count) {
   lcd.setCursor(15,0);
   lcd.print(stage);
   lcd.print("/");
   lcd.print(stages_count);
-  lcd.setCursor(0,1);
-  lcd.print(stage_name);
   }
 
 void d76() {
@@ -212,15 +221,19 @@ void d76() {
   byte stage=1;
   lcd.setCursor(0,0);
   lcd.print("B&W develop");
-  display_progress(1,stages_count,"Develop",0);
-  do_stage((Stage){"Develop",0,0,0,0,1,1});
-  display_progress(2,stages_count,"Dev rinse",0);
-  do_stage((Stage){"Dev rinse",0,0,0,0,1,1});
-  display_progress(3,stages_count,"Fix",0);
-  do_stage((Stage){"Fix",0,0,0,0,1,1});
-  for (byte i=1;i<washes_count;i++) {
-    display_progress(3+i,stages_count,"Wash ",i);
-    do_stage((Stage){"Fix",0,0,0,0,1,1});
+  display_progress(1,stages_count);
+  do_stage((Stage){"Develop    ",0,0,0,0,1,1,0});
+  display_progress(2,stages_count);
+  do_stage((Stage){"Dev rinse  ",0,0,0,0,1,1,0});
+  display_progress(3,stages_count);
+  do_stage((Stage){"Fix        ",0,0,0,0,1,1,0});
+  for (byte i=1;i<=washes_count;i++) {
+    display_progress(3+i,stages_count);
+    do_stage((Stage){"Wash ",0,0,0,0,1,1,i});
+    }
+  if(fotoflo!=0) {
+    display_progress(stages_count,stages_count);
+    do_stage((Stage){"Fotoflo",0,0,0,0,1,1,0});
     }
   }
 
@@ -573,22 +586,13 @@ void loop() {
     keypressed=false;
     break;
     case 16:
-
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("B&W develop     1/7");
-    lcd.setCursor(0,1);
-    lcd.print("Developer pump in");
-    lcd.setCursor(0,2);
-    lcd.print("276g      1:23:59:59");
-    lcd.setCursor(0,3);
-    lcd.print("1:23:53:15      left");
+    d76();
 
     keypressed=false;
     while (not keypressed) {
-      if(digitalRead(button1)==LOW) {keypressed=true; delay(300);}
-      if(digitalRead(button2)==LOW) {keypressed=true; delay(300);}
-      if(digitalRead(button3)==LOW) {keypressed=true; delay(300);}
+      if(digitalRead(button1)==LOW) {k=0; keypressed=true; delay(300);}
+      if(digitalRead(button2)==LOW) {k=0; keypressed=true; delay(300);}
+      if(digitalRead(button3)==LOW) {k=0; keypressed=true; delay(300);}
     }
     keypressed=false;
     break;
