@@ -45,7 +45,11 @@ volatile unsigned long int tstart; // start of development time
 volatile unsigned long int t0; // start of intermediate process
 volatile unsigned long int tk; // last key press time
 bool keypressed=false;
-
+bool button1_released=true;
+bool button2_released=true;
+bool button3_released=true;
+unsigned long ignore_until;
+bool released;
 Servo mixer;
 HX711 scale;
 LiquidCrystal_I2C lcd(0x27,20,4);
@@ -153,6 +157,25 @@ char* const tohms(unsigned long int s)
   return hms;
 }
 
+byte waitkey() {
+
+  while (true) {
+    if(digitalRead(button1)==LOW) {
+      if (released or millis()> ignore_until) {ignore_until=released?millis()+500:ignore_until+50; released=false; return 1;}
+      released=false;
+      }
+    else if(digitalRead(button2)==LOW) {
+      if (released or millis()> ignore_until) {ignore_until=released?millis()+500:ignore_until+50; released=false; return 2;}
+      released=false;
+      }
+    else if(digitalRead(button3)==LOW) {
+      if (released or millis()> ignore_until) {ignore_until=released?millis()+500:ignore_until+50; released=false; return 3;}
+      released=false;
+      }
+    else released=true;
+  }
+}
+
 void pump(boolean direction, byte vessel) {
   lcd.setCursor(12,1);
   lcd.print("pump ");
@@ -187,7 +210,7 @@ void do_stage(struct Stage stage) {
 
 struct Process {
   const char display_name[16];
-  struct Stage stages[7];
+  struct Stage stages[8];
 };
 
 void do_process (struct Process process) {
@@ -227,6 +250,19 @@ void d76() {
     (Stage){"Developer",toseconds(bw_dev_time),init_agit,agit_period,agit_duration,1,2,1},
     (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,1,2,1},
     (Stage){"Fixer",toseconds(bw_fix_time),init_agit,agit_period,agit_duration,1,2,1},
+    (Stage){"Wash ",toseconds(washes_duration),init_agit,agit_period,agit_duration,1,2,washes_count},
+    (Stage){"Wet agent",toseconds(washes_duration),init_agit,agit_period,agit_duration,1,2,fotoflo}
+  }});
+}
+
+void c41() {
+  do_process((Process){"C41 develop", {
+    (Stage){"Prewash",30ul,init_agit,agit_period,agit_duration,1,2,1},
+    (Stage){"Developer",100ul,init_agit,agit_period,agit_duration,1,2,1},
+    (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,1,2,1},
+    (Stage){"Bleach",100ul,init_agit,agit_period,agit_duration,1,2,1},
+    (Stage){"Rinse bl",30ul,init_agit,agit_period,agit_duration,1,2,1},
+    (Stage){"Fixer",100ul,init_agit,agit_period,agit_duration,1,2,1},
     (Stage){"Wash ",toseconds(washes_duration),init_agit,agit_period,agit_duration,1,2,washes_count},
     (Stage){"Wet agent",toseconds(washes_duration),init_agit,agit_period,agit_duration,1,2,fotoflo}
   }});
@@ -326,12 +362,19 @@ void loop() {
     lcd.setCursor(0,3);
     lcd.print("-      +      Next >");
 
-    keypressed=false;
+    /*keypressed=false;
     while (not keypressed) {
+      
       if(digitalRead(button1)==LOW) {bw_dev_time--;keypressed=true;keydelay();}
       if(digitalRead(button2)==LOW) {bw_dev_time++;keypressed=true;keydelay();}
       if(digitalRead(button3)==LOW) {k=3; EEPROM.update(ess+0,bw_dev_time); keypressed=true;delay(300);}
-    }
+      */
+      switch(waitkey()){
+        case 1: bw_dev_time--; break;
+        case 2: bw_dev_time++; break;
+        case 3: k=3; EEPROM.update(ess+0,bw_dev_time);
+        }
+ // }
     keypressed=false;
     break;
 
