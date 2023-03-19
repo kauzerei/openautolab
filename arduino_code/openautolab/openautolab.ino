@@ -44,7 +44,6 @@ byte k=0; //main menu state machine state index
 volatile unsigned long int tstart; // start of development time
 volatile unsigned long int t0; // start of intermediate process
 volatile unsigned long int tk; // last key press time
-bool keypressed=false;
 bool button1_released=true;
 bool button2_released=true;
 bool button3_released=true;
@@ -300,7 +299,7 @@ void setup() {
   lcd.backlight();
 }
 void loop() {
-  switch(k){
+  switch(k) {
     case 0: //main menu
     lcd.clear();
     lcd.setCursor(0,0);
@@ -325,15 +324,13 @@ void loop() {
     lcd.print(bw_film_count);
     lcd.setCursor(0,3);
     lcd.print("B&W   C41   Settings");
-
-    keypressed=false;
-    while (not keypressed) {
-      if(digitalRead(button1)==LOW) {if (oneshot==0) k=1; else k=2; keypressed=true; delay(300);}
-      if(digitalRead(button2)==LOW) {k=4; keypressed=true; delay(300);}
-      if(digitalRead(button3)==LOW) {k=5; keypressed=true; delay(300);}
-    }
-    keypressed=false;
+    switch(waitkey()){
+      case 1: k=(oneshot==0)?1:2; break;
+      case 2: k=4; break;
+      case 3: k=5; EEPROM.update(ess+0,bw_dev_time);
+      }
     break;
+    
     case 1:
     lcd.clear();
     lcd.setCursor(0,0);
@@ -343,14 +340,11 @@ void loop() {
     lcd.print(bw_film_count);
     lcd.setCursor(0,3);
     lcd.print("Reset    +    Next >");
-
-    keypressed=false;
-    while (not keypressed) {
-      if(digitalRead(button1)==LOW) {bw_film_count=1; keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {bw_film_count++; keypressed=true;keydelay();}
-      if(digitalRead(button3)==LOW) {k=2; EEPROM.update(ess+2,bw_film_count); keypressed=true;delay(300);}
-    }
-    keypressed=false;
+    switch(waitkey()){
+      case 1: bw_film_count=1; break;
+      case 2: bw_film_count++; break;
+      case 3: k=2; EEPROM.update(ess+2,bw_film_count);
+      }
     break;
 
     case 2:
@@ -361,21 +355,11 @@ void loop() {
     lcd.print(tohms(toseconds(bw_dev_time)));
     lcd.setCursor(0,3);
     lcd.print("-      +      Next >");
-
-    /*keypressed=false;
-    while (not keypressed) {
-      
-      if(digitalRead(button1)==LOW) {bw_dev_time--;keypressed=true;keydelay();}
-      if(digitalRead(button2)==LOW) {bw_dev_time++;keypressed=true;keydelay();}
-      if(digitalRead(button3)==LOW) {k=3; EEPROM.update(ess+0,bw_dev_time); keypressed=true;delay(300);}
-      */
-      switch(waitkey()){
-        case 1: bw_dev_time--; break;
-        case 2: bw_dev_time++; break;
-        case 3: k=3; EEPROM.update(ess+0,bw_dev_time);
-        }
- // }
-    keypressed=false;
+    switch(waitkey()){
+      case 1: bw_dev_time--; break;
+      case 2: bw_dev_time++; break;
+      case 3: k=3; EEPROM.update(ess+0,bw_dev_time);
+      }
     break;
 
     case 3:
@@ -386,14 +370,11 @@ void loop() {
     lcd.print(tohms(toseconds(bw_fix_time)));
     lcd.setCursor(0,3);
     lcd.print("-      +       Start");
-
-    keypressed=false;
-    while (not keypressed) {
-      if(digitalRead(button1)==LOW) {bw_fix_time--;keypressed=true;keydelay();}
-      if(digitalRead(button2)==LOW) {bw_fix_time++;keypressed=true;keydelay();}
-      if(digitalRead(button3)==LOW) {k=16; EEPROM.update(ess+1,bw_fix_time); keypressed=true;delay(300);}
-    }
-    keypressed=false;
+    switch(waitkey()){
+      case 1: bw_fix_time--; break;
+      case 2: bw_fix_time++; break;
+      case 3: k=16; EEPROM.update(ess+1,bw_fix_time);
+      }
     break;
 
     case 4:
@@ -405,14 +386,10 @@ void loop() {
     lcd.print(c41_film_count);
     lcd.setCursor(0,3);
     lcd.print("Reset    +     Start");
-
-    keypressed=false;
-    while (not keypressed) {
-      if(digitalRead(button1)==LOW) {c41_film_count=1;keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {c41_film_count++;keypressed=true;keydelay();}
-      if(digitalRead(button3)==LOW) {k=17; EEPROM.update(ess+3,c41_film_count); keypressed=true; delay(300);}
-    }
-    keypressed=false;
+    switch(waitkey()){
+      case 1: c41_film_count=1; break;
+      case 2: c41_film_count++; break;
+      case 3: k=17; EEPROM.update(ess+3,c41_film_count);}
     break;
 
     case 5:
@@ -425,14 +402,11 @@ void loop() {
     lcd.print(tohms(toseconds(washes_duration)));
     lcd.setCursor(0,3);
     lcd.print("-      +      Next >");
-
-    keypressed=false;
-    while (not keypressed) {
-      if(digitalRead(button1)==LOW) {washes_duration--; keypressed=true; keydelay();}
-      if(digitalRead(button2)==LOW) {washes_duration++; keypressed=true; keydelay();}
-      if(digitalRead(button3)==LOW) {k=6; EEPROM.update(ess+5,washes_duration); keypressed=true; delay(300);}
-    }
-    keypressed=false;
+    switch(waitkey()){
+      case 1: washes_duration--; break;
+      case 2: washes_duration++; break;
+      case 3: k=6; EEPROM.update(ess+5,washes_duration);
+      }
     break;
 
     case 6:
@@ -445,14 +419,11 @@ void loop() {
     lcd.print(washes_count);
     lcd.setCursor(0,3);
     lcd.print("-      +      Next >");
-
-    keypressed=false;
-    while (not keypressed) {
-      if(digitalRead(button1)==LOW) {washes_count--; keypressed=true; keydelay();}
-      if(digitalRead(button2)==LOW) {washes_count++; keypressed=true; keydelay();}
-      if(digitalRead(button3)==LOW) {k=7; EEPROM.update(ess+4,washes_count); keypressed=true; delay(300);}
-    }
-    keypressed=false;
+    switch(waitkey()){
+      case 1: washes_count--; break;
+      case 2: washes_count++; break;
+      case 3: k=7; EEPROM.update(ess+4,washes_count);
+      }
     break;
 
     case 7:
@@ -466,14 +437,11 @@ void loop() {
     else lcd.print("                 Yes");
     lcd.setCursor(0,3);
     lcd.print("No     Yes    Next >");
-
-    keypressed=false;
-    while (not keypressed) {
-      if(digitalRead(button1)==LOW) {fotoflo=0; keypressed=true; delay(300);}
-      if(digitalRead(button2)==LOW) {fotoflo=1; keypressed=true; delay(300);}
-      if(digitalRead(button3)==LOW) {k=8; EEPROM.update(ess+6,fotoflo); keypressed=true; delay(300);}
-    }
-    keypressed=false;
+    switch(waitkey()){
+      case 1: fotoflo=0; break;
+      case 2: fotoflo=1; break;
+      case 3: k=8; EEPROM.update(ess+6,fotoflo);
+      }
     break;
 
     case 8:
@@ -486,14 +454,11 @@ void loop() {
     lcd.print(tohms(toseconds(init_agit)));
     lcd.setCursor(0,3);
     lcd.print("-      +      Next >");
-
-    keypressed=false;
-    while (not keypressed) {
-      if(digitalRead(button1)==LOW) {init_agit--; keypressed=true; keydelay();}
-      if(digitalRead(button2)==LOW) {init_agit++; keypressed=true; keydelay();}
-      if(digitalRead(button3)==LOW) {k=9; EEPROM.update(ess+7,init_agit); keypressed=true; delay(300);}
-    }
-    keypressed=false;
+    switch(waitkey()){
+      case 1: init_agit--; break;
+      case 2: init_agit++; break;
+      case 3: k=9; EEPROM.update(ess+7,init_agit);
+      }
     break;
 
     case 9:
@@ -506,18 +471,14 @@ void loop() {
     lcd.print(tohms(toseconds(agit_period)));
     lcd.setCursor(0,3);
     lcd.print("-      +      Next >");
-
-    keypressed=false;
-    while (not keypressed) {
-      if(digitalRead(button1)==LOW) {agit_period--; keypressed=true; keydelay();}
-      if(digitalRead(button2)==LOW) {agit_period++; keypressed=true; keydelay();}
-      if(digitalRead(button3)==LOW) {k=10; EEPROM.update(ess+8,agit_period); keypressed=true; delay(300);}
-    }
-    keypressed=false;
+    switch(waitkey()){
+      case 1: agit_period--; break;
+      case 2: agit_period++; break;
+      case 3: k=10; EEPROM.update(ess+8,agit_period);
+      }
     break;
 
     case 10:
-
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Settings         6/8");
@@ -527,18 +488,14 @@ void loop() {
     lcd.print(tohms(toseconds(agit_duration)));
     lcd.setCursor(0,3);
     lcd.print("-      +      Next >");
-
-    keypressed=false;
-    while (not keypressed) {
-      if(digitalRead(button1)==LOW) {agit_duration--; keypressed=true; keydelay();}
-      if(digitalRead(button2)==LOW) {agit_duration++; keypressed=true; keydelay();}
-      if(digitalRead(button3)==LOW) {k=11; EEPROM.update(ess+9,agit_duration); keypressed=true; delay(300);}
-    }
-    keypressed=false;
+    switch(waitkey()){
+      case 1: agit_duration--; break;
+      case 2: agit_duration++; break;
+      case 3: k=11; EEPROM.update(ess+9,agit_duration);
+      }
     break;
 
     case 11:
-
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Settings         7/8");
@@ -549,18 +506,14 @@ void loop() {
     lcd.print("g");
     lcd.setCursor(0,3);
     lcd.print("-      +      Next >");
-
-    keypressed=false;
-    while (not keypressed) {
-      if(digitalRead(button1)==LOW) {tank_cap--; keypressed=true; keydelay();}
-      if(digitalRead(button2)==LOW) {tank_cap++; keypressed=true; keydelay();}
-      if(digitalRead(button3)==LOW) {k=12; EEPROM.update(ess+10,tank_cap); keypressed=true; delay(300);}
-    }
-    keypressed=false;
+    switch(waitkey()){
+      case 1: tank_cap--; break;
+      case 2: tank_cap++; break;
+      case 3: k=12; EEPROM.update(ess+10,tank_cap);
+      }
     break;
 
     case 12:
-
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Settings         8/8");
@@ -570,16 +523,14 @@ void loop() {
     lcd.print("enter advanced opts");
     lcd.setCursor(0,3);
     lcd.print("Yes     Yes       No");
-
-    keypressed=false;
+    {bool keypressed=false;
     while (not keypressed) {
       if(digitalRead(button1)==LOW && digitalRead(button2)==LOW) {k=13; keypressed=true; delay(300);}
       if(digitalRead(button3)==LOW) {k=0; keypressed=true; delay(300);}
-    }
-    keypressed=false;
+    }}
     break;
-    case 13:
 
+    case 13:
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Advanced         1/2");
@@ -591,18 +542,14 @@ void loop() {
     lcd.print("Set:0  Set:");
     lcd.print(tank_cap*10);
     lcd.print("g    >");
-
-    keypressed=false;
-    while (not keypressed) {
-      if(digitalRead(button1)==LOW) {keypressed=true; delay(300);}
-      if(digitalRead(button2)==LOW) {keypressed=true; delay(300);}
-      if(digitalRead(button3)==LOW) {k=14; keypressed=true; delay(300);}
-    }
-    keypressed=false;
+    switch(waitkey()){
+      case 1:  break;
+      case 2:  break;
+      case 3: k=14;
+      }
     break;
 
     case 14:
-
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Advanced         2/2");
@@ -614,47 +561,22 @@ void loop() {
     else lcd.print("Yes");
     lcd.setCursor(0,3);
     lcd.print("Yes     No      Done");
-
-    keypressed=false;
-    while (not keypressed) {
-      if(digitalRead(button1)==LOW) {oneshot=1; keypressed=true; delay(300);}
-      if(digitalRead(button2)==LOW) {oneshot=0; keypressed=true; delay(300);}
-      if(digitalRead(button3)==LOW) {k=0; EEPROM.update(ess+11,oneshot); keypressed=true; delay(300);}
-    }
-    keypressed=false;
+    switch(waitkey()){
+      case 1: oneshot=1; break;
+      case 2: oneshot=0; break;
+      case 3: k=0; EEPROM.update(ess+11,oneshot);
+      }
     break;
+    
     case 16:
     d76();
-
-    keypressed=false;
-    while (not keypressed) {
-      if(digitalRead(button1)==LOW) {k=0; keypressed=true; delay(300);}
-      if(digitalRead(button2)==LOW) {k=0; keypressed=true; delay(300);}
-      if(digitalRead(button3)==LOW) {k=0; keypressed=true; delay(300);}
-    }
-    keypressed=false;
+    waitkey();
+    k=0;
     break;
 
     case 17:
-
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("C41 develop     1/7");
-    lcd.setCursor(0,1);
-    lcd.print("Developer pump in");
-    lcd.setCursor(0,2);
-    lcd.print("276g      1:23:59:59");
-    lcd.setCursor(0,3);
-    lcd.print("1:23:53:15      left");
-
-    keypressed=false;
-    while (not keypressed) {
-      if(digitalRead(button1)==LOW) {keypressed=true;delay(300);}
-      if(digitalRead(button2)==LOW) {keypressed=true;delay(300);}
-      if(digitalRead(button3)==LOW) {keypressed=true;delay(300);}
-    }
-    keypressed=false;
-
-
+    c41();
+    waitkey();
+    k=0;
   }
 }
