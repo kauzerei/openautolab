@@ -37,8 +37,8 @@ byte agit_period=EEPROM.read(ess+8);
 byte agit_duration=EEPROM.read(ess+9);
 byte tank_cap=EEPROM.read(ess+10);
 byte oneshot=EEPROM.read(ess+11);
-float divider=1;
-long offset=0;
+float divider;
+long offset;
 
 //global variables, which store values during work
 byte k=0; //main menu state machine state index
@@ -50,6 +50,7 @@ bool button2_released=true;
 bool button3_released=true;
 unsigned long ignore_until;
 bool released;
+bool scale_calibrated=false;
 Servo mixer;
 HX711 scale;
 LiquidCrystal_I2C lcd(0x27,20,4);
@@ -292,10 +293,11 @@ void setup() {
   digitalWrite(motorminus,LOW);
   digitalWrite(buzzer,LOW);
   mixer.attach(servo);
-  //display.setBrightness(7);
-  //display.clear();
+  EEPROM.get(ess+12,divider);
+  EEPROM.get(ess+16,offset);
   scale.begin(scaledat,scaleclk);
-  scale.set_scale();
+  scale.set_scale(divider);
+  scale.set_offset(offset);
   lcd.init();
   lcd.backlight();
 }
@@ -546,9 +548,9 @@ void loop() {
     lcd.print("g    >");
     {bool keypressed=false;
     for (byte i=0;i<255;i++) {
-      if(digitalRead(button1)==LOW) {scale.set_offset(scale.read_average(10)); keypressed=true;}
-      if(digitalRead(button2)==LOW) {scale.set_scale(); scale.set_scale(scale.get_units(10)/(10.f*tank_cap)); keypressed=true;}
-      if(digitalRead(button3)==LOW) {k=0; keypressed=true; delay(300);}
+      if(digitalRead(button1)==LOW) {offset=scale.read_average(10); scale.set_offset(offset); keypressed=true; scale_calibrated=true;}
+      if(digitalRead(button2)==LOW) {scale.set_scale();divider=scale.get_units(10)/(10.f*tank_cap); scale.set_scale(divider); keypressed=true; scale_calibrated=true;}
+      if(digitalRead(button3)==LOW) {k=0; keypressed=true; if (scale_calibrated) {EEPROM.put(ess+12,divider);EEPROM.put(ess+16,offset);} delay(300);}
       if(keypressed) break;
     }}
     break;
