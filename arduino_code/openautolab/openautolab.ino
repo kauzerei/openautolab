@@ -37,7 +37,8 @@ byte agit_period=EEPROM.read(ess+8);
 byte agit_duration=EEPROM.read(ess+9);
 byte tank_cap=EEPROM.read(ess+10);
 byte oneshot=EEPROM.read(ess+11);
-
+float divider=1;
+long offset=0;
 
 //global variables, which store values during work
 byte k=0; //main menu state machine state index
@@ -294,7 +295,7 @@ void setup() {
   //display.setBrightness(7);
   //display.clear();
   scale.begin(scaledat,scaleclk);
-  scale.set_scale(1850);
+  scale.set_scale();
   lcd.init();
   lcd.backlight();
 }
@@ -531,22 +532,25 @@ void loop() {
     break;
 
     case 13:
-    lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Advanced         1/2");
+    lcd.setCursor(0,2);
+    lcd.print("Current: ");
+    lcd.print(scale.get_units());
+    lcd.print("           "); //erase symbols left from previous measurment
     lcd.setCursor(0,1);
     lcd.print("Weight sensor tuning");
-    lcd.setCursor(0,2);
-    lcd.print("Current: 297g");
     lcd.setCursor(0,3);
     lcd.print("Set:0  Set:");
     lcd.print(tank_cap*10);
     lcd.print("g    >");
-    switch(waitkey()){
-      case 1:  break;
-      case 2:  break;
-      case 3: k=14;
-      }
+    {bool keypressed=false;
+    for (byte i=0;i<255;i++) {
+      if(digitalRead(button1)==LOW) {scale.set_offset(scale.read_average(10)); keypressed=true;}
+      if(digitalRead(button2)==LOW) {scale.set_scale(); scale.set_scale(scale.get_units(10)/(10.f*tank_cap)); keypressed=true;}
+      if(digitalRead(button3)==LOW) {k=0; keypressed=true; delay(300);}
+      if(keypressed) break;
+    }}
     break;
 
     case 14:
@@ -578,5 +582,12 @@ void loop() {
     c41();
     waitkey();
     k=0;
+    break;
+
+    case 50:
+    lcd.setCursor(0,0);
+    lcd.print(scale.read_average(10));
+    lcd.setCursor(0,1);
+    lcd.print(scale.get_units(10));
   }
 }

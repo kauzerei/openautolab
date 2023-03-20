@@ -9,6 +9,6 @@ https://www.arduino.cc/reference/en/libraries/servo/
 ### LiquidCrystal I2C by Frank de Brabander
 Library that manages LCD output  
 https://github.com/johnrickman/LiquidCrystal_I2C  
-### HX711 by Rob Tillaart  
+### HX711 by Bogdan Necula  
 Library to manage load cell for measuring amount of liquid in tank  
-https://github.com/RobTillaart/HX711  
+https://github.com/bogde/HX711  
