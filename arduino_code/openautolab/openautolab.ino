@@ -37,45 +37,36 @@ byte agit_period=EEPROM.read(ess+8);
 byte agit_duration=EEPROM.read(ess+9);
 byte tank_cap=EEPROM.read(ess+10);
 byte oneshot=EEPROM.read(ess+11);
-float divider;
+float divider; //because one can't use EEPROM.get outside of a function
 long offset;
 
 //global variables, which store values during work
 byte k=0; //main menu state machine state index
-volatile unsigned long int tstart; // start of development time
-volatile unsigned long int t0; // start of intermediate process
-volatile unsigned long int tk; // last key press time
-bool button1_released=true;
-bool button2_released=true;
-bool button3_released=true;
-unsigned long ignore_until;
-bool released;
-bool scale_calibrated=false;
+unsigned long st_pr; // start of development time, to display for reference
+unsigned long st_st; // start of intermediate stage, to calculate when to pump out chemical
+unsigned long st_ag; // start of agitation, to calculate agitation cycles
+unsigned long ignore_until; //ignore keypress until this time, for key repeat implementation
+bool released; //true if no keys are pressed on waitkey() loop
+bool scale_calibrated=false; //store values to EEPROM only on change
 Servo mixer;
 HX711 scale;
 LiquidCrystal_I2C lcd(0x27,20,4);
 
-void keydelay() {
-  if(millis()-tk>200) delay (200);
-  //  else delay (50);
-  tk=millis();
-}
-
 void beep() {
-  t0=millis();
+  st_pr=millis();
   while (1) {
-    if((millis()-t0)%500UL<250UL) digitalWrite(buzzer,HIGH);
+    if((millis()-st_pr)%500UL<250UL) digitalWrite(buzzer,HIGH);
     else digitalWrite(buzzer,LOW);
-    if(millis()-t0>5000) {digitalWrite(buzzer,LOW); break;} //here be time of beepeng on error
+    if(millis()-st_pr>5000) {digitalWrite(buzzer,LOW); break;} //here be time of beepeng on error
     if(digitalRead(button3)==LOW) {digitalWrite(buzzer,LOW); break;} //here be interrupt beeping and continuing
   }
 }
 
-char* const threechars(unsigned long int s)
+char* const threechars(unsigned long int s) //time in seconds to three-character representation
 {
   static char tc[4];
   tc[0] = '\0';
-  if (s>99999999) { strcat(tc,"Inf"); return tc;}
+  if (s>=4000000) { strcat(tc,"Inf"); return tc;}
   char h[2]=" ";
   char m[2]=" ";
   char c[2]=" ";
@@ -120,7 +111,7 @@ char* const threechars(unsigned long int s)
   }
   return tc;
 }
-unsigned long int toseconds(byte t)
+unsigned long int toseconds(byte &t) //one-byte time representation to seconds
 {
   if (t<=120) return 5UL*t;
   else if (t<=140) return 30ul*(unsigned long int)(t)-3000ul;
@@ -129,13 +120,13 @@ unsigned long int toseconds(byte t)
   else if (t<=233) return 600ul*(unsigned long int)(t)-96600ul;
   else if (t<=245) return 3600ul*(unsigned long int)(t)-795600ul;
   else if (t<=254) return 7200ul*(unsigned long int)(t)-1677600ul;
-  else return 999999999;
+  else return 4000000;
 }
-char* const tohms(unsigned long int s)
+char* const tohms(unsigned long int s) //time in seconds to hh:mm:ss string
 {
   static char hms[20];
   hms[0] = '\0';
-  if (s>99999999) { strcat(hms,"Infinity"); return hms;}
+  if (s>=4000000) { strcat(hms,"Infinity"); return hms;}
   char h[3]=" ";
   char m[3]=" ";
   char c[3]=" ";
@@ -158,7 +149,7 @@ char* const tohms(unsigned long int s)
   return hms;
 }
 
-byte waitkey() {
+byte waitkey() { //waits for button press, implements delay. Function seems not to need explicit debounce, but if necessary, just add delay(20); before return
 
   while (true) {
     if(digitalRead(button1)==LOW) {
@@ -177,44 +168,58 @@ byte waitkey() {
   }
 }
 
-void pump(boolean direction, byte vessel) {
+void pump(boolean direction, byte vessel) { 
   lcd.setCursor(12,1);
   lcd.print("pump ");
   if (direction) lcd.print("in ");
   else lcd.print("out");
-  delay(1000);
+  delay(2000);
 }
 
-void agitate(unsigned long stage_duration, unsigned long init_agit, unsigned long agit_period, unsigned long agit_duration) {
+void agitate(unsigned long stage_duration, byte init_agit, byte agit_period, byte agit_duration) {
+  st_ag=millis(); //agitation-related times calculated from here
+  if (agit_period==0) agit_period=255; //period equal to zero does not make sense, setting to infinity instead, should never happen
   lcd.setCursor(12,1);
   lcd.print("process ");
-  delay(1000);
+  while(millis()-st_st<stage_duration*1000ul) { //stage duration is calculated from beginning of pumping in to beginning of pumping out, not from agitation start
+    lcd.setCursor(10,3);
+    lcd.print(tohms((millis()-st_pr)/1000));
+    lcd.setCursor(0,2);
+    lcd.print(tohms((millis()-st_st)/1000));
+    lcd.print(" / ");
+    lcd.print(tohms(stage_duration));
+    if ((millis()<st_ag+toseconds(init_agit)*1000ul)
+      || ((millis()-st_ag-toseconds(init_agit)*1000ul+toseconds(agit_duration)*1000ul)%(toseconds(agit_period)*1000ul)<toseconds(agit_duration)*1000ul) )
+        mixer.write(((millis()-st_ag)%2000UL<1000UL)?180:0);
+  }
 }
 
-struct Stage {
+struct Stage { //definition of a processing stage, such as developing, fixing or washing
   const char display_name[12];
   unsigned long duration;
-  unsigned long init_agit;
-  unsigned long agit_period;
-  unsigned long agit_duration;
+  byte init_agit;
+  byte agit_period;
+  byte agit_duration;
   byte fromvessel;
   byte tovessel;
   byte repeat;
 };
 
 
-void do_stage(struct Stage stage) {
+void do_stage(struct Stage &stage) { //execution one iteration of one processing stage
+  st_st=millis();
   pump(true,stage.fromvessel);
   agitate(stage.duration, stage.init_agit, stage.agit_period, stage.agit_duration);
   pump(false,stage.tovessel);
 }
 
-struct Process {
+struct Process { //definition of a process, such as C41 or D76
   const char display_name[16];
   struct Stage stages[8];
 };
 
-void do_process (struct Process process) {
+void do_process (struct Process process) { //execution of a process. Number of iterations and most of display output are taken care of here
+  st_pr=millis();
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("               "); //clear that part of display
@@ -242,11 +247,11 @@ void do_process (struct Process process) {
     }
   }
   lcd.setCursor(0,1);
-  lcd.print("        Done.       "); //clear that part of display
+  lcd.print("        Done.       "); 
 
 }
 
-void d76() {
+void d76() { //definition of black-and-white process, more of those can be written if needed
   do_process((Process){"B&W develop", {
     (Stage){"Developer",toseconds(bw_dev_time),init_agit,agit_period,agit_duration,1,2,1},
     (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,1,2,1},
@@ -256,8 +261,8 @@ void d76() {
   }});
 }
 
-void c41() {
-  do_process((Process){"C41 develop", {
+void c41() { //definition of c41 process, more of those can be written if needed 
+/*  do_process((Process){"C41 develop", {
     (Stage){"Prewash",30ul,init_agit,agit_period,agit_duration,1,2,1},
     (Stage){"Developer",100ul,init_agit,agit_period,agit_duration,1,2,1},
     (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,1,2,1},
@@ -267,6 +272,7 @@ void c41() {
     (Stage){"Wash ",toseconds(washes_duration),init_agit,agit_period,agit_duration,1,2,washes_count},
     (Stage){"Wet agent",toseconds(washes_duration),init_agit,agit_period,agit_duration,1,2,fotoflo}
   }});
+  */
 }
 
 void setup() {
@@ -293,12 +299,13 @@ void setup() {
   digitalWrite(motorminus,LOW);
   digitalWrite(buzzer,LOW);
   mixer.attach(servo);
-  EEPROM.get(ess+12,divider);
+  mixer.write(0);
+  EEPROM.get(ess+12,divider); //this is here, because one can't use EEPROM.get outside of a function
   EEPROM.get(ess+16,offset);
-  scale.begin(scaledat,scaleclk);
+  scale.begin(scaledat,scaleclk); //load cell
   scale.set_scale(divider);
   scale.set_offset(offset);
-  lcd.init();
+  lcd.init(); //display
   lcd.backlight();
 }
 void loop() {
@@ -334,7 +341,7 @@ void loop() {
       }
     break;
     
-    case 1:
+    case 1: //checking developer depletion
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("B&W developing");
@@ -350,7 +357,7 @@ void loop() {
       }
     break;
 
-    case 2:
+    case 2: //set up dev time
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Developing time:");
@@ -365,7 +372,7 @@ void loop() {
       }
     break;
 
-    case 3:
+    case 3: //set up fix time
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Fixing time:");
@@ -380,7 +387,7 @@ void loop() {
       }
     break;
 
-    case 4:
+    case 4: //checking chemicals depletion
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("C41 color developing");
@@ -395,7 +402,7 @@ void loop() {
       case 3: k=17; EEPROM.update(ess+3,c41_film_count);}
     break;
 
-    case 5:
+    case 5: //wash duration
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Settings         1/8");
@@ -412,7 +419,7 @@ void loop() {
       }
     break;
 
-    case 6:
+    case 6: //how many washes
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Settings         2/8");
@@ -429,7 +436,7 @@ void loop() {
       }
     break;
 
-    case 7:
+    case 7: //wetting agent in separate vessel
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Settings         3/8");
@@ -447,7 +454,7 @@ void loop() {
       }
     break;
 
-    case 8:
+    case 8: //initial agitation
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Settings         4/8");
@@ -464,7 +471,7 @@ void loop() {
       }
     break;
 
-    case 9:
+    case 9: //agitate every x seconds
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Settings         5/8");
@@ -475,13 +482,13 @@ void loop() {
     lcd.setCursor(0,3);
     lcd.print("-      +      Next >");
     switch(waitkey()){
-      case 1: agit_period--; break;
-      case 2: agit_period++; break;
+      case 1: agit_period--; if(agit_period==0) agit_period--; break;
+      case 2: agit_period++; if(agit_period==0) agit_period++; break;
       case 3: k=10; EEPROM.update(ess+8,agit_period);
       }
     break;
 
-    case 10:
+    case 10: //for how long to agitate
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Settings         6/8");
@@ -498,7 +505,7 @@ void loop() {
       }
     break;
 
-    case 11:
+    case 11: //tank capacity, this also sets weight to use on scale calibration
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Settings         7/8");
@@ -516,7 +523,7 @@ void loop() {
       }
     break;
 
-    case 12:
+    case 12: //advanced settings
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Settings         8/8");
@@ -533,7 +540,7 @@ void loop() {
     }}
     break;
 
-    case 13:
+    case 13: //scale calibration
     lcd.setCursor(0,0);
     lcd.print("Advanced         1/2");
     lcd.setCursor(0,2);
@@ -555,7 +562,7 @@ void loop() {
     }}
     break;
 
-    case 14:
+    case 14: //where does the developer go after use? Back to original vessel, or discarded?
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Advanced         2/2");
@@ -585,11 +592,5 @@ void loop() {
     waitkey();
     k=0;
     break;
-
-    case 50:
-    lcd.setCursor(0,0);
-    lcd.print(scale.read_average(10));
-    lcd.setCursor(0,1);
-    lcd.print(scale.get_units(10));
   }
 }
