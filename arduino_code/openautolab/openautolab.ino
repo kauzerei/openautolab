@@ -62,54 +62,41 @@ void beep() {
   }
 }
 
-char* const threechars(unsigned long int s) //time in seconds to three-character representation
+void threechars(unsigned long int s) //print time in seconds in three-character format
 {
-  static char tc[4];
-  tc[0] = '\0';
-  if (s>=4000000) { strcat(tc,"Inf"); return tc;}
-  char h[2]=" ";
-  char m[2]=" ";
-  char c[2]=" ";
-  unsigned long int seconds=s%60;
-  unsigned long int minutestotal=(unsigned long int)((s-seconds)/60ul);
-  unsigned long int minutes=minutestotal%60ul;
-  unsigned long int hours=(unsigned long int)((minutestotal-minutes)/60ul);
+  if (s>=4000000) { lcd.print(F("Inf")); return;}
+  byte seconds=s%60;
+  unsigned int minutestotal=(s-seconds)/60;
+  byte minutes=minutestotal%60ul;
+  byte hours=(minutestotal-minutes)/60ul;
   if (hours==0) {
     if (minutes==0) {
-      itoa(seconds,c,10);
-      strcat(tc, c);
-      strcat(tc, "s");
+      lcd.print(seconds);
+      lcd.print("s");
     }
     else if (minutes<10) {
-      itoa(minutes,m,10);
-      strcat(tc, m);
-      strcat(tc, "m");
+      lcd.print(minutes);
+      lcd.print("m");
       if (seconds>9) {
-        itoa(seconds/10ul,c,10);
-        strcat(tc, c);
-      }
+        lcd.print(seconds/10);
+        }
     }
     else {
-      itoa(minutes,m,10);
-      strcat(tc, m);
-      strcat(tc, "m");
+      lcd.print(minutes);
+      lcd.print("m");
     }
   }
   else if (hours<10) {
-    itoa(hours,h,10);
-    strcat(tc, h);
-    strcat(tc, "h");
+    lcd.print(hours);
+    lcd.print("h");
     if (minutes>10) {
-      itoa(minutes/10ul,m,10);
-      strcat(tc, m);
+      lcd.print(minutes/10);
     }
   }
   else {
-    itoa(hours,h,10);
-    strcat(tc, h);
-    strcat(tc, "h");
+    lcd.print(hours);
+    lcd.print("h");
   }
-  return tc;
 }
 unsigned long int toseconds(byte &t) //one-byte time representation to seconds
 {
@@ -122,31 +109,22 @@ unsigned long int toseconds(byte &t) //one-byte time representation to seconds
   else if (t<=254) return 7200ul*(unsigned long int)(t)-1677600ul;
   else return 4000000;
 }
-char* const tohms(unsigned long int s) //time in seconds to hh:mm:ss string
+void tohms(unsigned long int s) //print time in seconds in hh:mm:ss format without leading zeros
 {
-  static char hms[20];
-  hms[0] = '\0';
-  if (s>=4000000) { strcat(hms,"Infinity"); return hms;}
-  char h[3]=" ";
-  char m[3]=" ";
-  char c[3]=" ";
-  unsigned long int seconds=s%60;
-  unsigned long int minutestotal=(unsigned long int)((s-seconds)/60ul);
-  unsigned long int minutes=minutestotal%60ul;
-  unsigned long int hours=(unsigned long int)((minutestotal-minutes)/60ul);
-  itoa(hours,h,10);
-  itoa(minutes,m,10);
-  itoa(seconds,c,10);
+  if (s>=4000000) { lcd.print(F("Infinity")); return;}
+  byte seconds=s%60;
+  unsigned int minutestotal=(s-seconds)/60;
+  byte minutes=minutestotal%60ul;
+  byte hours=(minutestotal-minutes)/60ul;
   if (hours>0) {
-    strcat(hms,h);
-    strcat(hms,":");
-    if (minutes<10) strcat(hms,"0");
+    lcd.print(hours);
+    lcd.print(":");
+    if (minutes<10) lcd.print("0");
   }
-  strcat(hms,m);
-  strcat(hms,":");
-  if (seconds<10) strcat(hms,"0");
-  strcat(hms,c);
-  return hms;
+  lcd.print(minutes);
+  lcd.print(":");
+  if (seconds<10) lcd.print("0");
+  lcd.print(seconds);
 }
 
 byte waitkey() { //waits for button press, implements delay. Function seems not to need explicit debounce, but if necessary, just add delay(20); before return
@@ -183,11 +161,11 @@ void agitate(unsigned long stage_duration, byte init_agit, byte agit_period, byt
   lcd.print("process ");
   while(millis()-st_st<stage_duration*1000ul) { //stage duration is calculated from beginning of pumping in to beginning of pumping out, not from agitation start
     lcd.setCursor(10,3);
-    lcd.print(tohms((millis()-st_pr)/1000));
+    tohms((millis()-st_pr)/1000);
     lcd.setCursor(0,2);
-    lcd.print(tohms((millis()-st_st)/1000));
+    tohms((millis()-st_st)/1000);
     lcd.print(" / ");
-    lcd.print(tohms(stage_duration));
+    tohms(stage_duration);
     if ((millis()<st_ag+toseconds(init_agit)*1000ul)
       || ((millis()-st_ag-toseconds(init_agit)*1000ul+toseconds(agit_duration)*1000ul)%(toseconds(agit_period)*1000ul)<toseconds(agit_duration)*1000ul) )
         mixer.write(((millis()-st_ag)%2000UL<1000UL)?180:0);
@@ -206,7 +184,7 @@ struct Stage { //definition of a processing stage, such as developing, fixing or
 };
 
 
-void do_stage(struct Stage &stage) { //execution one iteration of one processing stage
+void do_stage(struct Stage stage) { //execution one iteration of one processing stage
   st_st=millis();
   pump(true,stage.fromvessel);
   agitate(stage.duration, stage.init_agit, stage.agit_period, stage.agit_duration);
@@ -218,7 +196,7 @@ struct Process { //definition of a process, such as C41 or D76
   struct Stage stages[8];
 };
 
-void do_process (struct Process process) { //execution of a process. Number of iterations and most of display output are taken care of here
+void do_process (const struct Process &process) { //execution of a process. Number of iterations and most of display output are taken care of here
   st_pr=millis();
   lcd.clear();
   lcd.setCursor(0,0);
@@ -251,18 +229,19 @@ void do_process (struct Process process) { //execution of a process. Number of i
 
 }
 
-void d76() { //definition of black-and-white process, more of those can be written if needed
-  do_process((Process){"B&W develop", {
+void c41() { //definition of black-and-white process, more of those can be written if needed
+    struct Process process={"B&W develop", {
     (Stage){"Developer",toseconds(bw_dev_time),init_agit,agit_period,agit_duration,1,2,1},
     (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,1,2,1},
     (Stage){"Fixer",toseconds(bw_fix_time),init_agit,agit_period,agit_duration,1,2,1},
     (Stage){"Wash ",toseconds(washes_duration),init_agit,agit_period,agit_duration,1,2,washes_count},
     (Stage){"Wet agent",toseconds(washes_duration),init_agit,agit_period,agit_duration,1,2,fotoflo}
-  }});
+  }};
+  do_process(process);
 }
 
-void c41() { //definition of c41 process, more of those can be written if needed 
-/*  do_process((Process){"C41 develop", {
+void d76() { //definition of c41 process, more of those can be written if needed 
+  struct Process process={"C41 develop", {
     (Stage){"Prewash",30ul,init_agit,agit_period,agit_duration,1,2,1},
     (Stage){"Developer",100ul,init_agit,agit_period,agit_duration,1,2,1},
     (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,1,2,1},
@@ -271,8 +250,8 @@ void c41() { //definition of c41 process, more of those can be written if needed
     (Stage){"Fixer",100ul,init_agit,agit_period,agit_duration,1,2,1},
     (Stage){"Wash ",toseconds(washes_duration),init_agit,agit_period,agit_duration,1,2,washes_count},
     (Stage){"Wet agent",toseconds(washes_duration),init_agit,agit_period,agit_duration,1,2,fotoflo}
-  }});
-  */
+  }};
+  do_process(process);
 }
 
 void setup() {
@@ -314,16 +293,16 @@ void loop() {
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("A:");
-    lcd.print(threechars(toseconds(init_agit)));
+    threechars(toseconds(init_agit));
     lcd.print("/");
-    lcd.print(threechars(toseconds(agit_period)));
+    threechars(toseconds(agit_period));
     lcd.print("/");
-    lcd.print(threechars(toseconds(agit_duration)));
+    threechars(toseconds(agit_duration));
     lcd.setCursor(0,1);
     lcd.print("Wash:");
     lcd.print(washes_count);
     lcd.print(" x ");
-    lcd.print(threechars(toseconds(washes_duration)));
+    threechars(toseconds(washes_duration));
     if (fotoflo!=0) lcd.print(" + WA");
     lcd.setCursor(0,2);
     lcd.print("B&W: ");
@@ -362,7 +341,7 @@ void loop() {
     lcd.setCursor(0,0);
     lcd.print("Developing time:");
     lcd.setCursor(0,1);
-    lcd.print(tohms(toseconds(bw_dev_time)));
+    tohms(toseconds(bw_dev_time));
     lcd.setCursor(0,3);
     lcd.print("-      +      Next >");
     switch(waitkey()){
@@ -377,7 +356,7 @@ void loop() {
     lcd.setCursor(0,0);
     lcd.print("Fixing time:");
     lcd.setCursor(0,1);
-    lcd.print(tohms(toseconds(bw_fix_time)));
+    tohms(toseconds(bw_fix_time));
     lcd.setCursor(0,3);
     lcd.print("-      +       Start");
     switch(waitkey()){
@@ -409,7 +388,7 @@ void loop() {
     lcd.setCursor(0,1);
     lcd.print("Final wash duration:");
     lcd.setCursor(0,2);
-    lcd.print(tohms(toseconds(washes_duration)));
+    tohms(toseconds(washes_duration));
     lcd.setCursor(0,3);
     lcd.print("-      +      Next >");
     switch(waitkey()){
@@ -461,7 +440,7 @@ void loop() {
     lcd.setCursor(0,1);
     lcd.print("Initial agitation:");
     lcd.setCursor(0,2);
-    lcd.print(tohms(toseconds(init_agit)));
+    tohms(toseconds(init_agit));
     lcd.setCursor(0,3);
     lcd.print("-      +      Next >");
     switch(waitkey()){
@@ -478,7 +457,7 @@ void loop() {
     lcd.setCursor(0,1);
     lcd.print("Agitations period: ");
     lcd.setCursor(0,2);
-    lcd.print(tohms(toseconds(agit_period)));
+    tohms(toseconds(agit_period));
     lcd.setCursor(0,3);
     lcd.print("-      +      Next >");
     switch(waitkey()){
@@ -495,7 +474,7 @@ void loop() {
     lcd.setCursor(0,1);
     lcd.print("Agitation duration:");
     lcd.setCursor(0,2);
-    lcd.print(tohms(toseconds(agit_duration)));
+    tohms(toseconds(agit_duration));
     lcd.setCursor(0,3);
     lcd.print("-      +      Next >");
     switch(waitkey()){
