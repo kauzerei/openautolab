@@ -200,7 +200,7 @@ void do_process (const struct Process &process) { //execution of a process. Numb
   st_pr=millis();
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("               "); //clear that part of display
+  lcd.print(F("               ")); //clear that part of display
   lcd.setCursor(0,0);
   lcd.print(process.display_name);
   byte stages_count=sizeof(process.stages)/sizeof(process.stages[0]);
@@ -210,7 +210,7 @@ void do_process (const struct Process &process) { //execution of a process. Numb
   for (byte i=0;i<stages_count;i++) {
     for (byte j=0;j<process.stages[i].repeat;j++) {
       lcd.setCursor(0,1);
-      lcd.print("           "); //clear that part of display
+      lcd.print(F("           ")); //clear that part of display
       lcd.setCursor(0,1);
       lcd.print(process.stages[i].display_name);
       if (process.stages[i].repeat>1) lcd.print(j+1);
@@ -312,7 +312,7 @@ void loop() {
     lcd.print("C41: #");
     lcd.print(bw_film_count);
     lcd.setCursor(0,3);
-    lcd.print("B&W   C41   Settings");
+    lcd.print(F("B&W   C41   Settings"));
     switch(waitkey()){
       case 1: k=(oneshot==0)?1:2; break;
       case 2: k=4; break;
@@ -323,12 +323,12 @@ void loop() {
     case 1: //checking developer depletion
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("B&W developing");
+    lcd.print(F("B&W developing"));
     lcd.setCursor(0,1);
-    lcd.print("Film count: ");
+    lcd.print(F("Film count: "));
     lcd.print(bw_film_count);
     lcd.setCursor(0,3);
-    lcd.print("Reset    +    Next >");
+    lcd.print(F("Reset    +    Next >"));
     switch(waitkey()){
       case 1: bw_film_count=1; break;
       case 2: bw_film_count++; break;
@@ -339,11 +339,11 @@ void loop() {
     case 2: //set up dev time
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Developing time:");
+    lcd.print(F("Developing time:"));
     lcd.setCursor(0,1);
     tohms(toseconds(bw_dev_time));
     lcd.setCursor(0,3);
-    lcd.print("-      +      Next >");
+    lcd.print(F("-      +      Next >"));
     switch(waitkey()){
       case 1: bw_dev_time--; break;
       case 2: bw_dev_time++; break;
@@ -354,11 +354,11 @@ void loop() {
     case 3: //set up fix time
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Fixing time:");
+    lcd.print(F("Fixing time:"));
     lcd.setCursor(0,1);
     tohms(toseconds(bw_fix_time));
     lcd.setCursor(0,3);
-    lcd.print("-      +       Start");
+    lcd.print(F("-      +       Start"));
     switch(waitkey()){
       case 1: bw_fix_time--; break;
       case 2: bw_fix_time++; break;
@@ -369,12 +369,12 @@ void loop() {
     case 4: //checking chemicals depletion
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("C41 color developing");
+    lcd.print(F("C41 color developing"));
     lcd.setCursor(0,1);
-    lcd.print("Film count: ");
+    lcd.print(F("Film count: "));
     lcd.print(c41_film_count);
     lcd.setCursor(0,3);
-    lcd.print("Reset    +     Start");
+    lcd.print(F("Reset    +     Start"));
     switch(waitkey()){
       case 1: c41_film_count=1; break;
       case 2: c41_film_count++; break;
@@ -384,13 +384,13 @@ void loop() {
     case 5: //wash duration
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Settings         1/8");
+    lcd.print(F("Settings         1/8"));
     lcd.setCursor(0,1);
-    lcd.print("Final wash duration:");
+    lcd.print(F("Final wash duration:"));
     lcd.setCursor(0,2);
     tohms(toseconds(washes_duration));
     lcd.setCursor(0,3);
-    lcd.print("-      +      Next >");
+    lcd.print(F("-      +      Next >"));
     switch(waitkey()){
       case 1: washes_duration--; break;
       case 2: washes_duration++; break;
@@ -401,13 +401,13 @@ void loop() {
     case 6: //how many washes
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Settings         2/8");
+    lcd.print(F("Settings         2/8"));
     lcd.setCursor(0,1);
-    lcd.print("Final washes number:");
+    lcd.print(F("Final washes number:"));
     lcd.setCursor(0,2);
     lcd.print(washes_count);
     lcd.setCursor(0,3);
-    lcd.print("-      +      Next >");
+    lcd.print(F("-      +      Next >"));
     switch(waitkey()){
       case 1: washes_count--; break;
       case 2: washes_count++; break;
@@ -418,14 +418,14 @@ void loop() {
     case 7: //wetting agent in separate vessel
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Settings         3/8");
+    lcd.print(F("Settings         3/8"));
     lcd.setCursor(0,1);
-    lcd.print("Apply wetting agent?");
+    lcd.print(F("Apply wetting agent?"));
     lcd.setCursor(0,2);
-    if(fotoflo==0) lcd.print("                  No");
-    else lcd.print("                 Yes");
+    if(fotoflo==0) lcd.print(F("                  No"));
+    else lcd.print(F("                 Yes"));
     lcd.setCursor(0,3);
-    lcd.print("No     Yes    Next >");
+    lcd.print(F("No     Yes    Next >"));
     switch(waitkey()){
       case 1: fotoflo=0; break;
       case 2: fotoflo=1; break;
@@ -436,13 +436,13 @@ void loop() {
     case 8: //initial agitation
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Settings         4/8");
+    lcd.print(F("Settings         4/8"));
     lcd.setCursor(0,1);
-    lcd.print("Initial agitation:");
+    lcd.print(F("Initial agitation:"));
     lcd.setCursor(0,2);
     tohms(toseconds(init_agit));
     lcd.setCursor(0,3);
-    lcd.print("-      +      Next >");
+    lcd.print(F("-      +      Next >"));
     switch(waitkey()){
       case 1: init_agit--; break;
       case 2: init_agit++; break;
@@ -453,13 +453,13 @@ void loop() {
     case 9: //agitate every x seconds
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Settings         5/8");
+    lcd.print(F("Settings         5/8"));
     lcd.setCursor(0,1);
-    lcd.print("Agitations period: ");
+    lcd.print(F("Agitations period: "));
     lcd.setCursor(0,2);
     tohms(toseconds(agit_period));
     lcd.setCursor(0,3);
-    lcd.print("-      +      Next >");
+    lcd.print(F("-      +      Next >"));
     switch(waitkey()){
       case 1: agit_period--; if(agit_period==0) agit_period--; break;
       case 2: agit_period++; if(agit_period==0) agit_period++; break;
@@ -470,13 +470,13 @@ void loop() {
     case 10: //for how long to agitate
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Settings         6/8");
+    lcd.print(F("Settings         6/8"));
     lcd.setCursor(0,1);
-    lcd.print("Agitation duration:");
+    lcd.print(F("Agitation duration:"));
     lcd.setCursor(0,2);
     tohms(toseconds(agit_duration));
     lcd.setCursor(0,3);
-    lcd.print("-      +      Next >");
+    lcd.print(F("-      +      Next >"));
     switch(waitkey()){
       case 1: agit_duration--; break;
       case 2: agit_duration++; break;
@@ -487,14 +487,14 @@ void loop() {
     case 11: //tank capacity, this also sets weight to use on scale calibration
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Settings         7/8");
+    lcd.print(F("Settings         7/8"));
     lcd.setCursor(0,1);
-    lcd.print("Tank capacity:");
+    lcd.print(F("Tank capacity:"));
     lcd.setCursor(0,2);
     lcd.print(tank_cap*10);
     lcd.print("g");
     lcd.setCursor(0,3);
-    lcd.print("-      +      Next >");
+    lcd.print(F("-      +      Next >"));
     switch(waitkey()){
       case 1: tank_cap--; break;
       case 2: tank_cap++; break;
@@ -505,13 +505,13 @@ void loop() {
     case 12: //advanced settings
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Settings         8/8");
+    lcd.print(F("Settings         8/8"));
     lcd.setCursor(0,1);
-    lcd.print("Press two buttons to");
+    lcd.print(F("Press two buttons to"));
     lcd.setCursor(0,2);
-    lcd.print("enter advanced opts");
+    lcd.print(F("enter advanced opts"));
     lcd.setCursor(0,3);
-    lcd.print("Yes     Yes       No");
+    lcd.print(F("Yes     Yes       No"));
     {bool keypressed=false;
     while (not keypressed) {
       if(digitalRead(button1)==LOW && digitalRead(button2)==LOW) {k=13; keypressed=true; delay(300);}
@@ -521,17 +521,17 @@ void loop() {
 
     case 13: //scale calibration
     lcd.setCursor(0,0);
-    lcd.print("Advanced         1/2");
+    lcd.print(F("Advanced         1/2"));
     lcd.setCursor(0,2);
-    lcd.print("Current: ");
+    lcd.print(F("Current: "));
     lcd.print(scale.get_units());
-    lcd.print("           "); //erase symbols left from previous measurment
+    lcd.print(F("           ")); //erase symbols left from previous measurment
     lcd.setCursor(0,1);
-    lcd.print("Weight sensor tuning");
+    lcd.print(F("Weight sensor tuning"));
     lcd.setCursor(0,3);
-    lcd.print("Set:0  Set:");
+    lcd.print(F("Set:0  Set:"));
     lcd.print(tank_cap*10);
-    lcd.print("g    >");
+    lcd.print(F("g    >"));
     {bool keypressed=false;
     for (byte i=0;i<255;i++) {
       if(digitalRead(button1)==LOW) {offset=scale.read_average(10); scale.set_offset(offset); keypressed=true; scale_calibrated=true;}
@@ -544,15 +544,15 @@ void loop() {
     case 14: //where does the developer go after use? Back to original vessel, or discarded?
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("Advanced         2/2");
+    lcd.print(F("Advanced         2/2"));
     lcd.setCursor(0,1);
-    lcd.print("Discard B&W dev");
+    lcd.print(F("Discard B&W dev"));
     lcd.setCursor(0,2);
-    lcd.print("after use?       ");
+    lcd.print(F("after use?       "));
     if(oneshot==0) lcd.print(" No");
     else lcd.print("Yes");
     lcd.setCursor(0,3);
-    lcd.print("Yes     No      Done");
+    lcd.print(F("Yes     No      Done"));
     switch(waitkey()){
       case 1: oneshot=1; break;
       case 2: oneshot=0; break;
