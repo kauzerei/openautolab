@@ -1,4 +1,4 @@
-int ess=0; //EEPROM starting address, change to ess+12 if settings saving becomes unstable
+int ess=0; //EEPROM starting address, change to ess+20 if settings saving becomes unstable
 
 #include <LiquidCrystal_I2C.h>
 #include <Servo.h>
@@ -128,18 +128,17 @@ void tohms(unsigned long int s) //print time in seconds in hh:mm:ss format witho
 }
 
 byte waitkey() { //waits for button press, implements delay. Function seems not to need explicit debounce, but if necessary, just add delay(20); before return
-
   while (true) {
     if(digitalRead(button1)==LOW) {
-      if (released or millis()> ignore_until) {ignore_until=released?millis()+500:ignore_until+50; released=false; return 1;}
+      if (released or millis()> ignore_until) {ignore_until=released?millis()+800:ignore_until+50; released=false; delay(20); return 1;}
       released=false;
       }
     else if(digitalRead(button2)==LOW) {
-      if (released or millis()> ignore_until) {ignore_until=released?millis()+500:ignore_until+50; released=false; return 2;}
+      if (released or millis()> ignore_until) {ignore_until=released?millis()+800:ignore_until+0; released=false; delay(20); return 2;}
       released=false;
       }
     else if(digitalRead(button3)==LOW) {
-      if (released or millis()> ignore_until) {ignore_until=released?millis()+500:ignore_until+50; released=false; return 3;}
+      if (released or millis()> ignore_until) {ignore_until=released?millis()+800:ignore_until+0; released=false; delay(20); return 3;}
       released=false;
       }
     else released=true;
@@ -310,7 +309,7 @@ void loop() {
     else lcd.print(bw_film_count);
     lcd.setCursor(11,2);
     lcd.print("C41: #");
-    lcd.print(bw_film_count);
+    lcd.print(c41_film_count);
     lcd.setCursor(0,3);
     lcd.print(F("B&W   C41   Settings"));
     switch(waitkey()){
@@ -332,7 +331,7 @@ void loop() {
     switch(waitkey()){
       case 1: bw_film_count=1; break;
       case 2: bw_film_count++; break;
-      case 3: k=2; EEPROM.update(ess+2,bw_film_count);
+      case 3: k=2; bw_film_count++; EEPROM.update(ess+2,bw_film_count);
       }
     break;
 
@@ -378,7 +377,7 @@ void loop() {
     switch(waitkey()){
       case 1: c41_film_count=1; break;
       case 2: c41_film_count++; break;
-      case 3: k=17; EEPROM.update(ess+3,c41_film_count);}
+      case 3: k=17; c41_film_count++; EEPROM.update(ess+3,c41_film_count);}
     break;
 
     case 5: //wash duration
@@ -568,7 +567,7 @@ void loop() {
 
     case 17:
     c41();
-    waitkey();
+    waitkey(); 
     k=0;
     break;
   }
