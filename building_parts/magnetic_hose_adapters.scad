@@ -5,7 +5,7 @@
 use <threads.scad>;
 $fs=0.5/1;
 $fa=1/1;
-part = "Main_body"; // [Main_body, Main_magnet_cover, Magnetic_holder, Holder_magnet_cover,Weight_gauge_mount,Hose_adapter, Hose_sleeve,Hollow_screw,OPTIONAL_Tapping_tool,OPTIONAL_Threading_tool,OPTIONAL_Wrench]
+part = "Main_body"; // [Main_body, Main_magnet_cover, Magnetic_holder, Holder_magnet_cover,Weight_gauge_mount,Hose_adapter, Hose_sleeve,Hollow_screw,OPTIONAL_Tapping_tool,OPTIONAL_Threading_tool,OPTIONAL_Wrench,testfit]
 cut_view=false;
 /* [Main body options] */
 light_trap=false;
@@ -15,7 +15,7 @@ offset=20;
 
 /* [Printed thread and magnet options] */
 thread_pitch=3;
-thread_expand=1.0;
+thread_expand=1.5;
 magnet_diameter=15;
 magnet_height=5;
 wall_between_magnets=0.8;
@@ -75,8 +75,8 @@ thread1=magnet_diameter;
 thread2=thread1+2*thread_expand;
 cyl1=thread2+2*wall;
 cyl2=cyl1+2*air_gap;
-thread3= cyl2+wall+thread_add;
-thread4=thread3+thread_expand;
+thread3= cyl2+2*wall+thread_add;
+thread4=thread3+2*thread_expand;
 cyl3=thread4+2*wall;
 
 module hollow_screw(){
@@ -155,18 +155,19 @@ module holder_magnet_cover(){
 
 module magnetic_holder(){
 holeh=(dbr<magnet_diameter+2*air_gap+2/wall+mount_hole)?-mount_hole/2:
-      (dbr<thread3+2/wall+mount_hole)?-mount_hole/2+wall_between_magnets+magnet_height:nut_width/2;
+      (dbr<thread3+2/wall+mount_hole)?-mount_hole/2+wall_between_magnets+magnet_height:
+      min(nut_width/2,wall+magnet_height+wall_between_magnets+height_to_hold-nut_width/2);
 cubew=max(10,2*((cyl3/2)^2-(max(dbr,nut_width)/2-nut_width/2)^2)^0.5);
   difference(){
     union(){
-      cylinder(h=2+magnet_height+wall_between_magnets+height_to_hold, d=cyl3);
+      cylinder(h=wall+magnet_height+wall_between_magnets+height_to_hold, d=cyl3);
       if(rod_mount) {
         translate([0,0,holeh])cube([dbr+nut_width,cubew,nut_width],center=true);
         translate([0,0,-nut_width/2+holeh])cylinder(d=cyl3,h=nut_width/2-holeh);
         }
     }
-    translate([0,0,2])cylinder(h=magnet_height+0.01,d=magnet_diameter+2*air_gap);
-    translate([0,0,2+magnet_height])ScrewThread(outer_diam=thread4,pitch=thread_pitch,height=height_to_hold+wall_between_magnets+0.01);
+    translate([0,0,wall])cylinder(h=magnet_height+0.01,d=magnet_diameter+2*air_gap);
+    translate([0,0,wall+magnet_height])ScrewThread(outer_diam=thread4,pitch=thread_pitch,height=height_to_hold+wall_between_magnets+0.01);
     if(rod_mount) {
       translate([dbr/2,0,holeh])rotate([90,0,0])cylinder(h=cyl3+0.01,d=mount_hole,center=true);
       translate([-dbr/2,0,holeh])rotate([90,0,0])cylinder(h=cyl3+0.01,d=mount_hole,center=true);
@@ -282,5 +283,7 @@ if (part=="Weight_gauge_mount") rotate([0,90,0])wg_holder();
 if (part=="OPTIONAL_Tapping_tool") instrument();
 if (part=="OPTIONAL_Threading_tool") dieholder();
 if (part=="OPTIONAL_Wrench") wrench();
+if (part=="testfit"){magnetic_holder(); translate([0,0,magnet_height+wall+0.1]){holder_magnet_cover();translate([0,0,wall_between_magnets+0.1]){main_magnet_cover();translate([0,0,wall_between_magnets+magnet_height])rotate([0,0,360*magnet_height/thread_pitch])difference(){ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);cylinder(d=4,h=2*thread_pitch);}}}
+*difference(){ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);cylinder(d=4,h=2*thread_pitch);}}
 if(cut_view)translate([-50,0,-50])cube([100,100,100]);
 }
