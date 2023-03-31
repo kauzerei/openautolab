@@ -1,4 +1,7 @@
+use <threads.scad>
 $fn= $preview ? 32 : 64;
+umad=false;
+
 part="lower_vertex";// [lower_vertex,upper_vertex,Upper_rail_holder,Lower_rail_holder,PCB_holder,all,test]
 threaded_rod_diameter=9;
 nut_height=8;
@@ -8,7 +11,7 @@ h=nut_height;
 w=nut_width;
 mount_holes=4;
 inclined_rod_length=400;
-machine_depth=150;
+machine_depth=120;
 machine_width=400;
 inclination_angle=2*atan((inclined_rod_length-sqrt(pow(inclined_rod_length,2)+pow(w,2)-pow((machine_depth/2),2)))/(w+machine_depth/2));
 ua=inclination_angle;
@@ -21,7 +24,11 @@ function vertex_pivot_long(a)=0.5*w/sin(a)+h*cos(a)+w/2;
 function vertex_pivot_short(a)=0.5*w/tan(a)+h+w*cos(a)/2;
 function vertex_width(a)=-cos(2*a)*0.5*w/tan(a)+0.5*w*sin(2*a)+vertex_pivot_short(a)+vertex_thickness(a)/2;
 function between_rods(a)=vertex_pivot_long(a)*sin(a);
-//perpendicular offset vertex_pivot_long(a)*cos(a)
+
+module cyl(d=1,h=1){
+  if (umad==false)cylinder(d=d,h=h);
+  if (umad)ScrewThread(outer_diam=d,pitch=1.25,height=h,screw_resolution=0.5);
+  }
 module vertex(a,rod1=0,rod2=0,rod3=0,nuts=false){
   difference() {
     union() {
@@ -33,12 +40,12 @@ module vertex(a,rod1=0,rod2=0,rod3=0,nuts=false){
       *rotate([0,0,-2*a])translate([0,0.5*w/tan(a)+h/2,0])cube([w,h,w],center=true);
       *translate([0,0.5*w/tan(a)+h/2,0])cube([w,h,w],center=true);
       if (nuts) color("lightgrey") {
-    translate([0,vertex_pivot_short(a)+h/2+w*cos(a)/2,0])rotate([90,0,0])cylinder(h=h,d=w,center=true,$fn=6);
-    translate([0,vertex_pivot_short(a)-h/2-w*cos(a)/2,0])rotate([90,0,0])cylinder(h=h,d=w,center=true,$fn=6);
-    rotate([0,0,-2*a])translate([0,vertex_pivot_short(a)+h/2+w*cos(a)/2,0])rotate([90,0,0])cylinder(h=h,d=w,center=true,$fn=6);
-    rotate([0,0,-2*a])translate([0,vertex_pivot_short(a)-h/2-w*cos(a)/2,0])rotate([90,0,0])cylinder(h=h,d=w,center=true,$fn=6);
-    rotate([0,0,-a])translate([0,vertex_pivot_long(a),w/2+h/2])cylinder(h=h,d=w,center=true,$fn=6);
-    rotate([0,0,-a])translate([0,vertex_pivot_long(a),-w/2-h/2])cylinder(h=h,d=w,center=true,$fn=6);
+    translate([0,vertex_pivot_short(a)+h/2+w*cos(a)/2,0])rotate([90,0,0])cylinder(h=h-0.1,d=w,center=true,$fn=6);
+    translate([0,vertex_pivot_short(a)-h/2-w*cos(a)/2,0])rotate([90,0,0])cylinder(h=h-0.1,d=w,center=true,$fn=6);
+    rotate([0,0,-2*a])translate([0,vertex_pivot_short(a)+h/2+w*cos(a)/2,0])rotate([90,0,0])cylinder(h=h-0.1,d=w,center=true,$fn=6);
+    rotate([0,0,-2*a])translate([0,vertex_pivot_short(a)-h/2-w*cos(a)/2,0])rotate([90,0,0])cylinder(h=h-0.1,d=w,center=true,$fn=6);
+    rotate([0,0,-a])translate([0,vertex_pivot_long(a),w/2+h/2])cylinder(h=h-0.1,d=w,center=true,$fn=6);
+    rotate([0,0,-a])translate([0,vertex_pivot_long(a),-w/2-h/2])cylinder(h=h-0.1,d=w,center=true,$fn=6);
     }
     }
     translate([0,vertex_pivot_short(a),0])rotate([90,0,0])cylinder(h=2*h+w+2,d=d,center=true);
@@ -49,10 +56,10 @@ module vertex(a,rod1=0,rod2=0,rod3=0,nuts=false){
   }
   
     color("gray"){
-    translate([0,vertex_pivot_short(a)-w*cos(a)/2-h,0])rotate([-90,0,0])cylinder(h=rod1,d=d);  
-    rotate([0,0,-2*a])translate([0,vertex_pivot_short(a)-w*cos(a)/2-h,0])rotate([-90,0,0])cylinder(h=rod2,d=d);
-    if (rod3>0) rotate([0,0,-a])translate([0,vertex_pivot_long(a),-w/2-h])cylinder(h=abs(rod3),d=d);
-      else mirror([0,0,1])rotate([0,0,-a])translate([0,vertex_pivot_long(a),-w/2-h])cylinder(h=abs(rod3),d=d);
+    translate([0,vertex_pivot_short(a)-w*cos(a)/2-h,0])rotate([-90,0,0])cyl(h=rod1,d=d);  
+    rotate([0,0,-2*a])translate([0,vertex_pivot_short(a)-w*cos(a)/2-h,0])rotate([-90,0,0])cyl(h=rod2,d=d);
+    if (rod3>0) rotate([0,0,-a])translate([0,vertex_pivot_long(a),-w/2-h])cyl(h=abs(rod3),d=d);
+      else mirror([0,0,1])rotate([0,0,-a])translate([0,vertex_pivot_long(a),-w/2-h])cyl(h=abs(rod3),d=d);
       }
 }
 module rodholder(dist=d+1) {
@@ -88,21 +95,6 @@ translate([machine_width-2*h-w,-vertex_pivot_short(la),0])rotate([0,-90,0])verte
 translate([machine_width-2*h-w,short_rod-vertex_thickness(a)-h*2,0])mirror([0,1,0])translate([0,-vertex_pivot_short(la),0])rotate([0,-90,0])vertex(la,nuts=true,rod2=inclined_rod_length);
 translate([0,-vertex_pivot_short(la),0])rotate([0,-90,0])rotate([0,0,-2*a])rotate([0,180,0])translate([0,vertex_pivot_short(a)-w*cos(a)/2-h,0])rotate([-90,0,0])translate([0,0,+vertex_pivot_short(ua)-vertex_thickness(ua)/2-h+inclined_rod_length])rotate([-90,0,0])vertex(ua,nuts=true);
   translate([machine_width-2*h-w,-vertex_pivot_short(la),0])rotate([0,-90,0])rotate([0,0,-2*a])rotate([0,180,0])translate([0,vertex_pivot_short(a)-w*cos(a)/2-h,0])rotate([-90,0,0])translate([0,0,+vertex_pivot_short(ua)-vertex_thickness(ua)/2-h+inclined_rod_length])rotate([-90,0,0])vertex(ua,nuts=true,rod3=machine_width);
-//translate([0,0,vertex_pivot_long(ua)])rotate([-90,ua,90])vertex(ua);
   }
-
-
-
-/*
-translate([0,-vertex_pivot_short((90-a)/2),0])rotate([0,-90,0])vertex((90-a)/2);
-translate([0,short_rod-vertex_thickness((90-a)/2)-h*2,0])mirror([0,1,0])translate([0,-vertex_pivot_short((90-a)/2),0])rotate([0,-90,0]){vertex((90-a)/2);color("grey")rotate([0,0,-(90-a)/2])translate([0,vertex_pivot_long((90-a)/2),h+w/2])mirror([0,0,1])cylinder(d=d,h=machine_width);};
-color("grey")translate([0,-vertex_thickness((90-a)/2)/2-h,0])rotate([-90,0,0])cylinder(d=d,h=short_rod);
-
-translate([machine_width-2*h-w,0,0]){translate([0,-vertex_pivot_short((90-a)/2),0])rotate([0,-90,0])vertex((90-a)/2);
-translate([0,short_rod-vertex_thickness((90-a)/2)-h*2,0])mirror([0,1,0])translate([0,-vertex_pivot_short((90-a)/2),0])rotate([0,-90,0])vertex((90-a)/2);
-color("grey")translate([0,-vertex_thickness((90-a)/2)/2-h,0])rotate([-90,0,0])cylinder(d=d,h=short_rod);}
-
-*vertex(a,nuts=true);
-vertex(a,rod1=100,rod2=200,rod3=300,nuts=true);
-
-*/
+  echo(str("short rod: ",short_rod));
+  echo(str("between_rods: ",short_rod-2*h-w-2*w*cos(ua)));

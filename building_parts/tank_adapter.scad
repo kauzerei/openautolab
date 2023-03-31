@@ -35,10 +35,10 @@ mirror([1,0,0])quarter_rotation(width,height);}
 module cap() {
   difference() {
     cylinder(d=outer_diameter+2*parts_thickness,h=outer_depth+parts_thickness);
-    translate([0,0,parts_thickness])cylinder(d=outer_diameter,h=outer_depth-extra_lip_height);
-    translate([0,0,parts_thickness+outer_depth-extra_lip_height])cylinder(d1=outer_diameter,d2=outer_diameter-2*extra_lip_width,h=extra_lip_height/3);
-    translate([0,0,parts_thickness+outer_depth-2*extra_lip_height/3])cylinder(d=outer_diameter-2*extra_lip_width,h=extra_lip_height/3);
-translate([0,0,parts_thickness+outer_depth-extra_lip_height/3])cylinder(d1=outer_diameter-2*extra_lip_width,d2=outer_diameter,h=extra_lip_height/3);
+    translate([0,0,parts_thickness])cylinder(d=outer_diameter,h=outer_depth-extra_lip_height+0.01);
+    translate([0,0,parts_thickness+outer_depth-extra_lip_height])cylinder(d1=outer_diameter,d2=outer_diameter-2*extra_lip_width,h=extra_lip_height/3+0.01);
+    translate([0,0,parts_thickness+outer_depth-2*extra_lip_height/3])cylinder(d=outer_diameter-2*extra_lip_width,h=extra_lip_height/3+0.01);
+    translate([0,0,parts_thickness+outer_depth-extra_lip_height/3])cylinder(d1=outer_diameter-2*extra_lip_width,d2=outer_diameter,h=extra_lip_height/3+0.01);
     for (a=[0:360/cutouts:360-360/cutouts])rotate([0,0,a])translate([0,outer_diameter/2+parts_thickness,outer_depth+parts_thickness])rotate([45,0,0])cube([cut_width,cut_depth*sqrt(2),cut_depth*sqrt(2)],center=true);
       translate([0,5.5,parts_thickness/2]){
         cube([13,24,parts_thickness+2],center=true);
@@ -49,7 +49,7 @@ translate([0,0,parts_thickness+outer_depth-extra_lip_height/3])cylinder(d1=outer
 }
 module rod() {
     difference() {
-    cylinder(d=rod_diameter,h=distance_to_coupling+coupling_length-servo_offset);
+    cylinder(d=rod_diameter,h=distance_to_coupling+coupling_length-servo_offset-0.01);
     translate([0,0,4])cylinder(d=rod_diameter-2*parts_thickness,h=distance_to_coupling+coupling_length);
     hull(){translate([0,0,distance_to_coupling-servo_offset])rotate([90,0,0])cylinder(d=coupling_width,h=2+rod_diameter,center=true);
     translate([0,0,distance_to_coupling+coupling_length+2-servo_offset])rotate([90,0,0])cylinder(d=coupling_width,h=2+rod_diameter,center=true);}
