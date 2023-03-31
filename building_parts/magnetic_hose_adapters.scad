@@ -16,8 +16,8 @@ offset=20;
 /* [Printed thread and magnet options] */
 thread_pitch=3;
 thread_expand=1.5;
-magnet_diameter=15;
-magnet_height=5;
+magnet_diameter=12;
+magnet_height=2;
 wall_between_magnets=0.8;
 wall=1.5;
 
@@ -53,7 +53,7 @@ leader_length=5;
 tap_length=22;
 leader_diameter=7;
 tap_diameter=10;
-air_gap=0.5;
+air_gap=1.0;
 holding_depth=3;
 die_diameter=25.5;
 die_height=9;
@@ -71,7 +71,7 @@ height_to_hold=magnet_height+thread_pitch*2+wall_between_magnets;
 
 //calculating threads and cylinder diameters that fit nicely
 thread_add=2*thread_pitch*cos(30);
-thread1=magnet_diameter;
+thread1=magnet_diameter+thread_add;
 thread2=thread1+2*thread_expand;
 cyl1=thread2+2*wall;
 cyl2=cyl1+2*air_gap;
@@ -283,7 +283,7 @@ if (part=="Weight_gauge_mount") rotate([0,90,0])wg_holder();
 if (part=="OPTIONAL_Tapping_tool") instrument();
 if (part=="OPTIONAL_Threading_tool") dieholder();
 if (part=="OPTIONAL_Wrench") wrench();
-if (part=="testfit"){magnetic_holder(); translate([0,0,magnet_height+wall+0.1]){holder_magnet_cover();translate([0,0,wall_between_magnets+0.1]){main_magnet_cover();translate([0,0,wall_between_magnets+magnet_height])rotate([0,0,360*magnet_height/thread_pitch])difference(){ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);cylinder(d=4,h=2*thread_pitch);}}}
-*difference(){ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);cylinder(d=4,h=2*thread_pitch);}}
+if (part=="testfit"){*magnetic_holder(); *translate([0,0,magnet_height+wall+0.1]){holder_magnet_cover();translate([0,0,wall_between_magnets+0.1]){main_magnet_cover();translate([0,0,wall_between_magnets+magnet_height])rotate([0,0,360*magnet_height/thread_pitch])difference(){ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);cylinder(d=4,h=2*thread_pitch);}}}
+difference(){ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);cylinder(d=4,h=2*thread_pitch);}}
 if(cut_view)translate([-50,0,-50])cube([100,100,100]);
 }
