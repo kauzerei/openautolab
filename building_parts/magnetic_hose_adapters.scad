@@ -1,6 +1,6 @@
 // Liquid management parts for OpenAutoLab
 
-// This project uses threads-scad 
+// This project uses threads-scad
 // https://github.com/rcolyer/threads-scad
 use <threads.scad>;
 $fs=0.5/1;
@@ -161,7 +161,7 @@ cubew=max(10,2*((cyl3/2)^2-(max(dbr,nut_width)/2-nut_width/2)^2)^0.5);
     union(){
       cylinder(h=2+magnet_height+wall_between_magnets+height_to_hold, d=cyl3);
       if(rod_mount) {
-        translate([0,0,holeh])cube([dbr+nut_width,cubew,nut_width],center=true); 
+        translate([0,0,holeh])cube([dbr+nut_width,cubew,nut_width],center=true);
         translate([0,0,-nut_width/2+holeh])cylinder(d=cyl3,h=nut_width/2-holeh);
         }
     }

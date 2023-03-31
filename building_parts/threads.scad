@@ -1,429 +1,632 @@
-/*
- * ISO-standard metric threads, following this specification:
- *          http://en.wikipedia.org/wiki/ISO_metric_screw_thread
- *
- * Copyright 2022 Dan Kirshner - dan_kirshner@yahoo.com
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * See <http://www.gnu.org/licenses/>.
- *
- * Version 2.7.  2022-02-27  Increase minimum thread segments.
- * Version 2.6.  2021-05-16  Contributed patches for leadin (thanks,
-                             jeffery.spirko@tamucc.edu) and aligning thread
-                             "facets" (triangulation) with base cylinder
-                             (thanks, rambetter@protonmail.com).
- * Version 2.5.  2020-04-11  Leadin option works for internal threads.
- * Version 2.4.  2019-07-14  Add test option - do not render threads.
- * Version 2.3.  2017-08-31  Default for leadin: 0 (best for internal threads).
- * Version 2.2.  2017-01-01  Correction for angle; leadfac option.  (Thanks to
- *                           Andrew Allen <a2intl@gmail.com>.)
- * Version 2.1.  2016-12-04  Chamfer bottom end (low-z); leadin option.
- * Version 2.0.  2016-11-05  Backwards compatibility (earlier OpenSCAD) fixes.
- * Version 1.9.  2016-07-03  Option: tapered.
- * Version 1.8.  2016-01-08  Option: (non-standard) angle.
- * Version 1.7.  2015-11-28  Larger x-increment - for small-diameters.
- * Version 1.6.  2015-09-01  Options: square threads, rectangular threads.
- * Version 1.5.  2015-06-12  Options: thread_size, groove.
- * Version 1.4.  2014-10-17  Use "faces" instead of "triangles" for polyhedron
- * Version 1.3.  2013-12-01  Correct loop over turns -- don't have early cut-off
- * Version 1.2.  2012-09-09  Use discrete polyhedra rather than linear_extrude ()
- * Version 1.1.  2012-09-07  Corrected to right-hand threads!
- */
-
-// Examples.
+// Created 2016-2017 by Ryan A. Colyer.
+// This work is released with CC0 into the public domain.
+// https://creativecommons.org/publicdomain/zero/1.0/
 //
-// Standard M8 x 1.
-// metric_thread (diameter=8, pitch=1, length=4);
-
-// Square thread.
-// metric_thread (diameter=8, pitch=1, length=4, square=true);
-
-// Non-standard: long pitch, same thread size.
-//metric_thread (diameter=8, pitch=4, length=4, thread_size=1, groove=true);
-
-// Non-standard: 20 mm diameter, long pitch, square "trough" width 3 mm,
-// depth 1 mm.
-//metric_thread (diameter=20, pitch=8, length=16, square=true, thread_size=6,
-//               groove=true, rectangle=0.333);
-
-// English: 1/4 x 20.
-//english_thread (diameter=1/4, threads_per_inch=20, length=1);
-
-// Tapered.  Example -- pipe size 3/4" -- per:
-// http://www.engineeringtoolbox.com/npt-national-pipe-taper-threads-d_750.html
-// english_thread (diameter=1.05, threads_per_inch=14, length=3/4, taper=1/16);
-
-// Thread for mounting on Rohloff hub.
-//difference () {
-//   cylinder (r=20, h=10, $fn=100);
+// https://www.thingiverse.com/thing:1686322
 //
-//   metric_thread (diameter=34, pitch=1, length=10, internal=true, n_starts=6);
-//}
+// v2.1
 
 
-// ----------------------------------------------------------------------------
-function segments (diameter) = min (150, max (ceil (diameter*6), 25));
+screw_resolution = 0.2;  // in mm
 
 
-// ----------------------------------------------------------------------------
-// diameter -    outside diameter of threads in mm. Default: 8.
-// pitch    -    thread axial "travel" per turn in mm.  Default: 1.
-// length   -    overall axial length of thread in mm.  Default: 1.
-// internal -    true = clearances for internal thread (e.g., a nut).
-//               false = clearances for external thread (e.g., a bolt).
-//               (Internal threads should be "cut out" from a solid using
-//               difference ()).  Default: false.
-// n_starts -    Number of thread starts (e.g., DNA, a "double helix," has
-//               n_starts=2).  See wikipedia Screw_thread.  Default: 1.
-// thread_size - (non-standard) axial width of a single thread "V" - independent
-//               of pitch.  Default: same as pitch.
-// groove      - (non-standard) true = subtract inverted "V" from cylinder
-//                (rather thanadd protruding "V" to cylinder).  Default: false.
-// square      - true = square threads (per
-//               https://en.wikipedia.org/wiki/Square_thread_form).  Default:
-//               false.
-// rectangle   - (non-standard) "Rectangular" thread - ratio depth/(axial) width
-//               Default: 0 (standard "v" thread).
-// angle       - (non-standard) angle (deg) of thread side from perpendicular to
-//               axis (default = standard = 30 degrees).
-// taper       - diameter change per length (National Pipe Thread/ANSI B1.20.1
-//               is 1" diameter per 16" length). Taper decreases from 'diameter'
-//               as z increases.  Default: 0 (no taper).
-// leadin      - 0 (default): no chamfer; 1: chamfer (45 degree) at max-z end;
-//               2: chamfer at both ends, 3: chamfer at z=0 end.
-// leadfac     - scale of leadin chamfer length (default: 1.0 = 1/2 thread).
-// test        - true = do not render threads (just draw "blank" cylinder).
-//               Default: false (draw threads).
-module metric_thread (diameter=8, pitch=1, length=1, internal=false, n_starts=1,
-                      thread_size=-1, groove=false, square=false, rectangle=0,
-                      angle=30, taper=0, leadin=0, leadfac=1.0, test=false)
-{
-   // thread_size: size of thread "V" different than travel per turn (pitch).
-   // Default: same as pitch.
-   local_thread_size = thread_size == -1 ? pitch : thread_size;
-   local_rectangle = rectangle ? rectangle : 1;
+// Provides standard metric thread pitches.
+function ThreadPitch(diameter) =
+  (diameter <= 64) ?
+    lookup(diameter, [
+      [2, 0.4],
+      [2.5, 0.45],
+      [3, 0.5],
+      [4, 0.7],
+      [5, 0.8],
+      [6, 1.0],
+      [7, 1.0],
+      [8, 1.25],
+      [10, 1.5],
+      [12, 1.75],
+      [14, 2.0],
+      [16, 2.0],
+      [18, 2.5],
+      [20, 2.5],
+      [22, 2.5],
+      [24, 3.0],
+      [27, 3.0],
+      [30, 3.5],
+      [33, 3.5],
+      [36, 4.0],
+      [39, 4.0],
+      [42, 4.5],
+      [48, 5.0],
+      [52, 5.0],
+      [56, 5.5],
+      [60, 5.5],
+      [64, 6.0]
+    ]) :
+    diameter * 6.0 / 64;
 
-   n_segments = segments (diameter);
-   h = (test && ! internal) ? 0 : (square || rectangle) ? local_thread_size*local_rectangle/2 : local_thread_size / (2 * tan(angle));
 
-   h_fac1 = (square || rectangle) ? 0.90 : 0.625;
+// Provides standard metric hex head widths across the flats.
+function HexAcrossFlats(diameter) =
+  (diameter <= 64) ?
+    lookup(diameter, [
+      [2, 4],
+      [2.5, 5],
+      [3, 5.5],
+      [3.5, 6],
+      [4, 7],
+      [5, 8],
+      [6, 10],
+      [7, 11],
+      [8, 13],
+      [10, 16],
+      [12, 18],
+      [14, 21],
+      [16, 24],
+      [18, 27],
+      [20, 30],
+      [22, 34],
+      [24, 36],
+      [27, 41],
+      [30, 46],
+      [33, 50],
+      [36, 55],
+      [39, 60],
+      [42, 65],
+      [48, 75],
+      [52, 80],
+      [56, 85],
+      [60, 90],
+      [64, 95]
+    ]) :
+    diameter * 95 / 64;
 
-   // External thread includes additional relief.
-   h_fac2 = (square || rectangle) ? 0.95 : 5.3/8;
+// Provides standard metric hex head widths across the corners.
+function HexAcrossCorners(diameter) =
+  HexAcrossFlats(diameter) / cos(30);
 
-   tapered_diameter = diameter - length*taper;
 
-   difference () {
-      union () {
-         if (! groove) {
-            if (! test) {
-               metric_thread_turns (diameter, pitch, length, internal, n_starts,
-                                    local_thread_size, groove, square, rectangle, angle,
-                                    taper);
-            }
-         }
+// Provides standard metric hex (Allen) drive widths across the flats.
+function HexDriveAcrossFlats(diameter) =
+  (diameter <= 64) ?
+    lookup(diameter, [
+      [2, 1.5],
+      [2.5, 2],
+      [3, 2.5],
+      [3.5, 3],
+      [4, 3],
+      [5, 4],
+      [6, 5],
+      [7, 5],
+      [8, 6],
+      [10, 8],
+      [12, 10],
+      [14, 12],
+      [16, 14],
+      [18, 15],
+      [20, 17],
+      [22, 18],
+      [24, 19],
+      [27, 20],
+      [30, 22],
+      [33, 24],
+      [36, 27],
+      [39, 30],
+      [42, 32],
+      [48, 36],
+      [52, 36],
+      [56, 41],
+      [60, 42],
+      [64, 46]
+    ]) :
+    diameter * 46 / 64;
 
-         difference () {
+// Provides standard metric hex (Allen) drive widths across the corners.
+function HexDriveAcrossCorners(diameter) =
+  HexDriveAcrossFlats(diameter) / cos(30);
 
-            // Solid center, including Dmin truncation.
-            if (groove) {
-               cylinder (r1=diameter/2, r2=tapered_diameter/2,
-                         h=length, $fn=n_segments);
-            } else if (internal) {
-               cylinder (r1=diameter/2 - h*h_fac1, r2=tapered_diameter/2 - h*h_fac1,
-                         h=length, $fn=n_segments);
-            } else {
+// Provides metric countersunk hex (Allen) drive widths across the flats.
+function CountersunkDriveAcrossFlats(diameter) =
+  (diameter <= 14) ?
+    HexDriveAcrossFlats(HexDriveAcrossFlats(diameter)) :
+    round(0.6*diameter);
 
-               // External thread.
-              cylinder (r1=diameter/2 - h*h_fac2, r2=tapered_diameter/2 - h*h_fac2,
-                         h=length, $fn=n_segments);
-            }
+// Provides metric countersunk hex (Allen) drive widths across the corners.
+function CountersunkDriveAcrossCorners(diameter) =
+  CountersunkDriveAcrossFlats(diameter) / cos(30);
 
-            if (groove) {
-               if (! test) {
-                  metric_thread_turns (diameter, pitch, length, internal, n_starts,
-                                       local_thread_size, groove, square, rectangle,
-                                       angle, taper);
-               }
-            }
-         }
+// Provides standard metric nut thickness.
+function NutThickness(diameter) =
+  (diameter <= 64) ?
+    lookup(diameter, [
+      [2, 1.6],
+      [2.5, 2],
+      [3, 2.4],
+      [3.5, 2.8],
+      [4, 3.2],
+      [5, 4.7],
+      [6, 5.2],
+      [7, 6.0],
+      [8, 6.8],
+      [10, 8.4],
+      [12, 10.8],
+      [14, 12.8],
+      [16, 14.8],
+      [18, 15.8],
+      [20, 18.0],
+      [22, 21.1],
+      [24, 21.5],
+      [27, 23.8],
+      [30, 25.6],
+      [33, 28.7],
+      [36, 31.0],
+      [42, 34],
+      [48, 38],
+      [56, 45],
+      [64, 51]
+    ]) :
+    diameter * 51 / 64;
 
-         // Internal thread lead-in: take away from external solid.
-         if (internal) {
 
-            // "Negative chamfer" z=0 end if leadin is 2 or 3.
-            if (leadin == 2 || leadin == 3) {
+// This generates a closed polyhedron from an array of arrays of points,
+// with each inner array tracing out one loop outlining the polyhedron.
+// pointarrays should contain an array of N arrays each of size P outlining a
+// closed manifold.  The points must obey the right-hand rule.  For example,
+// looking down, the P points in the inner arrays are counter-clockwise in a
+// loop, while the N point arrays increase in height.  Points in each inner
+// array do not need to be equal height, but they usually should not meet or
+// cross the line segments from the adjacent points in the other arrays.
+// (N>=2, P>=3)
+// Core triangles:
+//   [j][i], [j+1][i], [j+1][(i+1)%P]
+//   [j][i], [j+1][(i+1)%P], [j][(i+1)%P]
+//   Then triangles are formed in a loop with the middle point of the first
+//   and last array.
+module ClosePoints(pointarrays) {
+  function recurse_avg(arr, n=0, p=[0,0,0]) = (n>=len(arr)) ? p :
+    recurse_avg(arr, n+1, p+(arr[n]-p)/(n+1));
 
-               // Fixes by jeffery.spirko@tamucc.edu.
-               cylinder (r1=diameter/2 - h + h*h_fac1*leadfac,
-                         r2=diameter/2 - h,
-                         h=h*h_fac1*leadfac, $fn=n_segments);
-               /*
-               cylinder (r1=diameter/2,
-                         r2=diameter/2 - h*h_fac1*leadfac,
-                         h=h*h_fac1*leadfac, $fn=n_segments);
-               */
-            }
+  N = len(pointarrays);
+  P = len(pointarrays[0]);
+  NP = N*P;
+  lastarr = pointarrays[N-1];
+  midbot = recurse_avg(pointarrays[0]);
+  midtop = recurse_avg(pointarrays[N-1]);
 
-            // "Negative chamfer" z-max end if leadin is 1 or 2.
-            if (leadin == 1 || leadin == 2) {
-               translate ([0, 0, length + 0.05 - h*h_fac1*leadfac]) {
+  faces_bot = [
+    for (i=[0:P-1])
+      [0,i+1,1+(i+1)%len(pointarrays[0])]
+  ];
 
-                  cylinder (r1=tapered_diameter/2 - h,
-                            h=h*h_fac1*leadfac,
-                            r2=tapered_diameter/2 - h + h*h_fac1*leadfac,
-                            $fn=n_segments);
-                  /*
-                  cylinder (r1=tapered_diameter/2 - h*h_fac1*leadfac,
-                            h=h*h_fac1*leadfac,
-                            r2=tapered_diameter/2,
-                            $fn=n_segments);
-                  */
-               }
-            }
-         }
-      }
+  loop_offset = 1;
+  bot_len = loop_offset + P;
 
-      if (! internal) {
+  faces_loop = [
+    for (j=[0:N-2], i=[0:P-1], t=[0:1])
+      [loop_offset, loop_offset, loop_offset] + (t==0 ?
+      [j*P+i, (j+1)*P+i, (j+1)*P+(i+1)%P] :
+      [j*P+i, (j+1)*P+(i+1)%P, j*P+(i+1)%P])
+  ];
 
-         // Chamfer z=0 end if leadin is 2 or 3.
-         if (leadin == 2 || leadin == 3) {
-            difference () {
-               cylinder (r=diameter/2 + 1, h=h*h_fac1*leadfac, $fn=n_segments);
+  top_offset = loop_offset + NP - P;
+  midtop_offset = top_offset + P;
 
-               cylinder (r2=diameter/2, r1=diameter/2 - h*h_fac1*leadfac, h=h*h_fac1*leadfac,
-                         $fn=n_segments);
-            }
-         }
+  faces_top = [
+    for (i=[0:P-1])
+      [midtop_offset,top_offset+(i+1)%P,top_offset+i]
+  ];
 
-         // Chamfer z-max end if leadin is 1 or 2.
-         if (leadin == 1 || leadin == 2) {
-            translate ([0, 0, length + 0.05 - h*h_fac1*leadfac]) {
-               difference () {
-                  cylinder (r=diameter/2 + 1, h=h*h_fac1*leadfac, $fn=n_segments);
+  points = [
+    for (i=[-1:NP])
+      (i<0) ? midbot :
+      ((i==NP) ? midtop :
+      pointarrays[floor(i/P)][i%P])
+  ];
+  faces = concat(faces_bot, faces_loop, faces_top);
 
-                  cylinder (r1=tapered_diameter/2, r2=tapered_diameter/2 - h*h_fac1*leadfac, h=h*h_fac1*leadfac,
-                            $fn=n_segments);
-               }
-            }
-         }
-      }
-   }
+  polyhedron(points=points, faces=faces);
 }
 
 
-// ----------------------------------------------------------------------------
-// Input units in inches.
-// Note: units of measure in drawing are mm!
-module english_thread (diameter=0.25, threads_per_inch=20, length=1,
-                      internal=false, n_starts=1, thread_size=-1, groove=false,
-                      square=false, rectangle=0, angle=30, taper=0, leadin=0,
-                      leadfac=1.0, test=false)
-{
-   // Convert to mm.
-   mm_diameter = diameter*25.4;
-   mm_pitch = (1.0/threads_per_inch)*25.4;
-   mm_length = length*25.4;
 
-   echo (str ("mm_diameter: ", mm_diameter));
-   echo (str ("mm_pitch: ", mm_pitch));
-   echo (str ("mm_length: ", mm_length));
-   metric_thread (mm_diameter, mm_pitch, mm_length, internal, n_starts,
-                  thread_size, groove, square, rectangle, angle, taper, leadin,
-                  leadfac, test);
+// This creates a vertical rod at the origin with external threads.  It uses
+// metric standards by default.
+module ScrewThread(outer_diam, height, pitch=0, tooth_angle=30, tolerance=0.0, tip_height=0, tooth_height=0, tip_min_fract=0,screw_resolution=1) {
+
+  pitch = (pitch==0) ? ThreadPitch(outer_diam) : pitch;
+  tooth_height = (tooth_height==0) ? pitch : tooth_height;
+  tip_min_fract = (tip_min_fract<0) ? 0 :
+    ((tip_min_fract>0.9999) ? 0.9999 : tip_min_fract);
+
+  outer_diam_cor = outer_diam + 0.25*tolerance; // Plastic shrinkage correction
+  inner_diam = outer_diam - tooth_height/tan(tooth_angle);
+  or = (outer_diam_cor < screw_resolution) ?
+    screw_resolution/2 : outer_diam_cor / 2;
+  ir = (inner_diam < screw_resolution) ? screw_resolution/2 : inner_diam / 2;
+  height = (height < screw_resolution) ? screw_resolution : height;
+
+  steps_per_loop_try = ceil(2*3.14159265359*or / screw_resolution);
+  steps_per_loop = (steps_per_loop_try < 4) ? 4 : steps_per_loop_try;
+  hs_ext = 3;
+  hsteps = ceil(3 * height / pitch) + 2*hs_ext;
+
+  extent = or - ir;
+
+  tip_start = height-tip_height;
+  tip_height_sc = tip_height / (1-tip_min_fract);
+
+  tip_height_ir = (tip_height_sc > tooth_height/2) ?
+    tip_height_sc - tooth_height/2 : tip_height_sc;
+
+  tip_height_w = (tip_height_sc > tooth_height) ? tooth_height : tip_height_sc;
+  tip_wstart = height + tip_height_sc - tip_height - tip_height_w;
+
+
+  function tooth_width(a, h, pitch, tooth_height, extent) =
+    let(
+      ang_full = h*360.0/pitch-a,
+      ang_pn = atan2(sin(ang_full), cos(ang_full)),
+      ang = ang_pn < 0 ? ang_pn+360 : ang_pn,
+      frac = ang/360,
+      tfrac_half = tooth_height / (2*pitch),
+      tfrac_cut = 2*tfrac_half
+    )
+    (frac > tfrac_cut) ? 0 : (
+      (frac <= tfrac_half) ?
+        ((frac / tfrac_half) * extent) :
+        ((1 - (frac - tfrac_half)/tfrac_half) * extent)
+    );
+
+
+  pointarrays = [
+    for (hs=[0:hsteps])
+      [
+        for (s=[0:steps_per_loop-1])
+          let(
+            ang_full = s*360.0/steps_per_loop,
+            ang_pn = atan2(sin(ang_full), cos(ang_full)),
+            ang = ang_pn < 0 ? ang_pn+360 : ang_pn,
+
+            h_fudge = pitch*0.001,
+
+            h_mod =
+              (hs%3 == 2) ?
+                ((s == steps_per_loop-1) ? tooth_height - h_fudge : (
+                 (s == steps_per_loop-2) ? tooth_height/2 : 0)) : (
+              (hs%3 == 0) ?
+                ((s == steps_per_loop-1) ? pitch-tooth_height/2 : (
+                 (s == steps_per_loop-2) ? pitch-tooth_height + h_fudge : 0)) :
+                ((s == steps_per_loop-1) ? pitch-tooth_height/2 + h_fudge : (
+                 (s == steps_per_loop-2) ? tooth_height/2 : 0))
+              ),
+
+            h_level =
+              (hs%3 == 2) ? tooth_height - h_fudge : (
+              (hs%3 == 0) ? 0 : tooth_height/2),
+
+            h_ub = floor((hs-hs_ext)/3) * pitch
+              + h_level + ang*pitch/360.0 - h_mod,
+            h_max = height - (hsteps-hs) * h_fudge,
+            h_min = hs * h_fudge,
+            h = (h_ub < h_min) ? h_min : ((h_ub > h_max) ? h_max : h_ub),
+
+            ht = h - tip_start,
+            hf_ir = ht/tip_height_ir,
+            ht_w = h - tip_wstart,
+            hf_w_t = ht_w/tip_height_w,
+            hf_w = (hf_w_t < 0) ? 0 : ((hf_w_t > 1) ? 1 : hf_w_t),
+
+            ext_tip = (h <= tip_wstart) ? extent : (1-hf_w) * extent,
+            wnormal = tooth_width(ang, h, pitch, tooth_height, ext_tip),
+            w = (h <= tip_wstart) ? wnormal :
+              (1-hf_w) * wnormal +
+              hf_w * (0.1*screw_resolution + (wnormal * wnormal * wnormal /
+                (ext_tip*ext_tip+0.1*screw_resolution))),
+            r = (ht <= 0) ? ir + w :
+              ( (ht < tip_height_ir ? ((2/(1+(hf_ir*hf_ir))-1) * ir) : 0) + w)
+          )
+          [r*cos(ang), r*sin(ang), h]
+      ]
+  ];
+
+
+  ClosePoints(pointarrays);
 }
 
-// ----------------------------------------------------------------------------
-module metric_thread_turns (diameter, pitch, length, internal, n_starts,
-                            thread_size, groove, square, rectangle, angle,
-                            taper)
-{
-   // Number of turns needed.
-   n_turns = floor (length/pitch);
 
-   intersection () {
-
-      // Start one below z = 0.  Gives an extra turn at each end.
-      for (i=[-1*n_starts : n_turns+1]) {
-         translate ([0, 0, i*pitch]) {
-            metric_thread_turn (diameter, pitch, internal, n_starts,
-                                thread_size, groove, square, rectangle, angle,
-                                taper, i*pitch);
-         }
-      }
-
-      // Cut to length.
-      translate ([0, 0, length/2]) {
-         cube ([diameter*3, diameter*3, length], center=true);
-      }
-   }
+// This creates a vertical rod at the origin with external auger-style
+// threads.
+module AugerThread(outer_diam, inner_diam, height, pitch, tooth_angle=30, tolerance=0.4, tip_height=0, tip_min_fract=0) {
+  tooth_height = tan(tooth_angle)*(outer_diam-inner_diam);
+  ScrewThread(outer_diam, height, pitch, tooth_angle, tolerance, tip_height,
+    tooth_height, tip_min_fract);
 }
 
 
-// ----------------------------------------------------------------------------
-module metric_thread_turn (diameter, pitch, internal, n_starts, thread_size,
-                           groove, square, rectangle, angle, taper, z)
-{
-   n_segments = segments (diameter);
-   fraction_circle = 1.0/n_segments;
-   for (i=[0 : n_segments-1]) {
+// This creates a threaded hole in its children using metric standards by
+// default.
+module ScrewHole(outer_diam, height, position=[0,0,0], rotation=[0,0,0], pitch=0, tooth_angle=30, tolerance=0.4, tooth_height=0) {
+  extra_height = 0.001 * height;
 
-      // Keep polyhedron "facets" aligned -- circumferentially -- with base
-      // cylinder facets.  (Patch contributed by rambetter@protonmail.com.)
-      rotate ([0, 0, (i + 0.5)*360*fraction_circle + 90]) {
-         translate ([0, 0, i*n_starts*pitch*fraction_circle]) {
-            //current_diameter = diameter - taper*(z + i*n_starts*pitch*fraction_circle);
-            thread_polyhedron ((diameter - taper*(z + i*n_starts*pitch*fraction_circle))/2,
-                               pitch, internal, n_starts, thread_size, groove,
-                               square, rectangle, angle);
-         }
-      }
-   }
+  difference() {
+    children();
+    translate(position)
+      rotate(rotation)
+      translate([0, 0, -extra_height/2])
+      ScrewThread(1.01*outer_diam + 1.25*tolerance, height + extra_height,
+        pitch, tooth_angle, tolerance, tooth_height=tooth_height);
+  }
 }
 
 
-// ----------------------------------------------------------------------------
-module thread_polyhedron (radius, pitch, internal, n_starts, thread_size,
-                          groove, square, rectangle, angle)
-{
-   n_segments = segments (radius*2);
-   fraction_circle = 1.0/n_segments;
-
-   local_rectangle = rectangle ? rectangle : 1;
-
-   h = (square || rectangle) ? thread_size*local_rectangle/2 : thread_size / (2 * tan(angle));
-   outer_r = radius + (internal ? h/20 : 0); // Adds internal relief.
-   //echo (str ("outer_r: ", outer_r));
-
-   // A little extra on square thread -- make sure overlaps cylinder.
-   h_fac1 = (square || rectangle) ? 1.1 : 0.875;
-   inner_r = radius - h*h_fac1; // Does NOT do Dmin_truncation - do later with
-                                // cylinder.
-
-   translate_y = groove ? outer_r + inner_r : 0;
-   reflect_x   = groove ? 1 : 0;
-
-   // Make these just slightly bigger (keep in proportion) so polyhedra will
-   // overlap.
-   x_incr_outer = (! groove ? outer_r : inner_r) * fraction_circle * 2 * PI * 1.02;
-   x_incr_inner = (! groove ? inner_r : outer_r) * fraction_circle * 2 * PI * 1.02;
-   z_incr = n_starts * pitch * fraction_circle * 1.005;
-
-   /*
-    (angles x0 and x3 inner are actually 60 deg)
-
-                          /\  (x2_inner, z2_inner) [2]
-                         /  \
-   (x3_inner, z3_inner) /    \
-                  [3]   \     \
-                        |\     \ (x2_outer, z2_outer) [6]
-                        | \    /
-                        |  \  /|
-             z          |[7]\/ / (x1_outer, z1_outer) [5]
-             |          |   | /
-             |   x      |   |/
-             |  /       |   / (x0_outer, z0_outer) [4]
-             | /        |  /     (behind: (x1_inner, z1_inner) [1]
-             |/         | /
-    y________|          |/
-   (r)                  / (x0_inner, z0_inner) [0]
-
-   */
-
-   x1_outer = outer_r * fraction_circle * 2 * PI;
-
-   z0_outer = (outer_r - inner_r) * tan(angle);
-   //echo (str ("z0_outer: ", z0_outer));
-
-   //polygon ([[inner_r, 0], [outer_r, z0_outer],
-   //        [outer_r, 0.5*pitch], [inner_r, 0.5*pitch]]);
-   z1_outer = z0_outer + z_incr;
-
-   // Give internal square threads some clearance in the z direction, too.
-   bottom = internal ? 0.235 : 0.25;
-   top    = internal ? 0.765 : 0.75;
-
-   translate ([0, translate_y, 0]) {
-      mirror ([reflect_x, 0, 0]) {
-
-         if (square || rectangle) {
-
-            // Rule for face ordering: look at polyhedron from outside: points must
-            // be in clockwise order.
-            polyhedron (
-               points = [
-                         [-x_incr_inner/2, -inner_r, bottom*thread_size],         // [0]
-                         [x_incr_inner/2, -inner_r, bottom*thread_size + z_incr], // [1]
-                         [x_incr_inner/2, -inner_r, top*thread_size + z_incr],    // [2]
-                         [-x_incr_inner/2, -inner_r, top*thread_size],            // [3]
-
-                         [-x_incr_outer/2, -outer_r, bottom*thread_size],         // [4]
-                         [x_incr_outer/2, -outer_r, bottom*thread_size + z_incr], // [5]
-                         [x_incr_outer/2, -outer_r, top*thread_size + z_incr],    // [6]
-                         [-x_incr_outer/2, -outer_r, top*thread_size]             // [7]
-                        ],
-
-               faces = [
-                         [0, 3, 7, 4],  // This-side trapezoid
-
-                         [1, 5, 6, 2],  // Back-side trapezoid
-
-                         [0, 1, 2, 3],  // Inner rectangle
-
-                         [4, 7, 6, 5],  // Outer rectangle
-
-                         // These are not planar, so do with separate triangles.
-                         [7, 2, 6],     // Upper rectangle, bottom
-                         [7, 3, 2],     // Upper rectangle, top
-
-                         [0, 5, 1],     // Lower rectangle, bottom
-                         [0, 4, 5]      // Lower rectangle, top
-                        ]
-            );
-         } else {
-
-            // Rule for face ordering: look at polyhedron from outside: points must
-            // be in clockwise order.
-            polyhedron (
-               points = [
-                         [-x_incr_inner/2, -inner_r, 0],                        // [0]
-                         [x_incr_inner/2, -inner_r, z_incr],                    // [1]
-                         [x_incr_inner/2, -inner_r, thread_size + z_incr],      // [2]
-                         [-x_incr_inner/2, -inner_r, thread_size],              // [3]
-
-                         [-x_incr_outer/2, -outer_r, z0_outer],                 // [4]
-                         [x_incr_outer/2, -outer_r, z0_outer + z_incr],         // [5]
-                         [x_incr_outer/2, -outer_r, thread_size - z0_outer + z_incr], // [6]
-                         [-x_incr_outer/2, -outer_r, thread_size - z0_outer]    // [7]
-                        ],
-
-               faces = [
-                         [0, 3, 7, 4],  // This-side trapezoid
-
-                         [1, 5, 6, 2],  // Back-side trapezoid
-
-                         [0, 1, 2, 3],  // Inner rectangle
-
-                         [4, 7, 6, 5],  // Outer rectangle
-
-                         // These are not planar, so do with separate triangles.
-                         [7, 2, 6],     // Upper rectangle, bottom
-                         [7, 3, 2],     // Upper rectangle, top
-
-                         [0, 5, 1],     // Lower rectangle, bottom
-                         [0, 4, 5]      // Lower rectangle, top
-                        ]
-            );
-         }
-      }
-   }
+// This creates an auger-style threaded hole in its children.
+module AugerHole(outer_diam, inner_diam, height, pitch, position=[0,0,0], rotation=[0,0,0], tooth_angle=30, tolerance=0.4) {
+  tooth_height = tan(tooth_angle)*(outer_diam-inner_diam);
+  ScrewHole(outer_diam, height, position, rotation, pitch, tooth_angle,
+    tolerance, tooth_height=tooth_height) children();
 }
+
+
+// This inserts a ClearanceHole in its children.
+// The rotation vector is applied first, then the position translation,
+// starting from a position upward from the z-axis at z=0.
+module ClearanceHole(diameter, height, position=[0,0,0], rotation=[0,0,0], tolerance=0.4) {
+  extra_height = 0.001 * height;
+
+  difference() {
+    children();
+    translate(position)
+      rotate(rotation)
+      translate([0, 0, -extra_height/2])
+      cylinder(h=height + extra_height, r=(diameter/2+tolerance));
+  }
+}
+
+
+// This inserts a ClearanceHole with a recessed bolt hole in its children.
+// The rotation vector is applied first, then the position translation,
+// starting from a position upward from the z-axis at z=0.  The default
+// recessed parameters fit a standard metric bolt.
+module RecessedClearanceHole(diameter, height, position=[0,0,0], rotation=[0,0,0], recessed_diam=-1, recessed_height=-1, tolerance=0.4) {
+  recessed_diam = (recessed_diam < 0) ?
+    HexAcrossCorners(diameter) : recessed_diam;
+  recessed_height = (recessed_height < 0) ? diameter : recessed_height;
+  extra_height = 0.001 * height;
+
+  difference() {
+    children();
+    translate(position)
+      rotate(rotation)
+      translate([0, 0, -extra_height/2])
+      cylinder(h=height + extra_height, r=(diameter/2+tolerance));
+    translate(position)
+      rotate(rotation)
+      translate([0, 0, -extra_height/2])
+      cylinder(h=recessed_height + extra_height/2,
+        r=(recessed_diam/2+tolerance));
+  }
+}
+
+
+// This inserts a countersunk ClearanceHole in its children.
+// The rotation vector is applied first, then the position translation,
+// starting from a position upward from the z-axis at z=0.
+// The countersunk side is on the bottom by default.
+module CountersunkClearanceHole(diameter, height, position=[0,0,0], rotation=[0,0,0], sinkdiam=0, sinkangle=45, tolerance=0.4) {
+  extra_height = 0.001 * height;
+  sinkdiam = (sinkdiam==0) ? 2*diameter : sinkdiam;
+  sinkheight = ((sinkdiam-diameter)/2)/tan(sinkangle);
+
+  difference() {
+    children();
+    translate(position)
+      rotate(rotation)
+      translate([0, 0, -extra_height/2])
+      union() {
+        cylinder(h=height + extra_height, r=(diameter/2+tolerance));
+        cylinder(h=sinkheight + extra_height, r1=(sinkdiam/2+tolerance), r2=(diameter/2+tolerance));
+      }
+  }
+}
+
+
+// This inserts a Phillips tip shaped hole into its children.
+// The rotation vector is applied first, then the position translation,
+// starting from a position upward from the z-axis at z=0.
+module PhillipsTip(width=7, thickness=0, straightdepth=0, position=[0,0,0], rotation=[0,0,0]) {
+  thickness = (thickness <= 0) ? width*2.5/7 : thickness;
+  straightdepth = (straightdepth <= 0) ? width*3.5/7 : straightdepth;
+  angledepth = (width-thickness)/2;
+  height = straightdepth + angledepth;
+  extra_height = 0.001 * height;
+
+  difference() {
+    children();
+    translate(position)
+      rotate(rotation)
+      union() {
+        hull() {
+          translate([-width/2, -thickness/2, -extra_height/2])
+            cube([width, thickness, straightdepth+extra_height]);
+          translate([-thickness/2, -thickness/2, height-extra_height])
+            cube([thickness, thickness, extra_height]);
+        }
+        hull() {
+          translate([-thickness/2, -width/2, -extra_height/2])
+            cube([thickness, width, straightdepth+extra_height]);
+          translate([-thickness/2, -thickness/2, height-extra_height])
+            cube([thickness, thickness, extra_height]);
+        }
+      }
+  }
+}
+
+
+
+// Create a standard sized metric bolt with hex head and hex key.
+module MetricBolt(diameter, length, tolerance=0.4) {
+  drive_tolerance = pow(3*tolerance/HexDriveAcrossCorners(diameter),2)
+    + 0.75*tolerance;
+
+  difference() {
+    cylinder(h=diameter, r=(HexAcrossCorners(diameter)/2-0.5*tolerance), $fn=6);
+    cylinder(h=diameter,
+      r=(HexDriveAcrossCorners(diameter)+drive_tolerance)/2, $fn=6,
+      center=true);
+  }
+  translate([0,0,diameter-0.01])
+    ScrewThread(diameter, length+0.01, tolerance=tolerance,
+      tip_height=ThreadPitch(diameter), tip_min_fract=0.75);
+}
+
+
+// Create a standard sized metric countersunk (flat) bolt with hex key drive.
+// In compliance with convention, the length for this includes the head.
+module MetricCountersunkBolt(diameter, length, tolerance=0.4) {
+  drive_tolerance = pow(3*tolerance/CountersunkDriveAcrossCorners(diameter),2)
+    + 0.75*tolerance;
+
+  difference() {
+    cylinder(h=diameter/2, r1=diameter, r2=diameter/2);
+    cylinder(h=0.8*diameter,
+      r=(CountersunkDriveAcrossCorners(diameter)+drive_tolerance)/2, $fn=6,
+      center=true);
+  }
+  translate([0,0,diameter/2-0.01])
+    ScrewThread(diameter, length-diameter/2+0.01, tolerance=tolerance,
+      tip_height=ThreadPitch(diameter), tip_min_fract=0.75);
+}
+
+
+// Create a standard sized metric countersunk (flat) bolt with hex key drive.
+// In compliance with convention, the length for this includes the head.
+module MetricWoodScrew(diameter, length, tolerance=0.4) {
+  drive_tolerance = pow(3*tolerance/CountersunkDriveAcrossCorners(diameter),2)
+    + 0.75*tolerance;
+
+  PhillipsTip(diameter-2)
+    union() {
+      cylinder(h=diameter/2, r1=diameter, r2=diameter/2);
+
+      translate([0,0,diameter/2-0.01])
+        ScrewThread(diameter, length-diameter/2+0.01, tolerance=tolerance,
+          tip_height=diameter);
+    }
+}
+
+
+// Create a standard sized metric hex nut.
+module MetricNut(diameter, thickness=0, tolerance=0.4) {
+  thickness = (thickness==0) ? NutThickness(diameter) : thickness;
+  ScrewHole(diameter, thickness, tolerance=tolerance)
+    cylinder(h=thickness, r=HexAcrossCorners(diameter)/2-0.5*tolerance, $fn=6);
+}
+
+
+// Create a convenient washer size for a metric nominal thread diameter.
+module MetricWasher(diameter) {
+  difference() {
+    cylinder(h=diameter/5, r=1.15*diameter);
+    cylinder(h=2*diameter, r=0.575*diameter, center=true);
+  }
+}
+
+
+// Solid rod on the bottom, external threads on the top.
+module RodStart(diameter, height, thread_len=0, thread_diam=0, thread_pitch=0) {
+  // A reasonable default.
+  thread_diam = (thread_diam==0) ? 0.75*diameter : thread_diam;
+  thread_len = (thread_len==0) ? 0.5*diameter : thread_len;
+  thread_pitch = (thread_pitch==0) ? ThreadPitch(thread_diam) : thread_pitch;
+
+  cylinder(r=diameter/2, h=height);
+
+  translate([0, 0, height])
+    ScrewThread(thread_diam, thread_len, thread_pitch,
+      tip_height=thread_pitch, tip_min_fract=0.75);
+}
+
+
+// Solid rod on the bottom, internal threads on the top.
+// Flips around x-axis after printing to pair with RodStart.
+module RodEnd(diameter, height, thread_len=0, thread_diam=0, thread_pitch=0) {
+  // A reasonable default.
+  thread_diam = (thread_diam==0) ? 0.75*diameter : thread_diam;
+  thread_len = (thread_len==0) ? 0.5*diameter : thread_len;
+  thread_pitch = (thread_pitch==0) ? ThreadPitch(thread_diam) : thread_pitch;
+
+  ScrewHole(thread_diam, thread_len, [0, 0, height], [180,0,0], thread_pitch)
+    cylinder(r=diameter/2, h=height);
+}
+
+
+// Internal threads on the bottom, external threads on the top.
+module RodExtender(diameter, height, thread_len=0, thread_diam=0, thread_pitch=0) {
+  // A reasonable default.
+  thread_diam = (thread_diam==0) ? 0.75*diameter : thread_diam;
+  thread_len = (thread_len==0) ? 0.5*diameter : thread_len;
+  thread_pitch = (thread_pitch==0) ? ThreadPitch(thread_diam) : thread_pitch;
+
+  max_bridge = height - thread_len;
+  // Use 60 degree slope if it will fit.
+  bridge_height = ((thread_diam/4) < max_bridge) ? thread_diam/4 : max_bridge;
+
+  difference() {
+    union() {
+      ScrewHole(thread_diam, thread_len, pitch=thread_pitch)
+        cylinder(r=diameter/2, h=height);
+
+      translate([0,0,height])
+        ScrewThread(thread_diam, thread_len, pitch=thread_pitch,
+          tip_height=thread_pitch, tip_min_fract=0.75);
+    }
+    // Carve out a small conical area as a bridge.
+    translate([0,0,thread_len])
+      cylinder(h=bridge_height, r1=thread_diam/2, r2=0.1);
+  }
+}
+
+
+// Produces a matching set of metric bolts, nuts, and washers.
+module MetricBoltSet(diameter, length, quantity=1) {
+  for (i=[0:quantity-1]) {
+    translate([0, i*4*diameter, 0]) MetricBolt(diameter, length);
+    translate([4*diameter, i*4*diameter, 0]) MetricNut(diameter);
+    translate([8*diameter, i*4*diameter, 0]) MetricWasher(diameter);
+  }
+}
+
+
+module Demo() {
+  translate([0,-0,0]) MetricBoltSet(3, 8);
+  translate([0,-20,0]) MetricBoltSet(4, 8);
+  translate([0,-40,0]) MetricBoltSet(5, 8);
+  translate([0,-60,0]) MetricBoltSet(6, 8);
+  translate([0,-80,0]) MetricBoltSet(8, 8);
+
+  translate([0,25,0]) MetricCountersunkBolt(5, 10);
+  translate([23,18,5])
+    scale([1,1,-1])
+    CountersunkClearanceHole(5, 8, [7,7,0], [0,0,0])
+    cube([14, 14, 5]);
+
+  translate([70, -10, 0])
+    RodStart(20, 30);
+  translate([70, 20, 0])
+    RodEnd(20, 30);
+
+  translate([70, -45, 0])
+    MetricWoodScrew(8, 20);
+
+  translate([12, 50, 0])
+    union() {
+      translate([0, 0, 5.99])
+        AugerThread(15, 3.5, 22, 7, tooth_angle=15, tip_height=7);
+      translate([-4, -9, 0]) cube([8, 18, 6]);
+    }
+}
+
+
+Demo();
+
+//MetricBoltSet(6, 8, 10);
 
