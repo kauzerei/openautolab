@@ -80,8 +80,8 @@ thread3= cyl2+2*wall+thread_add;
 thread4=thread3+2*thread_expand;
 cyl3=thread4+2*wall;
 dbr=override_dbr?distance_between_rods:
-part=="Weight_gauge_mount"?wg_ms_hole_distance+wg_ms_hole_size+2*wall+mount_hole:
-thread3+2*wall+mount_hole;
+(part=="Weight_gauge_mount" && perpendicular_to_rods)?wg_ms_hole_distance+wg_ms_hole_size+2*wall+mount_hole:
+thread4+2*wall+mount_hole;
 echo(dbr);
 
 module hollow_screw(){
@@ -160,19 +160,19 @@ module holder_magnet_cover(){
 
 module magnetic_holder(){
 holeh=(dbr<magnet_diameter+2*air_gap+2/wall+mount_hole)?-mount_hole/2:
-      (dbr<thread3+2*wall+mount_hole)?-mount_hole/2+wall_between_magnets+magnet_height:
-      min(nut_width/2,wall+magnet_height+wall_between_magnets+height_to_hold-nut_width/2);
+      (dbr<thread4+2*wall+mount_hole)?-mount_hole/2+magnet_height:
+      min(nut_width/2,hor_wall+magnet_height+wall_between_magnets+height_to_hold-nut_width/2);
 cubew=max(10,2*((cyl3/2)^2-(max(dbr,nut_width)/2-nut_width/2)^2)^0.5);
   difference(){
     union(){
-      cylinder(h=wall+magnet_height+wall_between_magnets+height_to_hold, d=cyl3);
+      cylinder(h=hor_wall+magnet_height+wall_between_magnets+height_to_hold, d=cyl3);
       if(rod_mount) {
         translate([0,0,holeh])cube([dbr+nut_width,cubew,nut_width],center=true);
         translate([0,0,-nut_width/2+holeh])cylinder(d=cyl3,h=nut_width/2-holeh);
         }
     }
-    translate([0,0,wall])cylinder(h=magnet_height+0.01,d=magnet_diameter+2*air_gap);
-    translate([0,0,wall+magnet_height])ScrewThread(outer_diam=thread4,pitch=thread_pitch,height=height_to_hold+wall_between_magnets+0.01);
+    translate([0,0,hor_wall])cylinder(h=magnet_height+0.01,d=magnet_diameter+2*air_gap);
+    translate([0,0,hor_wall+magnet_height])ScrewThread(outer_diam=thread4,pitch=thread_pitch,height=height_to_hold+wall_between_magnets+0.01);
     if(rod_mount) {
       translate([dbr/2,0,holeh])rotate([90,0,0])cylinder(h=cyl3+0.01,d=mount_hole,center=true);
       translate([-dbr/2,0,holeh])rotate([90,0,0])cylinder(h=cyl3+0.01,d=mount_hole,center=true);
@@ -189,11 +189,12 @@ cubew=max(10,2*((cyl3/2)^2-(max(dbr,nut_width)/2-nut_width/2)^2)^0.5);
 }
 
 module wg_holder() {
+wgh_h=perpendicular_to_rods?nut_width:wg_ms_hole_distance+wg_width;
   difference() {
     union() {
-      cube([wg_ms_hole_distance+wg_width,dbr,nut_width],center=true);
-      translate([0,dbr/2,0])rotate([0,90,0])cylinder(d=nut_width, h=wg_ms_hole_distance+wg_width, center=true);
-      translate([0,-dbr/2,0])rotate([0,90,0])cylinder(d=nut_width, h=wg_ms_hole_distance+wg_width, center=true);
+      cube([wgh_h,dbr,nut_width],center=true);
+      translate([0,dbr/2,0])rotate([0,90,0])cylinder(d=nut_width, h=wgh_h, center=true);
+      translate([0,-dbr/2,0])rotate([0,90,0])cylinder(d=nut_width, h=wgh_h, center=true);
     }
     translate([0,dbr/2,0])rotate([0,90,0])cylinder(d=mount_hole, h=wg_ms_hole_distance+wg_width+2, center=true);
     translate([0,-dbr/2,0])rotate([0,90,0])cylinder(d=mount_hole, h=wg_ms_hole_distance+wg_width+2, center=true);
@@ -290,7 +291,7 @@ if (part=="Weight_gauge_mount") rotate([0,90,0])wg_holder();
 if (part=="OPTIONAL_Tapping_tool") instrument();
 if (part=="OPTIONAL_Threading_tool") dieholder();
 if (part=="OPTIONAL_Wrench") wrench();
-if (part=="testfit"){*magnetic_holder(); *translate([0,0,magnet_height+wall+0.1]){holder_magnet_cover();translate([0,0,wall_between_magnets+0.1]){main_magnet_cover();translate([0,0,wall_between_magnets+magnet_height])rotate([0,0,360*magnet_height/thread_pitch])difference(){ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);cylinder(d=4,h=2*thread_pitch);}}}
-difference(){ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);cylinder(d=4,h=2*thread_pitch);}}
+if (part=="testfit"){magnetic_holder(); translate([0,0,magnet_height+hor_wall+0.1]){holder_magnet_cover();translate([0,0,wall_between_magnets+0.1]){main_magnet_cover();translate([0,0,wall_between_magnets+magnet_height])rotate([0,0,360*magnet_height/thread_pitch])difference(){ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);cylinder(d=4,h=2*thread_pitch);}}}
+if (part=="force_test") difference(){ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);cylinder(d=4,h=2*thread_pitch);}}
 if(cut_view)translate([-50,0,-50])cube([100,100,100]);
 }
