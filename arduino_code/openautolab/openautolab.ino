@@ -45,6 +45,7 @@ byte k=0; //main menu state machine state index
 unsigned long st_pr; // start of development time, to display for reference
 unsigned long st_st; // start of intermediate stage, to calculate when to pump out chemical
 unsigned long st_ag; // start of agitation, to calculate agitation cycles
+unsigned long t0; //start of pumping
 unsigned long ignore_until; //ignore keypress until this time, for key repeat implementation
 bool released; //true if no keys are pressed on waitkey() loop
 bool scale_calibrated=false; //store values to EEPROM only on change
@@ -146,11 +147,45 @@ byte waitkey() { //waits for button press, implements delay. Function seems not 
 }
 
 void pump(boolean direction, byte vessel) { 
+  byte pin;
+  switch (vessel) {
+    case 1: pin=valve1; break;
+    case 2: pin=valve2; break;
+    case 3: pin=valve3; break;
+    case 4: pin=valve4; break;
+    case 5: pin=valve5; break;
+    case 6: pin=valve6; break;
+    }
   lcd.setCursor(12,1);
   lcd.print("pump ");
   if (direction) lcd.print("in ");
   else lcd.print("out");
-  delay(2000);
+  int i=0;
+  float measurements[10];
+  scale.tare();
+  digitalWrite(pin,HIGH);
+  digitalWrite(direction?motorminus:motorplus,HIGH);
+  t0=millis();
+  bool error=false;
+  while (1) {
+    delay(100);
+    measurements[i]=scale.get_units();
+    lcd.setCursor(0,2);
+    lcd.print(measurements[i]);
+    lcd.print(F("     "));
+    if(abs(measurements[i])>10.0*tank_cap) {error=false; break;}
+    i=(i+1)%10;
+    float maximum=measurements[0];
+    float minimum=measurements[0];
+    for(int j=0;j<10;j++) {
+      if(measurements[j]<minimum) minimum=measurements[j];
+      if(measurements[j]>maximum) maximum=measurements[j];
+    }
+    if(maximum-minimum<3.0 && millis()-t0>5000ul) {error=true; break;}
+  }
+  digitalWrite(motorminus,LOW);
+  digitalWrite(motorplus,LOW);
+  digitalWrite(pin,LOW);
 }
 
 void agitate(unsigned long stage_duration, byte init_agit, byte agit_period, byte agit_duration) {
@@ -228,18 +263,18 @@ void do_process (const struct Process &process) { //execution of a process. Numb
 
 }
 
-void c41() { //definition of black-and-white process, more of those can be written if needed
+void d76() { //definition of black-and-white process, more of those can be written if needed
     struct Process process={"B&W develop", {
-    (Stage){"Developer",toseconds(bw_dev_time),init_agit,agit_period,agit_duration,1,2,1},
-    (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,1,2,1},
-    (Stage){"Fixer",toseconds(bw_fix_time),init_agit,agit_period,agit_duration,1,2,1},
-    (Stage){"Wash ",toseconds(washes_duration),init_agit,agit_period,agit_duration,1,2,washes_count},
-    (Stage){"Wet agent",toseconds(washes_duration),init_agit,agit_period,agit_duration,1,2,fotoflo}
+    (Stage){"Developer",toseconds(bw_dev_time),init_agit,agit_period,agit_duration,1,oneshot?byte(4):byte(1),1},
+    (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,3,4,1},
+    (Stage){"Fixer",toseconds(bw_fix_time),init_agit,agit_period,agit_duration,2,2,1},
+    (Stage){"Wash ",toseconds(washes_duration),init_agit,agit_period,agit_duration,3,4,washes_count},
+    (Stage){"Wet agent",toseconds(washes_duration),init_agit,agit_period,agit_duration,5,4,fotoflo}
   }};
   do_process(process);
 }
 
-void d76() { //definition of c41 process, more of those can be written if needed 
+void c41() { //definition of c41 process, more of those can be written if needed 
   struct Process process={"C41 develop", {
     (Stage){"Prewash",30ul,init_agit,agit_period,agit_duration,1,2,1},
     (Stage){"Developer",100ul,init_agit,agit_period,agit_duration,1,2,1},
@@ -535,7 +570,7 @@ void loop() {
     for (byte i=0;i<255;i++) {
       if(digitalRead(button1)==LOW) {offset=scale.read_average(10); scale.set_offset(offset); keypressed=true; scale_calibrated=true;}
       if(digitalRead(button2)==LOW) {scale.set_scale();divider=scale.get_units(10)/(10.f*tank_cap); scale.set_scale(divider); keypressed=true; scale_calibrated=true;}
-      if(digitalRead(button3)==LOW) {k=0; keypressed=true; if (scale_calibrated) {EEPROM.put(ess+12,divider);EEPROM.put(ess+16,offset);} delay(300);}
+      if(digitalRead(button3)==LOW) {k=14; keypressed=true; if (scale_calibrated) {EEPROM.put(ess+12,divider);EEPROM.put(ess+16,offset);} delay(300);}
       if(keypressed) break;
     }}
     break;
