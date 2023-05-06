@@ -1,5 +1,5 @@
 # Building OpenAutoLab
-This is a detailed description of building OpenAutoLab from scratch. If you have any prebuilt modules like main board or magnetic rail, just skip the section. If you are 3d-printing the parts yourself, please refer to the section "building parts" of this repo, it contains useful information about postprocessing of the parts. If you want to modify the size of the frame itself, of of the modules, due to differently sized magnets, hoses, or other components, also refer to the section "building parts" of this repo, it contains parametric models of all parts and instructions how to modify their parameters to meet your needs.   
+This is a detailed description of building OpenAutoLab. If you have any prebuilt modules like main board or magnetic rail, just skip the section. If you are 3d-printing the parts yourself, please refer "making_parts.MD", it contains useful information about postprocessing of the parts. If you want to modify the size of the frame itself, or of the modules, due to differently sized magnets, hoses, or other components, refer to "modifying parts.MD", it describes how to modify parametric models of all 3d-printable parts to meet your needs.   
 ## Building frame
 By the end of this chapter you will have skeleton of the machine with most components mounted on the frame.   
 ### Building rail for valves and pumps
@@ -22,7 +22,8 @@ Take the main pump and mount it on its bracket. Mount the pump on the rail about
 Take the fresh water pump and mount it on its bracket. Mount the fresh water pump on the rail about 1cm away from the main pump.   
 
 ### Building rail for magnetic holders
-By the end of this section you will have a water-tight bottom part of the machine. The distances on the picture are for reference only, because depending on width of the frame, size of the magnets and the space required for vessels, holders may be mounted differently. For shallow frames that could fit 14cm-deep plant containers it may be preferable to mount the holders individually on pairs of rods, mounted perpendicularly to the main structure. If the the frame has sufficient depth it is easier to mount all magnetic holders on two rods parallel to the main structure, which is the default layout described here. 
+By the end of this section you will have a water-tight bottom part of the machine. The distances on the picture are for reference only, because depending on width of the frame, size of the magnets and the space required for vessels, holders may be mounted differently. For shallow frames that could fit 14cm-deep plant containers it may be preferable to mount the holders individually on pairs of rods, mounted perpendicularly to the main structure. If the the frame has sufficient depth it is easier to mount all magnetic holders on two rods parallel to the main structure, which is the default layout described here.  
+If the force gauge was not the part of the kit, follow the instructions in making_parts.MD to make it waterproof.  
 Parts list:  
 - 3x rod-mountable magnetic holders
 - Bar-mountable magnetic holder
@@ -41,7 +42,8 @@ Take the threaded rods and push them through one of the magnetic holders. Place 
 Take the force gauge, and the pair of mounting brackets and fix the gauge to the rods by threading each screw through two brackets into the gauge. Mind the orientation of the gauge, the arrow must be on the free side and should point in the direction of rods.  
 Mount the last holder to the other side of the gauge with two M5 screws.
 Place magnets in the same orientation into all four holders.  
-Screw the magnet covers into the holders.   
+Screw the magnet covers into the holders. Magnets are simply put into the smaller cover and are held down with screwed on interfaces. The orientation of all the magnets should be the same in all holders and interfaces, so that they are attracted.  
+
 ### Building frame and rails together.  
 Parts list:  
 - 2x upper vertex
@@ -64,13 +66,20 @@ Take six nuts, two long rods and two rails and put one nut on each of the thread
 ## Connecting electronics  
 
 ## Connecting hoses
-The vessels and the developing tank are connected to the hoses with interfaces, which are fancy L-shaped tubes with inner M8 threads on each end and a magnet on the bottom. The top thread is for the hollow screw, that is put through the hole in the bottom of the vessel, a gasket ring and then tightened to the interface itself. The machine is designed with AP developing tank, Ikea 500mL shakers and Brita water filter in mind. If you are building the machine from scratch you need to drill 8mm holes in each of those items, 20mm offset fro
-The side one is for the hose adapter. This part is designed to be interchangable, because of how easily it could be accidentally broken. For the same reason it is designed with redundant sleeve that holds the hose and adds to the strength of the part.    
+The vessels and the developing tank are connected to the hoses with interfaces, which are fancy L-shaped tubes with inner M8 threads on each end and a magnet on the bottom. The top thread is for the hollow screw, that is put through the hole in the bottom of the vessel, a gasket ring and then tightened to the interface itself.
+The side thread is for the hose adapter. This part is designed to be interchangeable, because of how easily it could be accidentally broken. For the same reason it is designed with redundant sleeve that holds the hose and adds to the strength of the part.      
 Parts list:
 - Silicone hose 6mm ID, 9mm OD
 - 3x T-connectors for 6mm hose
--  
-
-First, the sleeve is put on the hose, the side with hexagonal cutout facing the end of the hose. Then the narrow side of the adapter is put over the hose. Then holding the hose with one hand, the second pulls the sleeve to cover contact area. The pulling force will stretch the hose so it becomes narrower and it is easier to fit the sleeve on top of it, however it should be done carefully not to pull the hose away from the assembled adapter.  
-Magnets are simply put into the smaller cover and are held down with screwed on interfaces. The orientation of all the magnets should be the same in all holders and interfaces, so that they are attracted.  
-Cut 4 pieces of 
+- 4x hose adapters
+- 4x hose adapter sleeves
+- 4x hollow hollow screws
+- 4x silicone rings
+- 13x cable binders
+### Mounting hose adapters
+First, the sleeve is put on the hose, the side with hexagonal cutout facing the end of the hose. Then the narrow side of the adapter is put over the hose. Then holding the hose with one hand, the sleeve to cover contact area with the second hand. The pulling force will stretch the hose so it becomes narrower and it is easier to fit the sleeve on top of it, however it should be done carefully not to pull the hose away from the assembled adapter.  
+Screw those adapters on the sides of the interfaces (not on top part which is opposite to the magnet)
+### Preparing vessels and tank  
+The machine is designed with AP developing tank, Ikea 500mL shakers and Brita water filter in mind. If you are building the machine from scratch you need to drill 8mm holes in each of those items, 20mm offset from center for the tank and dead center for the others. Then for each one of those repeat similar mounting process. Put the hollow screw through the hole from the inner side, such that the thread is sticking outside. Put a silicone gasket on the thread. Screw the interface on, magnetic side down. Do not over-tight, especially if you have a 3d-printed screw. Tighten just that the interface is not unscrewing itself when forces are applied by the dangling hose during normal operation.
+### Finishing the connections
+Cut 4 pieces of
