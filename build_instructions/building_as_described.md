@@ -62,8 +62,12 @@ Take six nuts, two long rods and two rails and put one nut on each of the thread
 ## Building main board
 
 ## Building agitation module
-
+Mount the servo on tank cap in such a way, that its axis is in the center of the cap. Take a long screwdriver and fix the mixing rod to the servo.
 ## Connecting electronics  
+If you did not receive valves and pumps as a part of the kit, you need to prepare the wires to be connected to the board. The optimal way is crimping the ferrules. Covering ends of wires with solder using soldering iron is not optimal, since the solder slowly deforms under pressure with time and connection may become loose, but better than nothing. Screwing the wires as is is strongly not recommended.  
+Put each pair of wires of each valve into holes in screw terminals and tighten them with screws. Polarity does not matter in case of valves. Terminals 1 through 4 are supposed to correspond to developer, fixer, clean water and dirty water respectively. Connect the rightmost teFrminal to the power supply, here the polarity is important, make sure that the negative contact is on the left, and the positive is on the right.
+To the left of the power terminal is magnetic sensor for the filter and further to the left is th filter pump, both cave no incorrect polarity, unless you are using a different bidirectional pump.  
+Fourth terminal to the right is the main pump. Polarity is important here, but your pump **may** theoretically have different polarity. In case it does, don't worry, just do the test run in the end and check that the pump moves the water in the right direction and change the polarity of this pump. If the hoses are connected as depicted, connect the wires as depicted. Connect the force gauge, to 4-pin connector and the agitation module to a 3-pin connector as depicted, the polarity is very important.  
 
 ## Connecting hoses
 The vessels and the developing tank are connected to the hoses with interfaces, which are fancy L-shaped tubes with inner M8 threads on each end and a magnet on the bottom. The top thread is for the hollow screw, that is put through the hole in the bottom of the vessel, a gasket ring and then tightened to the interface itself.
@@ -77,9 +81,10 @@ Parts list:
 - 4x silicone rings
 - 13x cable binders
 ### Mounting hose adapters
+Cut 4 hoses for vessels, filter and tank. Their length needs to be enough to connect the upper rail and the lower rail and to allow comfortable handling of vessels, mounted to them. Recommended length is about diagonal of the frame. Now connect each hose to adapter as follows.    
 First, the sleeve is put on the hose, the side with hexagonal cutout facing the end of the hose. Then the narrow side of the adapter is put over the hose. Then holding the hose with one hand, the sleeve to cover contact area with the second hand. The pulling force will stretch the hose so it becomes narrower and it is easier to fit the sleeve on top of it, however it should be done carefully not to pull the hose away from the assembled adapter.  
-Screw those adapters on the sides of the interfaces (not on top part which is opposite to the magnet)
+Screw those adapters on the sides of the interfaces (not on top part which is opposite to the magnet). Use TPFE tape, silicone of other glue to make threaded connection water-tight. Keep in mind, that in case adapter is broken, you need to be able to unscrew the thread.  
 ### Preparing vessels and tank  
 The machine is designed with AP developing tank, Ikea 500mL shakers and Brita water filter in mind. If you are building the machine from scratch you need to drill 8mm holes in each of those items, 20mm offset from center for the tank and dead center for the others. Then for each one of those repeat similar mounting process. Put the hollow screw through the hole from the inner side, such that the thread is sticking outside. Put a silicone gasket on the thread. Screw the interface on, magnetic side down. Do not over-tight, especially if you have a 3d-printed screw. Tighten just that the interface is not unscrewing itself when forces are applied by the dangling hose during normal operation.
 ### Finishing the connections
-Cut 4 pieces of
+Cut 3 pieces of hose, each of which is just long enough to connect a T-piece with a valve and put 3 T-pieces on top of three valves which are closer to the center of machine. Cut one more slightly longer hose to connect the last valve to the side of the T-piece of the neighboring one. From now on measure the length of the hose to be cut judging from the distance of components that it connects. Cut two more short hoses and connect 3 T-pieces together. Connect the main pump to the only T-piece left. Connect the other side of the pump to the tank. Connect the four hoses attached to two vessels, water filter to valves 1 through 3, the fourth valve is for dirty water output. Connect the pump to the tank. Secure each end of each hose with a cable-binder.
