@@ -1,5 +1,5 @@
 # Building OpenAutoLab
-This is a detailed description of building OpenAutoLab. If you have any prebuilt modules like main board or magnetic rail, just skip the section. If you are 3d-printing the parts yourself, please refer "making_parts.MD", it contains useful information about postprocessing of the parts. If you want to modify the size of the frame itself, or of the modules, due to differently sized magnets, hoses, or other components, refer to "modifying parts.MD", it describes how to modify parametric models of all 3d-printable parts to meet your needs.   
+This is a detailed description of building OpenAutoLab. If you have any prebuilt modules like main board or magnetic rail, just skip the section. If you are 3d-printing the parts yourself, please refer to "making_parts.MD", it contains useful information about postprocessing of the parts. If you want to modify the size of the frame itself, or of the modules, due to differently sized magnets, hoses, or other components, refer to "modifying parts.MD", it describes how to modify parametric models of all 3d-printable parts to meet your needs.   
 ## Building frame
 By the end of this chapter you will have skeleton of the machine with most components mounted on the frame.   
 ### Building rail for valves and pumps
@@ -59,8 +59,8 @@ Put a shorter rod through one of the lower vertices and put parts on it between 
 Repeat the process to build a second triangle.  
 Take six nuts, two long rods and two rails and put one nut on each of the threads about 3cm from the end. Insert 6 rods into respective holes on the triangle and fasten them from the other side like depicted. Repeat the process on the other side.  
 
-## Building main board
-
+## Mounting main board
+If you want to make the board yourself, to understand its work better better, refer to "main_board" subdirectory of this repo. It contains schematics and board layout in Kicad format, and some insights about its production. First, place top cover of the front panel upside down and mount the screen and the pump switch to it. Connect the screen and the switch to the boadr. Place the buttons into their holes and put the board on top. Now close the front panel with its back cover and fix everything with screws. Now you can mount the whole assembly on the frame as shown on pictures.
 ## Building agitation module
 Mount the servo on tank cap in such a way, that its axis is in the center of the cap. Take a long screwdriver and fix the mixing rod to the servo.
 ## Connecting electronics  
