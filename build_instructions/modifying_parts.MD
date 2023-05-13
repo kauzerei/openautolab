@@ -1,0 +1,13 @@
+# Modifying parts
+All 3d-printable parts of the machine are designed in OpenSCAD and the original .scad files are included in this repository. That means that you can modify the parts using OpenSCAD or OpenSCAD extension for FreeCAD.  
+You do not need to be familiar with any CAD software to fine tune the parts, because they are parametric. Most of the dimensions you may wish to change such as inner and outer diameters of the hoses or height of the frame etc, can be edited using graphic interface. The shape of each part is calculated from the parameters that have default value, but can be changed to fit your needs. To make a 3d-printable .stl file you need to open .openscad file that contains the model, make "Parameters" section visible if it is hidden, choose the part you need from the drop-down list and change the parameters you want.
+## Frame
+OpenAutoLab is designed in such a way that it could be partially submerged into container with water, which is held at a particular temperature. If you want to use cheap off-the-shelf container, rectangular plant container is a good option. The frame is generated from the inner measurements of the container to fit inside perfectly.
+**machine depth** is the inner smaller size of the container (distance from front to back in the narrowest part inside container). Using shallow plant containers has drawbacks, but they are all managed in the design, at least for 14cm-deep containers this machine was tested on.  
+**machine width** is the inner larger size of the container (distance from left to right in the narrowest part inside container). Does not influence the shape of th parts, for visualization purposes only.
+**inclined rod length** is length of the inclined part of the frame, which is about the height of the machine. This is the parameter, defining the height and not the other way around, because of the decisions made on earlier stages of development which are not relevant anymore :)  
+**Length of shorter horizontal rods** is not a parameter and is calculated with the script from other parameters. You can see the length to which to cut the rod in the output console of OpenSCAD.  
+**threaded rod diameter** diameter of threaded rod used to build the frame. M8 seems reasonable, but you can try thinner or thicker rods.  
+**nut height** is a height of the nut for the chosen rod diameter with some tolerance.
+**nut width** is a largest width (from edge to edge) of the nut for the chosen rod diameter from with some tolerance.  
+**mount holes** is the diameters of the holes to mount main board. They can be potentially used for mounting decorative panels, enclosing valves and pumps, power supply, offset feet or base plate. 
