@@ -30,12 +30,12 @@ diameter of inner tube of the interface. Set this to inner diameter of the threa
 **offset** used only for the tank interface, makes effect only if light trap is checked. Since developing tanks usually have some axis in the center it is impossible to mount the interface directly there. Offset is the distance between the center of the tank and where you drill the hole. If set correctly, the tank will be supported with its magnetic holder directly in the middle, although the interfacing hole is offset.  
 ### Printed tread and magnet
 Those are the parameters of the 3d-printed threads used for mounting magnets. They do not affect the finer hose-mounting threads, which you need to cut with a tap and a die.  
-It is recommended to turn off layer expansion correction in the slicer and fine tune the tolerances here in the model itself. The reason is to have guaranteed minimal wall thickness. If the tolerance in the model is too small and you make it larger while slicing, the wall between the valley of the inner thread and the opposite wall of the part can become too thin for printing.  
+It is recommended to turn off layer expansion correction in the slicer and fine tune the tolerances here in the model itself. The reason is to have guaranteed minimal wall thickness. If the tolerance in the model is too small and you make it larger while slicing, the wall between the valley of the inner thread and the opposite wall of the part can become too thin for printing. To better understand the thickness of walls and tolerances between all of the parts, render the part called "testfit" with the "cut view" option on, it will provide a visual clue.  
 **thread pitch** is the distance between two neighboring coils of the thread. It affects also how much horizontal space the thread takes, 3mm seems to be a good compromise between ease of print and material usage.  
 **thread expend** horizontal distance between inner wall of outer thread and outer wall of inner thread in models, that guarantee their fit after printing. It should be at least twice the horizontal expansion of the print and smaller than thread pitch. Half of the thread pitch seems to be safely far from both limits.  
 **magnet diameter** diameter of the magnet, no extra tolerance needed.  
 **magnet height** height of the magnet, no extra tolerance needed.  
-**wall between magnets** thickness of a horizontal magnet-separating wall. Keep in mind that there are two of those walls between magnets. The parameter affects maximal attraction force between magnets. This force should be just strong enough to hold an empty vessel when it is partially submerged into temperature stabilizing water bath and to keep it from floating. However the walls need to be strong enough to hold the magnets, so avoid weak magnets. 12x1mm neodymium magnets with 0.8mm wall seem to hold 500ml vessels and are two layers thick even when printing with 0.4mm layer height.  
+**wall between magnets** thickness of a horizontal magnet-separating wall. Keep in mind that there are two of those walls between magnets. The parameter affects maximal attraction force between magnets. This force should be just strong enough to hold an empty vessel when it is partially submerged into temperature stabilizing water bath and to keep it from floating. However the walls need to be strong enough to hold the magnets, so avoid weak magnets. 12x2mm neodymium magnets with 0.8mm wall seem to hold 500ml vessels and are two layers thick even when printing with 0.4mm layer height.  
 **wall** minimal thickness of walls. Affects distance from thread valley to the nearest opposite wall, thickness of weight gauge mount on magnetic holder, position of rod mounting holes.  
 ### Hollow screw
 **screw shape** shape of the head. "Allen" option has only hexagonally-shaped inner hole for allen key and cylindrical head. "Hexagonal" and "Square" make polygon-shaped head in addition to hexagonally-shaped inner hole for allen key.  
@@ -44,11 +44,42 @@ It is recommended to turn off layer expansion correction in the slicer and fine 
 **insert diameter** and **screw diameter** are the diameters of hose adapter and hollow screw. Make it the outer diameter of the thread.  
 **adapter inner diameter** and **screw inner diameter** are the diameters of inner channels inside hose adapter and hollow screw.  
 ### Magnetic holder
-**rod mount** turns on and off mounting points to the lower rail.  
+**rod mount** turns on and off mounting points to the lower rail. The tank does not need rail mounts since it is mounted on a weight gauge.      
 **nut width** space for tightening the holder on the rail, largest width of the nut (from edge to edge).  
 **mount hole** diameter of threaded rods of lower rail.  
-**weight gauge mount** turns on and off mounting point to the force gauge.
+**weight gauge mount** turns on and off mounting point to the force gauge. Only the tank needs this mount type.  
+### Weight gauge
+**wg hole size** diameter of the thread on the loaded side.  
+**wg hole distance** center distance between threaded holes on the loaded side.  
+**wg ms hole size** diameter of the thread on the clamped side.  
+**wg ms hole distance** center distance between threaded holes on the clamped side.  
+**wg height** and **wg width** are the dimensions of the force gauge.  
+**perpendicular to rods** check if the weight gauge is mounted to rods perperdicular to the longest side of the frame. Uncheck if default lower rail is used.  
+### Helper tools
+**onside** checked generates tapping tool for the side thread. Unchecked generates the tool for the top thread.  
+**leader length** length of cylindrical part of the tap.  
+**tap length** length of the threaded part of the tap.  
+**leader diameter** diameter of the cylindrical part of the tap.  
+**holding depth** depth of the part inpression into the helping tool.  
+**die diameter** outer diameter of threading die.  
+**die height** height (thickness) of the die.  
+**handle length** length of the bar that is used to turn the tool.  
+**handle thickness** how thick is the turning bar.  
+**rounded handle** the bar is round in cross section instead of square. Nicer to hold, harder to print.  
+
 ## Tank adapter
+### Cap
+**outer diameter** is an outer diameter of cylindrical part of the tank where the lid is normally mounted. No correction for part thickness is required.  
+**outer depth** how deep the lid is.  
+**extra lip width** height of elevation inside the cap that provides extra tension which increases the friction between the tank and the cap. Does not need to be high, it's here mostly to make sure, that the contact point remains at the rim of the cap when the flaps are bent, not at the rim of the tank.   
+**extra lip height** how high does the elevation go from the rim of the cap.  
+**parts thickness** wall thickness of the part. Affects both strength and stiffness. If you want your part to be really strong, print it with thicker walls, you can compensate increased stiffness with other parameters.  
+**cutouts** amount of cuts that allow the cap to stretch.  
+**cut width** width of each cut. Doesn't need to be wide, just large enough to guarantee separation on printing.  
+**cut depth** how far from the rim the cutouts go. When smaller, than *outer depth* the cut affects only the side of the cap. If the stiffness of the part needs to be further decreased, larger cut depth will make it to the flat part also.  
+### Rod
+**servo offset** how far is the mounting plane of the servo from the rod.  
+**servo mount** optimal diameter of the hole for servo axis. This parameter is better found experimentally by printing a gauge with the same printer settings that you plan to use for the rod itself. The diameter needs to be large enough so the axis can be forced in, but small enough so the axis cuts splines inside of it, keeping it from free rotation.   
 ## Front panel
 ## Valve holder
 ## Filter_sensor

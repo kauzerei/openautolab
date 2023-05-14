@@ -4,16 +4,16 @@ outer_diameter= 72;
 outer_depth=20;
 extra_lip_width=1;
 extra_lip_height=3;
-rod_diameter=11;
-distance_to_coupling=73;
-coupling_length=20;
-coupling_width=3;
 parts_thickness=1.5;
 cutouts=10;
 cut_width=1;
 cut_depth=15;
 servo_offset=7;
 servo_mount=5.5;
+rod_diameter=11;
+distance_to_coupling=73;
+coupling_length=20;
+coupling_width=3;
 module quarter_rotation(width=10,height=10) {
   intersection() {
     linear_extrude(height = height, convexity = 10, twist = 90, slices = 20, $fn = 16) {
