@@ -159,7 +159,7 @@ module holder_magnet_cover(){
 }
 
 module magnetic_holder(){
-holeh=(dbr<magnet_diameter+2*air_gap+2/wall+mount_hole)?-mount_hole/2:
+holeh=(dbr<magnet_diameter+2*air_gap+2*wall+mount_hole)?-mount_hole/2:
       (dbr<thread4+2*wall+mount_hole)?-mount_hole/2+magnet_height:
       min(nut_width/2,hor_wall+magnet_height+wall_between_magnets+height_to_hold-nut_width/2);
 cubew=max(10,2*((cyl3/2)^2-(max(dbr,nut_width)/2-nut_width/2)^2)^0.5);

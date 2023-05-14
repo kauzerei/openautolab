@@ -2,7 +2,7 @@ use <threads.scad>
 $fn= $preview ? 32 : 64;
 umad=false;
 
-part="lower_vertex";// [lower_vertex,upper_vertex,Upper_rail_holder,Lower_rail_holder,PCB_holder,all,test]
+part="lower_vertex";// [lower_vertex,upper_vertex,Upper_rail_holder,Lower_rail_holder,PCB_holder,all]
 threaded_rod_diameter=9;
 nut_height=8;
 nut_width=16;
@@ -87,7 +87,6 @@ if (part=="lower_vertex") {
 if (part=="Upper_rail_holder") {rotate([90,0,0])rodholder(dist=between_rods(ua));}
 if (part=="Lower_rail_holder") {rotate([90,0,0])rodholder(dist=between_rods(la));}
 if (part=="PCB_holder") {smallholder();}
-if (part=="test") {vertex(15);}
 if (part=="all") {
 translate([0,-vertex_pivot_short(la),0])rotate([0,-90,0])vertex(la,nuts=true,rod1=short_rod,rod3=-machine_width,rod2=inclined_rod_length);
 translate([0,short_rod-vertex_thickness(a)-h*2,0])mirror([0,1,0])translate([0,-vertex_pivot_short(la),0])rotate([0,-90,0])vertex(la,nuts=true,rod3=-machine_width,rod2=inclined_rod_length);
