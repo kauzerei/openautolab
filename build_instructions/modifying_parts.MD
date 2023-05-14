@@ -79,9 +79,43 @@ It is recommended to turn off layer expansion correction in the slicer and fine 
 **cut depth** how far from the rim the cutouts go. When smaller, than *outer depth* the cut affects only the side of the cap. If the stiffness of the part needs to be further decreased, larger cut depth will make it to the flat part also.  
 ### Rod
 **servo offset** how far is the mounting plane of the servo from the rod.  
-**servo mount** optimal diameter of the hole for servo axis. This parameter is better found experimentally by printing a gauge with the same printer settings that you plan to use for the rod itself. The diameter needs to be large enough so the axis can be forced in, but small enough so the axis cuts splines inside of it, keeping it from free rotation.   
+**servo mount** optimal diameter of the hole for servo axis. This parameter is better found experimentally by printing a gauge with the same printer settings that you plan to use for the rod itself. The diameter needs to be large enough so the axis can be forced in, but small enough so the axis cuts splines inside of it, keeping it from free rotation.  
+**rod diameter** outer diameter of an agitating rod.  
+**distance to coupling** distance from the plane going through the upper rim of the tank to the coupling inside the spiral. For the tanks that use protrusions inside the tube that holds spirals (or just a wall dividing this tube in half at some depth) to engage with the rod to agitate through rotation. Distance from this protrusion or wall to the cap.  
+**coupling length** length of the slot, which moves the spirals. Can be over-sized without real consequences.  
+**coupling width** width of the slot. Should be larger than protrusion/wall it engages with.  
 ## Front panel
+**tolerance** tolerances for the board itself, for halves of the panel, for the buttons.  
+**pcb width** with of the main board  
+**pcb height** height of the main board  
+**pcb offset** distance from the top of the board (component side) to the front side of the front panel. There should be enough clearance for both the components soldered on the board and for external ones: display and switch.  
+**pcb thickness** distance from the top of the board (component side) to the furthest point on the rear side. Board thickness plus space occupied by soldered connections.  
+**walls** wall thickness.  
+**buttons inner** diameter of the buttons as seen from the outside.  
+**buttons inner** outer diameter of inner structure holding those buttons. Twice the inner diameter is a good start.  
+**buttons height** the height of the switches themselves. Distance between the component side of the board and the tip of the switch.  
+**switches diameter** mounting diameter of the fulter pump switch.  
+**screen pos** coordinates of the center of the screen.  
+**screen mount** vertical and horizontal distance between the mounting holes of the screen.  
+**screen mount holes** diameter of the screws that hold the screen.  
+**screen rect** the size of the protruding part of the screen, for which a rectangular slot should be cut on the front panel.  
+Careful with last three parameters, it is supposed, that mounting rectangle and viewing window share a center. If one is offset, make the slot bigger.  
+# Advanced modifications
+Most of the parameters for this part are the positions of different components on the main board. If you modified the board layout, measure X and Y coordinates of the components (and holes) from the upper-left corner of the board and write them inside the code. Unfortunately such arrays of values cannot be set with GUI. However if you understand how to modify the board in such a way it does not fit the box anymore, you'll manage to modify the array also :).  
+**pcb holes** array with coordinates of centers of the drilled holes on the PCB used for mounting it.  
+**buttons pos** array with coordinates of the centers of buttons.  
+**connectors pos** array with coordinates of the centers of screw terminals. This model is made for connectors along the upper side of the board, if you want to have connectors in other places, you may have to modify the model.  
+**switches pos** array with coordinates of the centers of switches. There's only one switch currently, but there may be more in future.  
+
 ## Valve holder
+**rod diameter** outer diameter of the threaded rod.  
+**rods distance** distance between rods of the upper rail.  
+**offset** used to place the valves at certain distance from the plane of upper rail, for example to free some space for a decorative panel that covers parts of the machine.  
+**mount hole** diameter of the screws that hold the valves.  
+**mount hole distance** distance between screws that hold the valve.  
+**part width** width of the holders. Twice the size of the hole is a good start.  
+**part thickness** Thickness of the brackets. About twice as thick as your comfortable wall thickness for not loaded parts.  
+**air gap** a gap between two halves of the mount. Gives a room for tightening them together on a rail and for printing two halves as one part without having them stuck together.
 ## Filter_sensor
 **filter_wall** size of air gap of the holding clip.  
 **holder wall** thickness of the part itself.  
