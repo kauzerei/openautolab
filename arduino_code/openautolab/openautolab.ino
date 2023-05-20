@@ -168,12 +168,14 @@ void pump(boolean direction, byte vessel) {
   t0=millis();
   bool error=false;
   while (1) {
+    lcd.setCursor(10,3);
+    tohms((millis()-st_pr)/1000);
     delay(100);
     measurements[i]=scale.get_units();
     lcd.setCursor(0,2);
     lcd.print(measurements[i]);
     lcd.print(F("     "));
-    if(abs(measurements[i])>10.0*tank_cap) {error=false; break;}
+    if(measurements[i]>10.0*tank_cap) {error=false; break;}
     i=(i+1)%10;
     float maximum=measurements[0];
     float minimum=measurements[0];
@@ -181,7 +183,7 @@ void pump(boolean direction, byte vessel) {
       if(measurements[j]<minimum) minimum=measurements[j];
       if(measurements[j]>maximum) maximum=measurements[j];
     }
-    if(maximum-minimum<3.0 && millis()-t0>5000ul) {error=true; break;}
+    if(maximum-minimum<3.0 && millis()-t0>10000ul) {error=true; break;}
   }
   digitalWrite(motorminus,LOW);
   digitalWrite(motorplus,LOW);
