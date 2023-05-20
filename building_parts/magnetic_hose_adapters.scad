@@ -7,22 +7,22 @@ $fs=0.5/1;
 $fa=1/1;
 part = "Main_body"; // [Main_body, Main_magnet_cover, Magnetic_holder, Holder_magnet_cover,Weight_gauge_mount,Hose_adapter, Hose_sleeve,Hollow_screw,OPTIONAL_Tapping_tool,OPTIONAL_Threading_tool,OPTIONAL_Wrench,testfit]
 cut_view=false;
-override_dbr=false;
+override_dbr=true;
 distance_between_rods=24;
-air_gap=1.0;
+air_gap=0.50;
 /* [Main body options] */
 light_trap=false;
 main_part_holes=7;
 seal_length=8;
 hor_wall=3;
-offset=20;
+offset=17;
 
 /* [Printed thread and magnet options] */
 thread_pitch=3;
 thread_expand=1.5;
 magnet_diameter=12;
 magnet_height=2;
-wall_between_magnets=0.8;
+wall_between_magnets=0.4;
 wall=1.5;
 
 /* [Hose adapter and hollow screw options] */
@@ -72,7 +72,7 @@ height_to_hold=magnet_height+thread_pitch*2+wall_between_magnets;
 
 //calculating threads and cylinder diameters that fit nicely
 thread_add=2*thread_pitch*cos(30);
-thread1=magnet_diameter+thread_add;
+thread1=magnet_diameter+thread_add-2*thread_expand+2*air_gap;
 thread2=thread1+2*thread_expand;
 cyl1=thread2+2*wall;
 cyl2=cyl1+2*air_gap;
