@@ -2,7 +2,7 @@ use <threads.scad>
 $fn= $preview ? 32 : 64;
 umad=false;
 
-part="lower_vertex";// [lower_vertex,upper_vertex,Upper_rail_holder,Lower_rail_holder,PCB_holder,all]
+part="lower_vertex";// [lower_vertex,upper_vertex,Upper_rail_holder,Lower_rail_holder,PCB_holder,top_holder,all]
 threaded_rod_diameter=9;
 nut_height=8;
 nut_width=16;
@@ -62,10 +62,13 @@ module vertex(a,rod1=0,rod2=0,rod3=0,nuts=false){
       else mirror([0,0,1])rotate([0,0,-a])translate([0,vertex_pivot_long(a),-w/2-h])cyl(h=abs(rod3),d=d);
       }
 }
-module rodholder(dist=d+1) {
+module rodholder(dist=d+1,cutout=false) {
   difference(){
     cube([w,w,w+dist],center=true);
-    translate([0,0,+dist/2])rotate([90,0,0])cylinder(d=d,h=w+2,center=true);
+    hull() {
+      translate([0,0,+dist/2])rotate([90,0,0])cylinder(d=d,h=w+2,center=true);
+      if (cutout) translate([w/2,0,+dist/2])rotate([90,0,0])cylinder(d=d,h=w+2,center=true);
+    }
     translate([0,0,-dist/2])rotate([0,90,0])cylinder(d=d,h=w+2,center=true);
     cylinder(d=mount_holes,h=w+dist+2,center=true);
   }
@@ -81,6 +84,7 @@ module rodholder(dist=d+1) {
 if (part=="upper_vertex") {
   translate([0,-vertex_pivot_short(a),0])vertex(a);
 }
+if (part=="top_holder") {rotate([90,0,0])rodholder(dist=between_rods(ua),cutout=true);}
 if (part=="lower_vertex") {
   translate([0,-vertex_pivot_short(a),0])vertex(a);
 }

@@ -1,8 +1,8 @@
 part = "two_halves"; // [bigger,smaller,two_halves, main_pump_holder,filter_pump_holder]
 rod_diameter=8;
 rods_distance=62;
-offset=8;
-mount_hole=5;
+offset=10;
+mount_hole=4;
 mount_hole_distance=38;
 part_width=10;
 part_thickness=3;
@@ -59,7 +59,29 @@ module pumpholes(){
   }
 
 module pump() {
-  difference(){
+pumpmounts=[[21,0],[-31,0]];
+rodmounts=[[rods_distance/2,0],[-rods_distance/2,0]];
+shift=[5,-6];
+rotation=40;
+pumpdiameter=34;
+difference()
+{
+  union() {
+    hull() {
+      translate(shift)rotate([0,0,rotation])for (i=pumpmounts) translate(i)cylinder(h=part_width,d=mount_hole+2*part_thickness,center=true);      
+      for (i=rodmounts) translate(i)cylinder(h=part_width,d=rod_diameter+2*part_thickness,center=true);
+      translate(shift)rotate([0,0,rotation])cylinder(h=part_width,d=pumpdiameter+2*part_thickness,center=true);
+    }
+    translate(shift)rotate([0,0,rotation])for (i=pumpmounts) translate(i)translate([0,0,offset/2])cylinder(h=part_width+offset,d=mount_hole+2*part_thickness,center=true);
+  }
+    translate(shift)rotate([0,0,rotation])for (i=pumpmounts) translate(i)cylinder(h=part_width+2*offset+0.02,d=mount_hole,center=true);
+    for (i=rodmounts) translate(i)cylinder(h=part_width+0.02,d=rod_diameter,center=true);
+    translate(shift)rotate([0,0,rotation])cylinder(h=part_width+2*offset+0.02,d=pumpdiameter,center=true);  
+    cube([2*rods_distance,air_gap,part_width+2],center=true);
+    #translate([-20,8,0])rotate([90,0,0])cylinder (d=4,h=30,center=true);
+}
+
+  *difference(){
     union(){
       linear_extrude(part_width)  offset(r=part_thickness+air_gap)translate([0,10])rotate([0,0,-50]){
     translate([31,0])circle(d=4);
