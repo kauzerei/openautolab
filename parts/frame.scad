@@ -2,11 +2,12 @@ use <threads.scad>
 $fn= $preview ? 32 : 64;
 umad=false;
 
-part="lower_vertex";// [lower_vertex,upper_vertex,Upper_rail_holder,Lower_rail_holder,PCB_holder,top_holder,all]
-threaded_rod_diameter=9;
+part="lower_vertex";// [lower_vertex,upper_vertex,Upper_rail_holder,Lower_rail_holder,PCB_holder,top_holder,nut_spinner,all]
+threaded_rod_diameter=8;
 nut_height=8;
 nut_width=16;
-d=threaded_rod_diameter;
+air_gap=0.5;
+d=threaded_rod_diameter+air_gap*2;
 h=nut_height;
 w=nut_width;
 mount_holes=4;
@@ -80,6 +81,26 @@ module rodholder(dist=d+1,cutout=false) {
     rotate([0,90,0])cylinder(d=mount_holes,h=w+2,center=true);
   }
   }
+module nutspinner(d1,d2,d3,d4,d5,h) {
+  difference() {
+    cylinder(d=d1,h=h,center=true);
+      hull() {
+        cylinder(d=d5,h=h+0.02,center=true);
+        translate([0,d1,0])cylinder(d=d5,h=h+0.02,center=true);
+      }
+      difference() {
+        cylinder(d=d2,h=h+0.02,center=true);
+        cylinder(d=d3,h=h+0.04,center=true);
+        hull() {
+          cylinder(d=d5+6,h=h+0.04,center=true);
+          translate([0,d1,0])cylinder(d=d5+6,h=h+0.04,center=true);
+      }
+        }
+        cylinder(d=d4,h=h,$fn=6);
+      }
+  }
+      
+      
 
 if (part=="upper_vertex") {
   translate([0,-vertex_pivot_short(a),0])vertex(a);
@@ -91,6 +112,7 @@ if (part=="lower_vertex") {
 if (part=="Upper_rail_holder") {rotate([90,0,0])rodholder(dist=between_rods(ua));}
 if (part=="Lower_rail_holder") {rotate([90,0,0])rodholder(dist=between_rods(la));}
 if (part=="PCB_holder") {smallholder();}
+if (part=="nut_spinner") {nutspinner(50,40,nut_width+6,nut_width+2*air_gap,threaded_rod_diameter+air_gap*2,nut_height*2);}
 if (part=="all") {
 translate([0,-vertex_pivot_short(la),0])rotate([0,-90,0])vertex(la,nuts=true,rod1=short_rod,rod3=-machine_width,rod2=inclined_rod_length);
 translate([0,short_rod-vertex_thickness(a)-h*2,0])mirror([0,1,0])translate([0,-vertex_pivot_short(la),0])rotate([0,-90,0])vertex(la,nuts=true,rod3=-machine_width,rod2=inclined_rod_length);
