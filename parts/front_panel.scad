@@ -10,7 +10,7 @@ pcb_holes=[[3.8,3.8],[141,3.8],[3.8,85],[141,85]];
 walls=1.5;
 buttons_pos=[[40,83],[70,83],[101,83]];
 buttons_outer=10;
-buttons_inner=5;
+buttons_inner=4;
 buttons_height=5;
 connectors_top=[[15,8],[27.66,8],[40.33,8],[53,8],[65.66,8],[78.33,8],[91,8],[103.66,8],[116.33,8],[129,8]];
 connectors_left=[[0,32],[0,52]];
@@ -28,7 +28,7 @@ translate([-tolerance-walls,-tolerance-walls,0.01])cube([pcb_width+2*tolerance+2
 for(tr=switches_pos) translate(tr) cylinder(d=switches_diameter,h=walls+0.02);
 for (i=[[[1,0],[0,1]],[[-1,0],[0,1]],[[1,0],[0,-1]],[[-1,0],[0,-1]]])translate(screen_pos)translate(i*screen_mount/2)cylinder(d=mount_holes,h=walls+0.02);
 translate(screen_pos-screen_rect/2)cube([screen_rect[0],screen_rect[1],walls+0.02]);
-for(tr=buttons_pos) translate(tr) cylinder(d=buttons_inner,h=pcb_offset-buttons_height-2+walls+0.02);
+for(tr=buttons_pos) translate(tr) cylinder(d=buttons_inner+2*tolerance,h=pcb_offset-buttons_height-2+walls+0.02);
 }
 difference(){
 translate([0,0,walls])cube([pcb_width,pcb_height,mount_holes/2]);
@@ -41,7 +41,7 @@ for (i=[[0,0,walls],[0,pcb_height-2*mount_holes,walls],[pcb_width-2*mount_holes,
 }
 difference() {
 translate([0,0,walls])for (tr = buttons_pos) translate(tr) cylinder(d=buttons_outer,h=pcb_offset-buttons_height+pcb_thickness+solder_thickness-2);
-translate([0,0,walls-0.01])for(tr=buttons_pos) translate(tr) cylinder(d=buttons_inner,h=pcb_offset-buttons_height+pcb_thickness+solder_thickness+0.02);
+translate([0,0,walls-0.01])for(tr=buttons_pos) translate(tr) cylinder(d=buttons_inner+2*tolerance,h=pcb_offset-buttons_height+pcb_thickness+solder_thickness+0.02);
 }
 
 difference() {
@@ -68,7 +68,7 @@ for (i=connectors_right)translate(i)translate([0,0,pcb_offset+pcb_thickness+sold
 
 module buttons() {
 cylinder(d=buttons_outer,h=2);
-translate([0,0,2])cylinder(d=buttons_inner-2*tolerance,h=pcb_offset-buttons_height+pcb_thickness+solder_thickness+walls+2);
+translate([0,0,2])cylinder(d=buttons_inner,h=pcb_offset-buttons_height+pcb_thickness+solder_thickness+walls+2);
 }
 
 if (part=="Front") front(); 

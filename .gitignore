@@ -1,4 +1,4 @@
 main_board/openautolab-backups/*
-main_board/autosave*
+main_board/_autosave*
 *.stl
 *.json
