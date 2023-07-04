@@ -164,6 +164,7 @@ void pump(boolean direction, byte vessel) {
   float measurements[10];
   scale.tare();
   digitalWrite(pin,HIGH);
+  delay(200);
   digitalWrite(direction?motorminus:motorplus,HIGH);
   t0=millis();
   bool error=false;
@@ -183,11 +184,14 @@ void pump(boolean direction, byte vessel) {
       if(measurements[j]<minimum) minimum=measurements[j];
       if(measurements[j]>maximum) maximum=measurements[j];
     }
-    if(maximum-minimum<3.0 && millis()-t0>10000ul) {error=true; break;}
+    if(maximum-minimum<3.0 && millis()-t0>5000ul) {error=true; break;}
   }
   digitalWrite(motorminus,LOW);
+  delay(200);
   digitalWrite(motorplus,LOW);
+  delay(200);
   digitalWrite(pin,LOW);
+  delay(200);
 }
 
 void agitate(unsigned long stage_duration, byte init_agit, byte agit_period, byte agit_duration) {
@@ -627,7 +631,9 @@ void loop() {
     break;
     
     case 16:
-    d76();
+    //pumpallin();
+    cleanall();
+    //d76(); 
     waitkey();
     k=0;
     break;
