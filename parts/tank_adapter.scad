@@ -1,17 +1,17 @@
 $fn= $preview ? 32 : 128;
 part="Cap"; //[Cap,Rod,OPTIONAL_servo_gauge,all]
-outer_diameter= 72;
-outer_depth=20;
-extra_lip_width=1;
-extra_lip_height=3;
+outer_diameter= 70;
+outer_depth=17;
+extra_lip_width=1.5;
+extra_lip_height=5;
 parts_thickness=1.5;
 cutouts=10;
-cut_width=1;
+cut_width=2;
 cut_depth=15;
 servo_offset=7;
 servo_mount=5.5;
-rod_diameter=11;
-distance_to_coupling=73;
+rod_diameter=14;
+distance_to_coupling=74;
 coupling_length=20;
 coupling_width=3;
 module quarter_rotation(width=10,height=10) {

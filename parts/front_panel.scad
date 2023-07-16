@@ -3,7 +3,7 @@ part="Box";//[Front,Box,Buttons]
 tolerance=0.5;
 pcb_width=145;
 pcb_height=89;
-pcb_offset=30;
+pcb_offset=26;
 pcb_thickness=2;
 solder_thickness=2;
 pcb_holes=[[3.8,3.8],[141,3.8],[3.8,85],[141,85]];
@@ -61,7 +61,7 @@ difference() {
 }
 translate([0,0,pcb_offset+2*pcb_thickness+solder_thickness+walls-0.01])for (i=pcb_holes)translate(i)cylinder(d=mount_holes,h=walls+solder_thickness+0.02);
 for (i=connectors_top)translate(i)translate([0,-5,pcb_offset+pcb_thickness+solder_thickness+walls-5])cube([10,18,10],center=true);
-for (i=connectors_left)translate(i)translate([0,0,pcb_offset+pcb_thickness+solder_thickness+walls-5])cube([20,10,10],center=true);
+for (i=connectors_left)translate(i)translate([0,0,pcb_offset+pcb_thickness+solder_thickness+walls-5-4])cube([20,10,18],center=true);
 for (i=connectors_right)translate(i)translate([0,0,pcb_offset+pcb_thickness+solder_thickness+walls-5-7])cube([20,10,19],center=true);
 }
 }
