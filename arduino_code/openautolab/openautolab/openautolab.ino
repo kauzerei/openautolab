@@ -271,46 +271,34 @@ void do_process (const struct Process &process) { //execution of a process. Numb
 
 void d76() { //definition of black-and-white process, more of those can be written if needed
     struct Process process={"B&W develop", {
-    (Stage){F("Developer"),toseconds(bw_dev_time),init_agit,agit_period,agit_duration,1,oneshot?byte(6):byte(1),1},
-    (Stage){F("Rinse dev"),30ul,init_agit,agit_period,agit_duration,5,6,1},
-    (Stage){F("Fixer"),toseconds(bw_fix_time),init_agit,agit_period,agit_duration,2,2,1},
-    (Stage){F("Wash "),toseconds(washes_duration),init_agit,agit_period,agit_duration,5,6,washes_count},
-    (Stage){F("Wet agent"),toseconds(washes_duration),init_agit,agit_period,agit_duration,4,6,fotoflo}
+    (Stage){"Developer",toseconds(bw_dev_time),init_agit,agit_period,agit_duration,1,oneshot?byte(6):byte(1),1},
+    (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,5,6,1},
+    (Stage){"Fixer",toseconds(bw_fix_time),init_agit,agit_period,agit_duration,2,2,1},
+    (Stage){"Wash ",toseconds(washes_duration),init_agit,agit_period,agit_duration,5,6,washes_count},
+    (Stage){"Wet agent",toseconds(washes_duration),init_agit,agit_period,agit_duration,4,6,fotoflo}
   }};
   do_process(process);
 }
 
 void pumpallout() { //definition of wash process
-  struct Process process={"Empty", {
-  (Stage){"Vessel 1",0,0,0,0,1,6,1},
-  (Stage){"Vessel 2",0,0,0,0,2,6,1},
-  (Stage){"Vessel 3",0,0,0,0,3,6,1},
-  (Stage){"Vessel 4",0,0,0,0,4,6,1}
-  }};
-  do_process(process);
+  for (byte i=1;i<=4;i++) {
+    lcd.clear();
+    pump(true,i);
+    pump(false,6);
+    }
 }
 
 void pumpallin() { //definition of wash process
-  struct Process process={"Water fill", {
-  (Stage){"Vessel 1",0,0,0,0,5,1,1},
-  (Stage){"Vessel 2",0,0,0,0,5,2,1},
-  (Stage){"Vessel 3",0,0,0,0,5,3,1},
-  (Stage){"Vessel 4",0,0,0,0,5,4,1}
-  }};
-  do_process(process);
-}
-void cleanall() {
-    tank_cap=50;
-    pumpallout();
-    tank_cap=30;
-    pumpallin();
-    tank_cap=50;
-    pumpallout();
-    tank_cap=EEPROM.read(ess+10);
+  for (byte i=1;i<=4;i++) {
+    lcd.clear();
+    pump(true,5);
+    pump(false,i);
   }
+}
+
 void c41() { //definition of c41 process, more of those can be written if needed 
   struct Process process={"C41 develop", {
-    (Stage){"Prewash",30ul,init_agit,agit_period,agit_duration,5,6,1},
+    (Stage){"Prewash",30ul,init_agit,agit_period,agit_duration,5,6,3},
     (Stage){"Developer",195ul+4ul*(c41_film_count-2),init_agit,agit_period,agit_duration,1,1,1},
     (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,5,6,1},
     (Stage){"Bleach",260ul,init_agit,agit_period,agit_duration,2,2,1},
@@ -354,8 +342,6 @@ void setup() {
   scale.set_offset(offset);
   lcd.init(); //display
   lcd.backlight();
-  //pumpallin();
-  //cleanall();
 }
 void loop() {
   switch(k) {
@@ -591,7 +577,7 @@ void loop() {
 
     case 13: //scale calibration
     lcd.setCursor(0,0);
-    lcd.print(F("Advanced         1/2"));
+    lcd.print(F("Advanced         1/3"));
     lcd.setCursor(0,2);
     lcd.print(F("Current: "));
     lcd.print(scale.get_units());
@@ -614,7 +600,7 @@ void loop() {
     case 14: //where does the developer go after use? Back to original vessel, or discarded?
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print(F("Advanced         2/2"));
+    lcd.print(F("Advanced         2/3"));
     lcd.setCursor(0,1);
     lcd.print(F("Discard B&W dev"));
     lcd.setCursor(0,2);
@@ -626,14 +612,39 @@ void loop() {
     switch(waitkey()){
       case 1: oneshot=1; break;
       case 2: oneshot=0; break;
-      case 3: k=0; EEPROM.update(ess+11,oneshot);
+      case 3: k=15; EEPROM.update(ess+11,oneshot);
       }
     break;
-    
+
+    case 15: //clean the system
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print(F("Advanced         3/3"));
+    lcd.setCursor(0,1);
+    lcd.print(F("System clean"));
+    lcd.setCursor(0,2);
+    lcd.print(F("Fill vessels only?"));
+    lcd.setCursor(0,3);
+    lcd.print(F("Yes     No       End"));
+    switch(waitkey()){
+      case 1:
+        pumpallin();
+        break;
+      case 2: 
+        tank_cap=50;
+        pumpallout();
+        tank_cap=40;
+        pumpallin();
+        tank_cap=50;
+        pumpallout();
+        tank_cap=EEPROM.read(ess+10);
+        break;
+      case 3: k=0;
+      }
+    break;
+
     case 16:
-    //pumpallin();
-    cleanall();
-    //d76(); 
+    d76(); 
     waitkey();
     k=0;
     break;
