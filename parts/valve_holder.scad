@@ -1,7 +1,8 @@
 part = "two_halves"; // [bigger,smaller,two_halves, main_pump_holder,filter_pump_holder,pcb_holder]
 rod_diameter=8;
 rods_distance=62;
-offset=10;
+valve_offset=0;
+pump_offset=5;
 mount_hole=4;
 mount_hole_distance=38;
 part_width=10;
@@ -14,15 +15,15 @@ $fn=$preview?32:64;
 module whole(){
     translate([rods_distance/2,0,0])cylinder(d=rod_diameter+2*part_thickness, h=part_width, center=true);
              translate([-rods_distance/2,0,0])cylinder(d=rod_diameter+2*part_thickness, h=part_width, center=true);
-     translate([0,offset,0])cube([rods_distance-rod_diameter+2*part_thickness+2*air_gap,2*part_thickness+air_gap,part_width],center=true);
-       translate([rods_distance/2-rod_diameter/2+air_gap/2,(offset-part_thickness-air_gap/2)/2,0])cube([2*part_thickness+air_gap,offset-part_thickness-air_gap/2,part_width],center=true);
-      translate([-rods_distance/2+rod_diameter/2-air_gap/2,(offset-part_thickness-air_gap/2)/2,0])cube([2*part_thickness+air_gap,offset-part_thickness-air_gap/2,part_width],center=true);
+     translate([0,valve_offset,0])cube([rods_distance-rod_diameter+2*part_thickness+2*air_gap,2*part_thickness+air_gap,part_width],center=true);
+       translate([rods_distance/2-rod_diameter/2+air_gap/2,(valve_offset-part_thickness-air_gap/2)/2,0])cube([2*part_thickness+air_gap,valve_offset-part_thickness-air_gap/2,part_width],center=true);
+      translate([-rods_distance/2+rod_diameter/2-air_gap/2,(valve_offset-part_thickness-air_gap/2)/2,0])cube([2*part_thickness+air_gap,valve_offset-part_thickness-air_gap/2,part_width],center=true);
     }
 module holes(){
     translate([rods_distance/2,0,0])cylinder(d=rod_diameter,h=part_width+2,center=true);
     translate([-rods_distance/2,0,0])cylinder(d=rod_diameter,h=part_width+2,center=true);
-    translate([-mount_hole_distance/2,offset,0])rotate([90,0,0])cylinder(d=mount_hole, h=2*part_thickness+air_gap+2, center=true);         
-             translate([mount_hole_distance/2,offset,0])rotate([90,0,0])cylinder(d=mount_hole, h=2*part_thickness+air_gap+2, center=true);
+    translate([-mount_hole_distance/2,valve_offset,0])rotate([90,0,0])cylinder(d=mount_hole, h=2*part_thickness+air_gap+2, center=true);         
+             translate([mount_hole_distance/2,valve_offset,0])rotate([90,0,0])cylinder(d=mount_hole, h=2*part_thickness+air_gap+2, center=true);
     }
 module bigger() {
     difference(){
@@ -41,15 +42,15 @@ module smaller() {
     }
 }
 module cutter(gap){
-    translate([(rod_diameter-rods_distance)/2-gap,-rod_diameter/2-part_thickness,-part_width/2-1])cube([rods_distance-rod_diameter+2*gap,part_thickness+rod_diameter/2+offset-air_gap/2+gap,part_width+2]);
+    translate([(rod_diameter-rods_distance)/2-gap,-rod_diameter/2-part_thickness,-part_width/2-1])cube([rods_distance-rod_diameter+2*gap,part_thickness+rod_diameter/2+valve_offset-air_gap/2+gap,part_width+2]);
     translate([-(rods_distance+rod_diameter+2*part_thickness)/2-1,-rod_diameter/2-part_thickness,-part_width/2-1])cube([rods_distance+rod_diameter+2*part_thickness+2,part_thickness+rod_diameter/2-air_gap/2+gap,part_width+2]);
-    translate([rods_distance/2-rod_diameter/2,-rod_diameter/2-max(0,air_gap/2-offset),-(part_width+2)/2])cube([rod_diameter/2,rod_diameter/2,part_width+2]);
-    translate([-rods_distance/2,-rod_diameter/2-max(0,air_gap/2-offset),-(part_width+2)/2])cube([rod_diameter/2,rod_diameter/2,part_width+2]);
+    translate([rods_distance/2-rod_diameter/2,-rod_diameter/2-max(0,air_gap/2-valve_offset),-(part_width+2)/2])cube([rod_diameter/2,rod_diameter/2,part_width+2]);
+    translate([-rods_distance/2,-rod_diameter/2-max(0,air_gap/2-valve_offset),-(part_width+2)/2])cube([rod_diameter/2,rod_diameter/2,part_width+2]);
 }
 module divider(gap)
 {
-    translate([0,offset-part_thickness-gap/2,0])cube([rods_distance-rod_diameter,2*part_thickness+air_gap,part_width],center=true);
-    cube([rods_distance-rod_diameter,2*offset,part_width],center=true);
+    translate([0,valve_offset-part_thickness-gap/2,0])cube([rods_distance-rod_diameter,2*part_thickness+air_gap,part_width],center=true);
+    cube([rods_distance-rod_diameter,2*valve_offset,part_width],center=true);
     }
 module pumpholes(){
   translate([rods_distance/2,0,0])circle(d=rod_diameter);
@@ -64,8 +65,8 @@ module pumpholes(){
 module pump() {
 pumpmounts=[[21,0],[-31,0]];
 rodmounts=[[rods_distance/2,0],[-rods_distance/2,0]];
-shift=[5,-6];
-rotation=40;
+shift=[-5,-6];
+rotation=140;
 pumpdiameter=34;
 difference()
 {
@@ -75,13 +76,13 @@ difference()
       for (i=rodmounts) translate(i)cylinder(h=part_width,d=rod_diameter+2*part_thickness,center=true);
       translate(shift)rotate([0,0,rotation])cylinder(h=part_width,d=pumpdiameter+2*part_thickness,center=true);
     }
-    translate(shift)rotate([0,0,rotation])for (i=pumpmounts) translate(i)translate([0,0,offset/2])cylinder(h=part_width+offset,d=mount_hole+2*part_thickness,center=true);
+    translate(shift)rotate([0,0,rotation])for (i=pumpmounts) translate(i)translate([0,0,pump_offset/2])cylinder(h=part_width+pump_offset,d=mount_hole+2*part_thickness,center=true);
   }
-    translate(shift)rotate([0,0,rotation])for (i=pumpmounts) translate(i)cylinder(h=part_width+2*offset+0.02,d=mount_hole,center=true);
+    translate(shift)rotate([0,0,rotation])for (i=pumpmounts) translate(i)cylinder(h=part_width+2*pump_offset+0.02,d=mount_hole,center=true);
     for (i=rodmounts) translate(i)cylinder(h=part_width+0.02,d=rod_diameter,center=true);
-    translate(shift)rotate([0,0,rotation])cylinder(h=part_width+2*offset+0.02,d=pumpdiameter,center=true);  
+    translate(shift)rotate([0,0,rotation])cylinder(h=part_width+2*pump_offset+0.02,d=pumpdiameter,center=true);  
     cube([2*rods_distance,air_gap,part_width+2],center=true);
-    #translate([-20,8,0])rotate([90,0,0])cylinder (d=4,h=30,center=true);
+    #translate([20,8,0])rotate([90,0,0])cylinder (d=4,h=30,center=true);
 }
 
   *difference(){
