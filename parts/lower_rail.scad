@@ -50,7 +50,6 @@ wg_ms_hole_size=6;
 wg_ms_hole_distance=15;
 wg_height=13.5;
 wg_width=13.5;
-perpendicular_to_rods=false;
 
 /* [Helper tools options] */
 onside=false;
@@ -82,9 +81,7 @@ cyl2=cyl1+2*air_gap;
 thread3= cyl2+2*wall+thread_add;
 thread4=thread3+2*thread_expand;
 cyl3=thread4+2*wall;
-dbr=override_dbr?distance_between_rods:
-(part=="Weight_gauge_mount" && perpendicular_to_rods)?wg_ms_hole_distance+wg_ms_hole_size+2*wall+mount_hole:
-thread4+2*wall+mount_hole;
+dbr=override_dbr?distance_between_rods:thread4+2*wall+mount_hole;
 holeh=(dbr<magnet_diameter+2*air_gap+2*wall+mount_hole)?-mount_hole/2:
       (dbr<thread4+2*wall+mount_hole)?-mount_hole/2+magnet_height:
       min(nut_width/2,hor_wall+magnet_height+wall_between_magnets+height_to_hold-nut_width/2);
@@ -208,7 +205,7 @@ module magnetic_holder() {
 }
 
 module wg_holder() {
-wgh_h=perpendicular_to_rods?nut_width:wg_ms_hole_distance+wg_width;
+wgh_h=wg_ms_hole_distance+wg_width;
   difference() {
     union() {
       cube([wgh_h,dbr,nut_width],center=true);
@@ -217,10 +214,14 @@ wgh_h=perpendicular_to_rods?nut_width:wg_ms_hole_distance+wg_width;
     }
     translate([0,dbr/2,0])rotate([0,90,0])cylinder(d=mount_hole, h=wg_ms_hole_distance+wg_width+2, center=true);
     translate([0,-dbr/2,0])rotate([0,90,0])cylinder(d=mount_hole, h=wg_ms_hole_distance+wg_width+2, center=true);
-    if(perpendicular_to_rods){translate([0,wg_ms_hole_distance/2,0])cylinder(h=nut_width+2,d=wg_ms_hole_size, center=true);
-    translate([0,-wg_ms_hole_distance/2,0])cylinder(h=nut_width+2,d=wg_ms_hole_size,center=true);}
-    else{translate([wg_ms_hole_distance/2,0,0])cylinder(h=nut_width+2,d=wg_ms_hole_size, center=true);
-    translate([-wg_ms_hole_distance/2,0,0])cylinder(h=nut_width+2,d=wg_ms_hole_size,center=true);}
+   hull() {
+     translate([wg_ms_hole_distance/2,(dbr-nut_width-wg_ms_hole_size)/2,0])cylinder(h=nut_width+2,d=wg_ms_hole_size, center=true);
+     translate([wg_ms_hole_distance/2,-(dbr-nut_width-wg_ms_hole_size)/2,0])cylinder(h=nut_width+2,d=wg_ms_hole_size, center=true);
+     }
+    hull() {
+     translate([-wg_ms_hole_distance/2,(dbr-nut_width-wg_ms_hole_size)/2,0])cylinder(h=nut_width+2,d=wg_ms_hole_size, center=true);
+     translate([-wg_ms_hole_distance/2,-(dbr-nut_width-wg_ms_hole_size)/2,0])cylinder(h=nut_width+2,d=wg_ms_hole_size, center=true);
+     }
     translate([0,0,-nut_width/4-0.5])cube([wg_ms_hole_distance+wg_width+2,dbr+nut_width+2,nut_width/2+1],center=true);
   }
 }
