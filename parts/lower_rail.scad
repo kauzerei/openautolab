@@ -7,7 +7,8 @@ $fs=0.5/1;
 $fa=1/1;
 part = "Main_body"; // [Main_body, Main_magnet_cover, Magnetic_holder, Holder_magnet_cover,Weight_gauge_mount,Hose_adapter, Hose_sleeve,Hollow_screw,Filter_support,OPTIONAL_Tapping_tool,OPTIONAL_Threading_tool,OPTIONAL_Wrench,testfit]
 cut_view=false;
-override_dbr=true;
+override_dbr=false;
+rod_diameter=8;
 distance_between_rods=24;
 air_gap=0.50;
 
@@ -39,7 +40,7 @@ screw_inner_diameter=4;
 /* [Magnetic holder options] */
 rod_mount=false;
 nut_width=16;
-mount_hole=8;
+mount_hole=rod_diameter+1*air_gap;
 weight_gauge_mount=false;
 
 /* [Weight gauge measurements] */
