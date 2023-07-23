@@ -101,11 +101,17 @@ module hollow_screw() {
 }
 
 module supports() {
-  sl=(hor_wall+magnet_height+wall_between_magnets+height_to_hold-holeh)+seal_length+main_part_holes/2+coeff*(hose_outer_diameter+4)/2;
+  sl=-holeh+hor_wall+magnet_height+wall_between_magnets+height_to_hold+seal_length+main_part_holes/2+coeff*(hose_outer_diameter+4)/2;
   difference() {
     cube([dbr+nut_width,nut_width/2,sl+nut_width/2]);
-    translate([nut_width/2,-0.01,nut_width/2])rotate([-90,0,0])cylinder(h=nut_width/2+0.02,d=mount_hole);
-    translate([dbr+nut_width/2,-0.01,nut_width/2])rotate([-90,0,0])cylinder(h=nut_width/2+0.02,d=mount_hole);
+    hull() {
+      translate([nut_width/2,-0.01,0])rotate([-90,0,0])cylinder(h=nut_width/2+0.02,d=mount_hole);
+      translate([nut_width/2,-0.01,nut_width/2])rotate([-90,0,0])cylinder(h=nut_width/2+0.02,d=mount_hole);
+    }
+    hull() {
+      translate([dbr+nut_width/2,-0.01,nut_width/2])rotate([-90,0,0])cylinder(h=nut_width/2+0.02,d=mount_hole);
+      translate([dbr+nut_width/2,-0.01,0])rotate([-90,0,0])cylinder(h=nut_width/2+0.02,d=mount_hole);
+    }
   }
 }
 
