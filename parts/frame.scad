@@ -1,7 +1,4 @@
-use <threads.scad>
-$fn= $preview ? 32 : 64;
-umad=false;
-
+$fs=1/2;
 part="x-mount_half";// [x-mount_half,x-mount_solid,t-mount_half,t-mount_solid,nut_spinner]
 rod_diameter=8;
 nut_height=8;
@@ -11,7 +8,8 @@ tightening_gap=2;
 d=rod_diameter+air_gap*2;
 h=nut_height;
 mount_holes=4;
-module xmount(thickness=16,diameter=8,half=false,slot=2){
+
+module xmount(thickness=16,diameter=8,half=false,slot=2) {
   difference() {
     cube([thickness, 1.5*thickness+diameter/2,thickness]);
     translate([thickness/2,thickness/2,-0.01])cylinder(d=diameter,h=thickness+0.02);
@@ -22,7 +20,8 @@ module xmount(thickness=16,diameter=8,half=false,slot=2){
     }
   }
 }
-module tmount(thickness=16,diameter=8,half=false,slot=2){
+
+module tmount(thickness=16,diameter=8,half=false,slot=2) {
   difference() {
     cube([thickness, 1.5*thickness+diameter/2,thickness]);
     translate([thickness/2,thickness/2,-0.01])cylinder(d=diameter,h=thickness+0.02);
@@ -30,10 +29,11 @@ module tmount(thickness=16,diameter=8,half=false,slot=2){
     if(half) {
       translate([-0.01,-0.01,(thickness)/2])cube([thickness+0.02, 1.5*thickness+diameter/2+0.02,thickness]);
       translate([-0.01,(thickness-diameter)/2,(thickness-slot)/2])cube([thickness+0.02, 1.5*thickness+diameter/2+0.02,thickness]);
-      
+
     }
   }
 }
+
 if (part=="x-mount_half") {
   xmount(thickness=nut_width,diameter=d,half=true,slot=tightening_gap);
 }
