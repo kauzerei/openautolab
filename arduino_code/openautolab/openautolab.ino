@@ -8,10 +8,10 @@ int ess=0; //EEPROM starting address, change to ess+20 if settings saving become
 //pin numbers
 const byte motorplus =5; //positive pole of pump motor
 const byte motorminus=6; //negative pole of pump motor
-const byte valve1=11; //pins
-const byte valve2=12; //of
+const byte valve1=9; //pins
+const byte valve2=11; //of
 const byte valve3=10; //valves
-const byte valve4=9;
+const byte valve4=12;
 const byte valve5=7;
 const byte valve6=8;
 const byte servo=4; //servo pin
@@ -164,6 +164,7 @@ void pump(boolean direction, byte vessel) {
   float measurements[10];
   scale.tare();
   digitalWrite(pin,HIGH);
+  delay(200);
   digitalWrite(direction?motorminus:motorplus,HIGH);
   t0=millis();
   bool error=false;
@@ -183,11 +184,14 @@ void pump(boolean direction, byte vessel) {
       if(measurements[j]<minimum) minimum=measurements[j];
       if(measurements[j]>maximum) maximum=measurements[j];
     }
-    if(maximum-minimum<3.0 && millis()-t0>10000ul) {error=true; break;}
+    if(maximum-minimum<3.0 && millis()-t0>5000ul) {error=true; break;}
   }
   digitalWrite(motorminus,LOW);
+  delay(200);
   digitalWrite(motorplus,LOW);
+  delay(200);
   digitalWrite(pin,LOW);
+  delay(200);
 }
 
 void agitate(unsigned long stage_duration, byte init_agit, byte agit_period, byte agit_duration) {
@@ -267,25 +271,41 @@ void do_process (const struct Process &process) { //execution of a process. Numb
 
 void d76() { //definition of black-and-white process, more of those can be written if needed
     struct Process process={"B&W develop", {
-    (Stage){"Developer",toseconds(bw_dev_time),init_agit,agit_period,agit_duration,1,oneshot?byte(4):byte(1),1},
-    (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,3,4,1},
+    (Stage){"Developer",toseconds(bw_dev_time),init_agit,agit_period,agit_duration,1,oneshot?byte(6):byte(1),1},
+    (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,5,6,1},
     (Stage){"Fixer",toseconds(bw_fix_time),init_agit,agit_period,agit_duration,2,2,1},
-    (Stage){"Wash ",toseconds(washes_duration),init_agit,agit_period,agit_duration,3,4,washes_count},
-    (Stage){"Wet agent",toseconds(washes_duration),init_agit,agit_period,agit_duration,5,4,fotoflo}
+    (Stage){"Wash ",toseconds(washes_duration),init_agit,agit_period,agit_duration,5,6,washes_count},
+    (Stage){"Wet agent",toseconds(washes_duration),init_agit,agit_period,agit_duration,4,6,fotoflo}
   }};
   do_process(process);
 }
 
+void pumpallout() { //definition of wash process
+  for (byte i=1;i<=4;i++) {
+    lcd.clear();
+    pump(true,i);
+    pump(false,6);
+    }
+}
+
+void pumpallin() { //definition of wash process
+  for (byte i=1;i<=4;i++) {
+    lcd.clear();
+    pump(true,5);
+    pump(false,i);
+  }
+}
+
 void c41() { //definition of c41 process, more of those can be written if needed 
   struct Process process={"C41 develop", {
-    (Stage){"Prewash",30ul,init_agit,agit_period,agit_duration,1,2,1},
-    (Stage){"Developer",100ul,init_agit,agit_period,agit_duration,1,2,1},
-    (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,1,2,1},
-    (Stage){"Bleach",100ul,init_agit,agit_period,agit_duration,1,2,1},
-    (Stage){"Rinse bl",30ul,init_agit,agit_period,agit_duration,1,2,1},
-    (Stage){"Fixer",100ul,init_agit,agit_period,agit_duration,1,2,1},
-    (Stage){"Wash ",toseconds(washes_duration),init_agit,agit_period,agit_duration,1,2,washes_count},
-    (Stage){"Wet agent",toseconds(washes_duration),init_agit,agit_period,agit_duration,1,2,fotoflo}
+    (Stage){"Prewash",30ul,init_agit,agit_period,agit_duration,5,6,3},
+    (Stage){"Developer",195ul+4ul*(c41_film_count-2),init_agit,agit_period,agit_duration,1,1,1},
+    (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,5,6,1},
+    (Stage){"Bleach",260ul,init_agit,agit_period,agit_duration,2,2,1},
+    (Stage){"Rinse bl",30ul,init_agit,agit_period,agit_duration,5,6,1},
+    (Stage){"Fixer",390ul,init_agit,agit_period,agit_duration,3,3,1},
+    (Stage){"Wash ",toseconds(washes_duration),init_agit,agit_period,agit_duration,5,6,washes_count},
+    (Stage){"Wet agent",toseconds(washes_duration),init_agit,agit_period,agit_duration,4,6,fotoflo}
   }};
   do_process(process);
 }
@@ -557,7 +577,7 @@ void loop() {
 
     case 13: //scale calibration
     lcd.setCursor(0,0);
-    lcd.print(F("Advanced         1/2"));
+    lcd.print(F("Advanced         1/3"));
     lcd.setCursor(0,2);
     lcd.print(F("Current: "));
     lcd.print(scale.get_units());
@@ -580,7 +600,7 @@ void loop() {
     case 14: //where does the developer go after use? Back to original vessel, or discarded?
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print(F("Advanced         2/2"));
+    lcd.print(F("Advanced         2/3"));
     lcd.setCursor(0,1);
     lcd.print(F("Discard B&W dev"));
     lcd.setCursor(0,2);
@@ -592,12 +612,39 @@ void loop() {
     switch(waitkey()){
       case 1: oneshot=1; break;
       case 2: oneshot=0; break;
-      case 3: k=0; EEPROM.update(ess+11,oneshot);
+      case 3: k=15; EEPROM.update(ess+11,oneshot);
       }
     break;
-    
+
+    case 15: //clean the system
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print(F("Advanced         3/3"));
+    lcd.setCursor(0,1);
+    lcd.print(F("System clean"));
+    lcd.setCursor(0,2);
+    lcd.print(F("Fill vessels only?"));
+    lcd.setCursor(0,3);
+    lcd.print(F("Yes     No       End"));
+    switch(waitkey()){
+      case 1:
+        pumpallin();
+        break;
+      case 2: 
+        tank_cap=50;
+        pumpallout();
+        tank_cap=40;
+        pumpallin();
+        tank_cap=50;
+        pumpallout();
+        tank_cap=EEPROM.read(ess+10);
+        break;
+      case 3: k=0;
+      }
+    break;
+
     case 16:
-    d76();
+    d76(); 
     waitkey();
     k=0;
     break;
