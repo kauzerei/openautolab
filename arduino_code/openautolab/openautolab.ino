@@ -1,4 +1,4 @@
-int ess=0; //EEPROM starting address, change to ess+20 if settings saving becomes unstable
+int ess=0; //EEPROM starting address, change to ess+22 if settings saving and loading becomes unstable
 
 #include <LiquidCrystal_I2C.h>
 #include <Servo.h>
@@ -29,14 +29,16 @@ byte bw_dev_time=EEPROM.read(ess+0);
 byte bw_fix_time=EEPROM.read(ess+1);
 byte bw_film_count=EEPROM.read(ess+2);
 byte c41_film_count=EEPROM.read(ess+3);
-byte washes_count=EEPROM.read(ess+4);
-byte washes_duration=EEPROM.read(ess+5);
-byte fotoflo=EEPROM.read(ess+6);
-byte init_agit=EEPROM.read(ess+7);
-byte agit_period=EEPROM.read(ess+8);
-byte agit_duration=EEPROM.read(ess+9);
-byte tank_cap=EEPROM.read(ess+10);
-byte oneshot=EEPROM.read(ess+11);
+byte prewashes_count=EEPROM.read(ess+4);
+byte prewashes_duration=EEPROM.read(ess+5);
+byte washes_count=EEPROM.read(ess+6);
+byte washes_duration=EEPROM.read(ess+7);
+byte fotoflo=EEPROM.read(ess+8);
+byte init_agit=EEPROM.read(ess+9);
+byte agit_period=EEPROM.read(ess+10);
+byte agit_duration=EEPROM.read(ess+11);
+byte tank_cap=EEPROM.read(ess+12);
+byte oneshot=EEPROM.read(ess+13);
 float divider; //because one can't use EEPROM.get outside of a function
 long offset;
 
@@ -146,7 +148,7 @@ byte waitkey() { //waits for button press, implements delay. Function seems not 
   }
 }
 
-void pump(boolean direction, byte vessel) { 
+void pump(boolean direction, byte vessel) {
   byte pin;
   switch (vessel) {
     case 1: pin=valve1; break;
@@ -173,9 +175,9 @@ void pump(boolean direction, byte vessel) {
     tohms((millis()-st_pr)/1000);
     delay(100);
     measurements[i]=scale.get_units();
-    lcd.setCursor(0,2);
+    lcd.setCursor(0,3);
     lcd.print(measurements[i]);
-    lcd.print(F("     "));
+    lcd.print(F("  "));
     if(measurements[i]>10.0*tank_cap) {error=false; break;}
     i=(i+1)%10;
     float maximum=measurements[0];
@@ -265,12 +267,12 @@ void do_process (const struct Process &process) { //execution of a process. Numb
     }
   }
   lcd.setCursor(0,1);
-  lcd.print("        Done.       "); 
-
+  lcd.print("        Done.       ");
 }
 
 void d76() { //definition of black-and-white process, more of those can be written if needed
     struct Process process={"B&W develop", {
+    (Stage){"Prewash ",toseconds(prewashes_duration),init_agit,agit_period,agit_duration,5,6,prewashes_count},
     (Stage){"Developer",toseconds(bw_dev_time),init_agit,agit_period,agit_duration,1,oneshot?byte(6):byte(1),1},
     (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,5,6,1},
     (Stage){"Fixer",toseconds(bw_fix_time),init_agit,agit_period,agit_duration,2,2,1},
@@ -280,25 +282,9 @@ void d76() { //definition of black-and-white process, more of those can be writt
   do_process(process);
 }
 
-void pumpallout() { //definition of wash process
-  for (byte i=1;i<=4;i++) {
-    lcd.clear();
-    pump(true,i);
-    pump(false,6);
-    }
-}
-
-void pumpallin() { //definition of wash process
-  for (byte i=1;i<=4;i++) {
-    lcd.clear();
-    pump(true,5);
-    pump(false,i);
-  }
-}
-
-void c41() { //definition of c41 process, more of those can be written if needed 
+void c41() { //definition of c41 process, more of those can be written if needed
   struct Process process={"C41 develop", {
-    (Stage){"Prewash",30ul,init_agit,agit_period,agit_duration,5,6,3},
+    (Stage){"Prewash ",toseconds(prewashes_duration),init_agit,agit_period,agit_duration,5,6,prewashes_count},
     (Stage){"Developer",195ul+4ul*(c41_film_count-2),init_agit,agit_period,agit_duration,1,1,1},
     (Stage){"Rinse dev",30ul,init_agit,agit_period,agit_duration,5,6,1},
     (Stage){"Bleach",260ul,init_agit,agit_period,agit_duration,2,2,1},
@@ -308,6 +294,48 @@ void c41() { //definition of c41 process, more of those can be written if needed
     (Stage){"Wet agent",toseconds(washes_duration),init_agit,agit_period,agit_duration,4,6,fotoflo}
   }};
   do_process(process);
+}
+
+void pumpallout() { //definition of wash process
+//  st_pr=millis();
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print(F("Emptying vessels"));
+  lcd.setCursor(0,1);
+  lcd.print(F("from tank"));
+  pump(false,6);
+  for (byte i=1;i<=4;i++) {
+    lcd.setCursor(0,1);
+    lcd.print(F("Vessel "));
+    lcd.print(i);
+    lcd.setCursor(0,2);
+    lcd.print(F("from vessel to tank"));
+    pump(true,i);
+    lcd.setCursor(0,2);
+    lcd.print(F("from tank          "));
+    pump(false,6);
+    }
+}
+
+void pumpallin(bool tank) { //definition of wash process
+//  st_pr=millis();
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print(F("Filling vessels"));
+  for (byte i=1;i<=4;i++) {
+    lcd.setCursor(0,1);
+    lcd.print(F("Vessel "));
+    lcd.print(i);
+    lcd.setCursor(0,2);
+    lcd.print(F("water to tank       "));
+    pump(true,5);
+    lcd.setCursor(0,2);
+    lcd.print(F("from tank to vessel"));
+    pump(false,i);
+  }
+  lcd.setCursor(0,3);
+  lcd.print(F("water to tank       "));
+  if (tank) pump(true,5);
 }
 
 void setup() {
@@ -335,20 +363,22 @@ void setup() {
   digitalWrite(buzzer,LOW);
   mixer.attach(servo);
   mixer.write(0);
-  EEPROM.get(ess+12,divider); //this is here, because one can't use EEPROM.get outside of a function
-  EEPROM.get(ess+16,offset);
+  EEPROM.get(ess+14,divider); //this is here, because one can't use EEPROM.get outside of a function
+  EEPROM.get(ess+18,offset);
   scale.begin(scaledat,scaleclk); //load cell
   scale.set_scale(divider);
   scale.set_offset(offset);
   lcd.init(); //display
   lcd.backlight();
+  if(digitalRead(button1)==LOW && digitalRead(button2)==LOW && digitalRead(button3)==LOW) k=40; //service menu
+
 }
 void loop() {
   switch(k) {
     case 0: //main menu
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print("A:");
+    lcd.print("Agit: ");
     threechars(toseconds(init_agit));
     lcd.print("/");
     threechars(toseconds(agit_period));
@@ -356,10 +386,14 @@ void loop() {
     threechars(toseconds(agit_duration));
     lcd.setCursor(0,1);
     lcd.print("Wash:");
+    lcd.print(prewashes_count);
+    lcd.print("x");
+    threechars(toseconds(prewashes_duration));
+    lcd.print("+");
     lcd.print(washes_count);
-    lcd.print(" x ");
+    lcd.print("x");
     threechars(toseconds(washes_duration));
-    if (fotoflo!=0) lcd.print(" + WA");
+    if (fotoflo!=0) lcd.print("+WA");
     lcd.setCursor(0,2);
     lcd.print("B&W: ");
     if (oneshot) lcd.print("1shot");
@@ -372,10 +406,10 @@ void loop() {
     switch(waitkey()){
       case 1: k=(oneshot==0)?1:2; break;
       case 2: k=4; break;
-      case 3: k=5; EEPROM.update(ess+0,bw_dev_time);
+      case 3: k=5;
       }
     break;
-    
+
     case 1: //checking developer depletion
     lcd.clear();
     lcd.setCursor(0,0);
@@ -437,10 +471,44 @@ void loop() {
       case 3: k=17; c41_film_count++; EEPROM.update(ess+3,c41_film_count);}
     break;
 
-    case 5: //wash duration
+    case 5: //prewash duration
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print(F("Settings         1/8"));
+    lcd.print(F("Settings        1/10"));
+    lcd.setCursor(0,1);
+    lcd.print(F("Prewash duration:"));
+    lcd.setCursor(0,2);
+    tohms(toseconds(prewashes_duration));
+    lcd.setCursor(0,3);
+    lcd.print(F("-      +      Next >"));
+    switch(waitkey()){
+      case 1: prewashes_duration--; break;
+      case 2: prewashes_duration++; break;
+      case 3: k=6; EEPROM.update(ess+5,prewashes_duration);
+      }
+    break;
+
+    case 6: //how many prewashes
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print(F("Settings        2/10"));
+    lcd.setCursor(0,1);
+    lcd.print(F("Prewashes number:"));
+    lcd.setCursor(0,2);
+    lcd.print(prewashes_count);
+    lcd.setCursor(0,3);
+    lcd.print(F("-      +      Next >"));
+    switch(waitkey()){
+      case 1: prewashes_count--; break;
+      case 2: prewashes_count++; break;
+      case 3: k=7; EEPROM.update(ess+4,prewashes_count);
+      }
+    break;
+
+    case 7: //wash duration
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print(F("Settings        3/10"));
     lcd.setCursor(0,1);
     lcd.print(F("Final wash duration:"));
     lcd.setCursor(0,2);
@@ -450,14 +518,14 @@ void loop() {
     switch(waitkey()){
       case 1: washes_duration--; break;
       case 2: washes_duration++; break;
-      case 3: k=6; EEPROM.update(ess+5,washes_duration);
+      case 3: k=8; EEPROM.update(ess+7,washes_duration);
       }
     break;
 
-    case 6: //how many washes
+    case 8: //how many washes
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print(F("Settings         2/8"));
+    lcd.print(F("Settings        4/10"));
     lcd.setCursor(0,1);
     lcd.print(F("Final washes number:"));
     lcd.setCursor(0,2);
@@ -467,14 +535,14 @@ void loop() {
     switch(waitkey()){
       case 1: washes_count--; break;
       case 2: washes_count++; break;
-      case 3: k=7; EEPROM.update(ess+4,washes_count);
+      case 3: k=9; EEPROM.update(ess+6,washes_count);
       }
     break;
 
-    case 7: //wetting agent in separate vessel
+    case 9: //wetting agent in separate vessel
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print(F("Settings         3/8"));
+    lcd.print(F("Settings        5/10"));
     lcd.setCursor(0,1);
     lcd.print(F("Apply wetting agent?"));
     lcd.setCursor(0,2);
@@ -485,14 +553,14 @@ void loop() {
     switch(waitkey()){
       case 1: fotoflo=0; break;
       case 2: fotoflo=1; break;
-      case 3: k=8; EEPROM.update(ess+6,fotoflo);
+      case 3: k=10; EEPROM.update(ess+8,fotoflo);
       }
     break;
 
-    case 8: //initial agitation
+    case 10: //initial agitation
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print(F("Settings         4/8"));
+    lcd.print(F("Settings        6/10"));
     lcd.setCursor(0,1);
     lcd.print(F("Initial agitation:"));
     lcd.setCursor(0,2);
@@ -502,14 +570,14 @@ void loop() {
     switch(waitkey()){
       case 1: init_agit--; break;
       case 2: init_agit++; break;
-      case 3: k=9; EEPROM.update(ess+7,init_agit);
+      case 3: k=11; EEPROM.update(ess+9,init_agit);
       }
     break;
 
-    case 9: //agitate every x seconds
+    case 11: //agitate every x seconds
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print(F("Settings         5/8"));
+    lcd.print(F("Settings        7/10"));
     lcd.setCursor(0,1);
     lcd.print(F("Agitations period: "));
     lcd.setCursor(0,2);
@@ -519,14 +587,14 @@ void loop() {
     switch(waitkey()){
       case 1: agit_period--; if(agit_period==0) agit_period--; break;
       case 2: agit_period++; if(agit_period==0) agit_period++; break;
-      case 3: k=10; EEPROM.update(ess+8,agit_period);
+      case 3: k=12; EEPROM.update(ess+10,agit_period);
       }
     break;
 
-    case 10: //for how long to agitate
+    case 12: //for how long to agitate
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print(F("Settings         6/8"));
+    lcd.print(F("Settings        8/10"));
     lcd.setCursor(0,1);
     lcd.print(F("Agitation duration:"));
     lcd.setCursor(0,2);
@@ -536,14 +604,14 @@ void loop() {
     switch(waitkey()){
       case 1: agit_duration--; break;
       case 2: agit_duration++; break;
-      case 3: k=11; EEPROM.update(ess+9,agit_duration);
+      case 3: k=13; EEPROM.update(ess+11,agit_duration);
       }
     break;
 
-    case 11: //tank capacity, this also sets weight to use on scale calibration
+    case 13: //tank capacity, this also sets weight to use on scale calibration
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print(F("Settings         7/8"));
+    lcd.print(F("Settings        9/10"));
     lcd.setCursor(0,1);
     lcd.print(F("Tank capacity:"));
     lcd.setCursor(0,2);
@@ -554,53 +622,14 @@ void loop() {
     switch(waitkey()){
       case 1: tank_cap--; break;
       case 2: tank_cap++; break;
-      case 3: k=12; EEPROM.update(ess+10,tank_cap);
+      case 3: k=14; EEPROM.update(ess+12,tank_cap);
       }
-    break;
-
-    case 12: //advanced settings
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print(F("Settings         8/8"));
-    lcd.setCursor(0,1);
-    lcd.print(F("Press two buttons to"));
-    lcd.setCursor(0,2);
-    lcd.print(F("enter advanced opts"));
-    lcd.setCursor(0,3);
-    lcd.print(F("Yes     Yes       No"));
-    {bool keypressed=false;
-    while (not keypressed) {
-      if(digitalRead(button1)==LOW && digitalRead(button2)==LOW) {k=13; keypressed=true; delay(300);}
-      if(digitalRead(button3)==LOW) {k=0; keypressed=true; delay(300);}
-    }}
-    break;
-
-    case 13: //scale calibration
-    lcd.setCursor(0,0);
-    lcd.print(F("Advanced         1/3"));
-    lcd.setCursor(0,2);
-    lcd.print(F("Current: "));
-    lcd.print(scale.get_units());
-    lcd.print(F("           ")); //erase symbols left from previous measurment
-    lcd.setCursor(0,1);
-    lcd.print(F("Weight sensor tuning"));
-    lcd.setCursor(0,3);
-    lcd.print(F("Set:0  Set:"));
-    lcd.print(tank_cap*10);
-    lcd.print(F("g    >"));
-    {bool keypressed=false;
-    for (byte i=0;i<255;i++) {
-      if(digitalRead(button1)==LOW) {offset=scale.read_average(10); scale.set_offset(offset); keypressed=true; scale_calibrated=true;}
-      if(digitalRead(button2)==LOW) {scale.set_scale();divider=scale.get_units(10)/(10.f*tank_cap); scale.set_scale(divider); keypressed=true; scale_calibrated=true;}
-      if(digitalRead(button3)==LOW) {k=14; keypressed=true; if (scale_calibrated) {EEPROM.put(ess+12,divider);EEPROM.put(ess+16,offset);} delay(300);}
-      if(keypressed) break;
-    }}
     break;
 
     case 14: //where does the developer go after use? Back to original vessel, or discarded?
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print(F("Advanced         2/3"));
+    lcd.print(F("Settings       10/10"));
     lcd.setCursor(0,1);
     lcd.print(F("Discard B&W dev"));
     lcd.setCursor(0,2);
@@ -612,29 +641,74 @@ void loop() {
     switch(waitkey()){
       case 1: oneshot=1; break;
       case 2: oneshot=0; break;
-      case 3: k=15; EEPROM.update(ess+11,oneshot);
+      case 3: k=0; EEPROM.update(ess+13,oneshot);
       }
     break;
 
-    case 15: //clean the system
+    case 40: //service menu
     lcd.clear();
     lcd.setCursor(0,0);
-    lcd.print(F("Advanced         3/3"));
-    lcd.setCursor(0,1);
-    lcd.print(F("System clean"));
+    lcd.print(F("Service menu"));
+    delay(2000);
+    k=41;
+    break;
+    
+    case 41: //scale calibration
+    lcd.setCursor(0,0);
+    lcd.print(F("Service menu     1/3"));
     lcd.setCursor(0,2);
-    lcd.print(F("Fill vessels only?"));
+    lcd.print(F("Current: "));
+    lcd.print(scale.get_units());
+    lcd.print(F("           ")); //erase symbols left from previous measurment
+    lcd.setCursor(0,1);
+    lcd.print(F("Weight sensor tuning"));
     lcd.setCursor(0,3);
-    lcd.print(F("Yes     No       End"));
+    lcd.print(F("Set:0  Set:"));
+    lcd.print(tank_cap*10);
+    lcd.print(F("g    >"));
+    {bool keypressed=false;
+    for (byte i=0;i<255;i++) { //I forgot why this loop is there, probably has to do with screen blinking
+      if(digitalRead(button1)==LOW) {offset=scale.read_average(10); scale.set_offset(offset); keypressed=true; scale_calibrated=true;}
+      if(digitalRead(button2)==LOW) {scale.set_scale();divider=scale.get_units(10)/(10.f*tank_cap); scale.set_scale(divider); keypressed=true; scale_calibrated=true;}
+      if(digitalRead(button3)==LOW) {k=42; keypressed=true; if (scale_calibrated) {EEPROM.put(ess+14,divider);EEPROM.put(ess+18,offset);}}
+      if(keypressed) break;
+    }}
+    break;
+
+    case 42: //pump in
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print(F("Service menu     2/3"));
+    lcd.setCursor(0,1);
+    lcd.print(F("Fill only vessels,"));
+    lcd.setCursor(0,2);
+    lcd.print(F("or also the tank?"));
+    lcd.setCursor(0,3);
+    lcd.print(F("V      V+T    Next >"));
     switch(waitkey()){
-      case 1:
-        pumpallin();
-        break;
-      case 2: 
+      case 1: pumpallin(false); break;
+      case 2: pumpallin(true); break;
+      case 3: k=43; EEPROM.update(ess+13,oneshot);
+      }
+    break;
+
+    case 43: //cleaning cycle
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print(F("Service menu     3/3"));
+    lcd.setCursor(0,1);
+    lcd.print(F("Clean. Are vessels"));
+    lcd.setCursor(0,2);
+    lcd.print(F("empty right now?"));
+    lcd.setCursor(0,3);
+    lcd.print(F("No     Yes    Done >"));
+    switch(waitkey()){
+      case 1: 
         tank_cap=50;
         pumpallout();
+      case 2: 
         tank_cap=40;
-        pumpallin();
+        pumpallin(false);
         tank_cap=50;
         pumpallout();
         tank_cap=EEPROM.read(ess+10);
@@ -644,14 +718,14 @@ void loop() {
     break;
 
     case 16:
-    d76(); 
+    d76();
     waitkey();
     k=0;
     break;
 
     case 17:
     c41();
-    waitkey(); 
+    waitkey();
     k=0;
     break;
   }
