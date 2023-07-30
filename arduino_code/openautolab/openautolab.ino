@@ -297,7 +297,6 @@ void c41() { //definition of c41 process, more of those can be written if needed
 }
 
 void pumpallout() { //definition of wash process
-//  st_pr=millis();
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print(F("Emptying vessels"));
@@ -319,7 +318,6 @@ void pumpallout() { //definition of wash process
 }
 
 void pumpallin(bool tank) { //definition of wash process
-//  st_pr=millis();
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print(F("Filling vessels"));
@@ -707,14 +705,23 @@ void loop() {
     lcd.print(F("No     Yes    Done >"));
     switch(waitkey()){
       case 1: 
+        st_pr=millis();
         tank_cap=50;
         pumpallout();
+        lcd.setCursor(16,0);
+        lcd.print(F("Done"));
+        waitkey();
+        break;
       case 2: 
+        st_pr=millis();
         tank_cap=40;
         pumpallin(false);
         tank_cap=50;
         pumpallout();
         tank_cap=EEPROM.read(ess+10);
+        lcd.setCursor(16,0);
+        lcd.print(F("Done"));
+        waitkey();
         break;
       case 3: k=0;
       }
