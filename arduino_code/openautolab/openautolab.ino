@@ -306,7 +306,8 @@ void pumpallout() { //definition of wash process
   pump(false,6);
   for (byte i=1;i<=4;i++) {
     lcd.setCursor(0,1);
-    lcd.print(F("Vessel "));
+    lcd.print(F("Vessel   "));
+    lcd.setCursor(7,1);
     lcd.print(i);
     lcd.setCursor(0,2);
     lcd.print(F("from vessel to tank"));
@@ -333,6 +334,8 @@ void pumpallin(bool tank) { //definition of wash process
     lcd.print(F("from tank to vessel"));
     pump(false,i);
   }
+  lcd.setCursor(0,1);
+    lcd.print(F("        "));
   lcd.setCursor(0,3);
   lcd.print(F("water to tank       "));
   if (tank) pump(true,5);
