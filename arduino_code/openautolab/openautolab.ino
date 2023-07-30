@@ -708,6 +708,11 @@ void loop() {
         st_pr=millis();
         tank_cap=50;
         pumpallout();
+        tank_cap=40;
+        pumpallin(false);
+        tank_cap=50;
+        pumpallout();
+        tank_cap=EEPROM.read(ess+10);
         lcd.setCursor(16,0);
         lcd.print(F("Done"));
         waitkey();
