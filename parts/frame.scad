@@ -1,13 +1,10 @@
 $fs=1/2;
-part="x-mount_half";// [x-mount_half,x-mount_solid,t-mount_half,t-mount_solid,nut_spinner]
+part="x-mount";// [x-mount,t-mount,nut_spinner]
 rod_diameter=8;
-nut_height=8;
 nut_width=16;
 air_gap=0.5;
 tightening_gap=2;
 d=rod_diameter+air_gap*2;
-h=nut_height;
-mount_holes=4;
 
 module xmount(thickness=16,diameter=8,half=false,slot=2) {
   difference() {
@@ -34,15 +31,9 @@ module tmount(thickness=16,diameter=8,half=false,slot=2) {
   }
 }
 
-if (part=="x-mount_half") {
+if (part=="x-mount") {
   xmount(thickness=nut_width,diameter=d,half=true,slot=tightening_gap);
 }
-if (part=="x-mount_solid") {
-  xmount(thickness=nut_width,diameter=d,half=false);
-}
-if (part=="t-mount_half") {
+if (part=="t-mount") {
   tmount(thickness=nut_width,diameter=d,half=true,slot=tightening_gap);
-}
-if (part=="t-mount_solid") {
-  tmount(thickness=nut_width,diameter=d,half=false);
 }
