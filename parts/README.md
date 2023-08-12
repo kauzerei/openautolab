@@ -52,7 +52,7 @@ To connect the vessels and the developing tank to valves and the pump magnetic h
 - 5x magnetic_holder to attach vessels to the rail.
 - magnetic_holder_wg to attach developing tank to the weight gauge.
 - 6x holder_magnet_cover to mount magnet to the holder
-- 2x(Print one mirrored!) weight_gauge_mount to mount weight gauge to the rail
+- 2x weight_gauge_mount to mount weight gauge to the rail
 ### Upper rail: mounts for valves, pumps and electronic box
 
 ### Agitation
