@@ -51,9 +51,20 @@ Parts list:
 - 20x M8 nuts
 You need to have two pairs of X-mounts on each of four rods to hold one rail on one side. Each pair should be able to be pressed together by two nuts in order to tightly hold the threaded rod of the rail. To achieve said structure, loosely put the parts in the following order on each of four rods: nut, two X-mounts (two round cutouts facing each other), two nuts some distance apart, two more X-mounts (also cutouts together), nut.  
 Take the upper rail and two longer (21cm long) rods. Place the ends of the rail between pairs of X-mounts and tighten the nuts. Repeat the same procedure with the lower rail and shorter (11cm) rods. Note that for the upper rail both of the perpendicular rods are mounted flush with rail ends when for the lower rail only the right rod mounted flush. The left one is mounted behind the weight gauge bracket, 3cm away from the end of the rail.
-
+Now use 4 T-mounts to fix the rails together: each of the two newly mounted perpendicular rods of the lower rail should get a nut, a pair of T-mounts and a second nut. The perpendicular rods of the upper rail are inserted between those pairs, which are then pressed against each other by the nuts.  
 ## Mounting main board
-If you want to make the board yourself, to understand its work better better, refer to "main_board" subdirectory of this repository. It contains schematics and board layout in KiCAD format, and some insights about its production. First, place top cover of the front panel upside down and mount the screen and the pump switch to it. Connect the screen and the switch to the board. Place the buttons into their holes and put the board on top. Now close the front panel with its back cover and fix everything with screws. Now you can mount the whole assembly on the frame as shown on pictures.
+If you want to make the board yourself, or just to understand its work better better, refer to "main_board" subdirectory of this repository. It contains schematics and board layout in KiCAD format, along with some insights about its production. In this document it is supposed that you already have a board with all components soldered to it.  
+Parts list:
+- Main board
+- 20x04 LCD display with i2c interface
+- Front half of the electronic box
+- Rear half of the electronic box
+- 3x plastic buttons
+- 4x M4x20 screws
+- 4x M4x6 screws
+- 4x M4 nuts
+Place the board inside the rear half of the box. Put 4 screws through the holes in the board and in the box. Put those screws sticking from the rear of the box through the brackets on the upper rail. Tighten it all with 4 nuts from the back.   
+Place the top cover of the electronic box upside down and mount the screen and the pump switch to it. Insert three plastic buttons into their places. If you do not invert the box completely they do not fall out, but if you struggle with them, you can hold the box screen-down and invert the whole frame to put the box together. Attach the screen and switch connectors to the board and put the box together. Fix the box halves together with four side-mounted M4x6 screws.
 ## Building agitation module
 Mount the servo on tank cap in such a way, that its axis is in the center of the cap. Take a long screwdriver and fix the mixing rod to the servo.
 ## Connecting electronics  
