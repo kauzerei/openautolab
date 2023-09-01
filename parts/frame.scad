@@ -1,4 +1,5 @@
-$fs=1/2;
+$fs=0.5/1;
+$fa=1/1;
 part="x-mount";// [x-mount,t-mount,nut_spinner]
 rod_diameter=8;
 nut_width=16;

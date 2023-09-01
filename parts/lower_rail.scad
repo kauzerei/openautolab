@@ -123,7 +123,10 @@ module main_body(nothread=false){
     }
     translate([0,0,-1])cylinder(d=main_part_holes,h=seal_length+main_part_holes/2+1);
     translate([0,0,seal_length+main_part_holes/2])rotate([0,90,0])cylinder(d=main_part_holes, h=max(cyl1/2,seal_length+main_part_holes/2)+1);
-    translate([0,0,seal_length+main_part_holes/2])intersection(){cylinder(d=main_part_holes, h=main_part_holes,center=true);rotate([0,90,0])cylinder(d=main_part_holes, h=main_part_holes,center=true);}
+    translate([0,0,seal_length+main_part_holes/2])intersection() {
+      cylinder(d=main_part_holes, h=main_part_holes,center=true);
+      rotate([0,90,0])cylinder(d=main_part_holes, h=main_part_holes,center=true);
+    }
   }
   else difference() {
     union() {
@@ -230,11 +233,13 @@ module instrument() {
   difference() {
     union() {
       handle();
-      translate([-shift,0,0])linear_extrude(instrument_length)minkowski(){
+      translate([-shift,0,0])linear_extrude(height=instrument_length, convexity=2)minkowski(){
         projection(cut=true)rotate([0,degre,0])translate([shiftx,0,0])main_body();
         circle(air_gap+holding_depth);
       }
     }
+    translate([0,0,-1])cylinder(d=leader_diameter,h=leader_length+2);
+    translate([0,0,leader_length])cylinder(d=tap_diameter,h=instrument_length);
     translate([-shift,0,instrument_length-holding_depth])minkowski(){
       cube(2*air_gap,center=true);
       intersection() {
@@ -242,8 +247,6 @@ module instrument() {
         cylinder(d=500,h=holding_depth+1);
       }
     }
-    translate([0,0,-1])cylinder(d=leader_diameter,h=leader_length+2);
-    translate([0,0,leader_length])cylinder(d=tap_diameter,h=instrument_length);
   }
 }
 
@@ -280,19 +283,19 @@ module wrench() {
       handle();
       cylinder(h=handle_thickness,d=die_diameter+2*holding_depth);
     }
-    translate([0,0,-1])linear_extrude(handle_thickness/3+1)minkowski() {
+    translate([0,0,-1])linear_extrude(height=handle_thickness/3+1,convexity=2 )minkowski() {
       projection(cut=true)translate([0,0,-seal_length])hose_adapter();
       circle(air_gap);
     }
-    translate([0,0,-1])linear_extrude(handle_thickness+2)minkowski() {
+    translate([0,0,-1])linear_extrude(height=handle_thickness+2,convexity=1)minkowski() {
       projection(cut=true)translate([0,0,-seal_length-4.1])hose_adapter();
       circle(air_gap);
     }
-    translate([0,0,-1])linear_extrude(handle_thickness+2)minkowski() {
+    translate([0,0,-1])linear_extrude(height=handle_thickness+2,convexity=2)minkowski() {
       projection(cut=true)translate([0,0,-1.5-seal_length])hollow_screw();
       circle(air_gap);
     }
-    translate([0,0,2*handle_thickness/3])linear_extrude(handle_thickness/3+1)minkowski() {
+    translate([0,0,2*handle_thickness/3])linear_extrude(height=handle_thickness/3+1,convexity=2)minkowski() {
       projection(cut=true)translate([0,0,0])hollow_screw();
       circle(air_gap);
     }
@@ -312,7 +315,18 @@ if (part=="Filter_support") supports();
 if (part=="OPTIONAL_Tapping_tool") instrument();
 if (part=="OPTIONAL_Threading_tool") dieholder();
 if (part=="OPTIONAL_Wrench") wrench();
-if (part=="testfit") {magnetic_holder(); translate([0,0,magnet_height+hor_wall+0.1]){holder_magnet_cover();translate([0,0,wall_between_magnets+0.1]){main_magnet_cover();translate([0,0,wall_between_magnets+magnet_height])rotate([0,0,360*magnet_height/thread_pitch])difference(){ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);cylinder(d=4,h=2*thread_pitch);}}}
-if (part=="force_test") difference(){ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);cylinder(d=4,h=2*thread_pitch);}}
-if (cut_view) translate([-50,0,-50])cube([100,100,100]);
+if (part=="testfit") {
+  magnetic_holder();
+  translate([0,0,magnet_height+hor_wall+0.1]) {
+    holder_magnet_cover();
+    translate([0,0,wall_between_magnets+0.1]) {
+      main_magnet_cover();
+      translate([0,0,wall_between_magnets+magnet_height])rotate([0,0,360*magnet_height/thread_pitch])difference() {
+        ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);
+        cylinder(d=4,h=2*thread_pitch);
+      }
+    }
+  }
+}
+if (cut_view) translate([-50,0,-50]) cube([100,100,100]);
 }

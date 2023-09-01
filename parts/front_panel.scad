@@ -1,4 +1,5 @@
-$fs=1/2;
+$fs=0.5/1;
+$fa=1/1;
 part="Box";//[Front,Box,Buttons]
 tolerance=0.5;
 pcb_width=145;

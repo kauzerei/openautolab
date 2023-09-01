@@ -1,4 +1,5 @@
-$fs=1/2;
+$fs=0.5/1;
+$fa=1/1;
 part = "two_halves"; // [bigger,smaller,two_halves, main_pump_holder,filter_pump_type1_holder,filter_pump_type2_holder,filter_attachment,pcb_mount]
 /* [Rail general parameters] */
 rod_diameter=8;

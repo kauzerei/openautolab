@@ -1,4 +1,5 @@
-$fn= $preview ? 32 : 128;
+$fs=0.5/1;
+$fa=1/1;
 part="Cap"; //[Cap,Rod,OPTIONAL_servo_gauge,all]
 outer_diameter= 70;
 outer_depth=17;
