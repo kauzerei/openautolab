@@ -1,5 +1,5 @@
 $fs=1/2;
-part = "two_halves"; // [bigger,smaller,two_halves, main_pump_holder,filter_pump_holder,filter_attachment]
+part = "two_halves"; // [bigger,smaller,two_halves, main_pump_holder,filter_pump_holder,filter_attachment,pcb_mount]
 /* [Rail general parameters] */
 rod_diameter=8;
 rods_distance=62;
@@ -12,6 +12,9 @@ valve_offset=0;
 pump_offset=5;
 mount_hole=4;
 mount_hole_distance=38;
+pcb_angle=15;
+pcb_holes_distance=81;
+extra_room=6;
 
 /* [Filter attachment options] */
 filter_wall=6;
@@ -136,6 +139,35 @@ module filter_attachment() {
   }
 }
 
+module pcbholder() {
+  difference() {
+    linear_extrude(part_width,convexity=3){
+      difference(){
+        union() {
+          hull() {
+            circle(d=part_thickness*2+air_gap);
+            rotate(pcb_angle)translate([-rods_distance,0])circle(d=part_thickness*2+air_gap);
+          }
+        translate([0,-part_thickness-air_gap/2])square([pcb_holes_distance+rod_diameter/2+part_thickness+2*extra_room,2*part_thickness+air_gap]);
+        circle(d=part_thickness*2+air_gap+rod_diameter);
+        rotate(pcb_angle)translate([-rods_distance,0])circle(d=part_thickness*2+air_gap+rod_diameter);
+        }
+        hull() {
+          circle(d=air_gap);
+          rotate(pcb_angle)translate([-rods_distance-rod_diameter-part_thickness,0])circle(d=air_gap);
+          }
+        translate([0,-air_gap/2])square([pcb_holes_distance+rod_diameter/2+part_thickness+2*extra_room,air_gap]);
+        circle(d=rod_diameter);
+        rotate(pcb_angle)translate([-rods_distance,0])circle(d=rod_diameter);
+      }
+    }
+    translate([rod_diameter/2+part_thickness+extra_room,0,part_width/2])rotate([90,0,0])cylinder(d=mount_hole,h=2*part_thickness+2*air_gap,center=true);
+    translate([pcb_holes_distance+rod_diameter/2+part_thickness+extra_room,0,part_width/2])rotate([90,0,0])cylinder(d=mount_hole,h=2*part_thickness+2*air_gap,center=true);
+    rotate([0,0,pcb_angle])translate([-rods_distance/2-mount_hole_distance/2,0,part_width/2])rotate([90,0,0])cylinder(d=mount_hole,h=2*part_thickness+2*air_gap,center=true);
+    rotate([0,0,pcb_angle])translate([-rods_distance/2+mount_hole_distance/2,0,part_width/2])rotate([90,0,0])cylinder(d=mount_hole,h=2*part_thickness+2*air_gap,center=true);
+  }
+}
+
 if (part=="test") {
   difference(){whole();holes();}
 }
@@ -150,3 +182,4 @@ if (part=="two_halves")
 if (part=="main_pump_holder") { pump(); }
 if (part=="filter_pump_holder") { filterpump(); }
 if (part=="filter_attachment") { filter_attachment(); }
+if (part=="pcb_mount") { pcbholder(); }
