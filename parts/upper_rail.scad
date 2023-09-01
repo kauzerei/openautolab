@@ -1,5 +1,5 @@
 $fs=1/2;
-part = "two_halves"; // [bigger,smaller,two_halves, main_pump_holder,filter_pump_holder,filter_attachment,pcb_mount]
+part = "two_halves"; // [bigger,smaller,two_halves, main_pump_holder,filter_pump_type1_holder,filter_pump_type2_holder,filter_attachment,pcb_mount]
 /* [Rail general parameters] */
 rod_diameter=8;
 rods_distance=62;
@@ -100,25 +100,31 @@ module pump() {
   }
 }
 
-module filterpump() {
+module pump_shape(type) {
+  if (type==1) {
+    circle(d=34);
+    translate([17,-9])circle(d=8);
+    translate([17,9])circle(d=8);
+    translate([-17,-9])circle(d=8);
+    translate([-17,9])circle(d=8);
+  }
+  if (type==2) {
+    translate([13.5,-13.5])circle(d=8);
+    translate([-13.5,-13.5])circle(d=8);
+    translate([13.5,13.5])circle(d=8);
+    translate([-13.5,13.5])circle(d=8);
+  }
+}
+
+module filterpump(type) {
   difference() {
-    linear_extrude(part_width)difference() {
+    linear_extrude(height=part_width,convexity=4)difference() {
       offset (r=part_thickness) hull() {
-        circle(d=34);
-        translate([17,-9])circle(d=8);
-        translate([17,9])circle(d=8);
-        translate([-17,-9])circle(d=8);
-        translate([-17,9])circle(d=8);
+        pump_shape(type);
         translate([rods_distance/2,9])circle(d=rod_diameter);
         translate([-rods_distance/2,9])circle(d=rod_diameter);
       }
-    hull() {
-      circle(d=34);
-      translate([17,-9])circle(d=8);
-      translate([17,9])circle(d=8);
-      translate([-17,-9])circle(d=8);
-      translate([-17,9])circle(d=8);
-    }
+    hull() pump_shape(type);
     translate([rods_distance/2,9])circle(d=rod_diameter);
     translate([-rods_distance/2,9])circle(d=rod_diameter);
     translate([0,9])square([2*rods_distance,1],center=true);
@@ -180,6 +186,7 @@ if (part=="two_halves")
   smaller();
 }
 if (part=="main_pump_holder") { pump(); }
-if (part=="filter_pump_holder") { filterpump(); }
+if (part=="filter_pump_type1_holder") { filterpump(1); }
+if (part=="filter_pump_type2_holder") { filterpump(2); }
 if (part=="filter_attachment") { filter_attachment(); }
 if (part=="pcb_mount") { pcbholder(); }
