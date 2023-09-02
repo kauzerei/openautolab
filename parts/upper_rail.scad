@@ -1,6 +1,8 @@
+// Upper rail parts of OpenAutoLab: mounting brackets for valves, pumps and electronic box
+
 $fs=0.5/1;
 $fa=1/1;
-part = "two_halves"; // [bigger,smaller,two_halves, main_pump_holder,filter_pump_type1_holder,filter_pump_type2_holder,filter_attachment,pcb_mount]
+part = "Valve"; // [Valve, Main_pump, Filter_pump_type1, Filter_pump_type2, Filter_attachment, PCB]
 /* [Rail general parameters] */
 rod_diameter=8;
 rods_distance=62;
@@ -175,19 +177,13 @@ module pcbholder() {
   }
 }
 
-if (part=="test") {
-  difference(){whole();holes();}
-}
-
-if (part=="bigger") { bigger(); }
-if (part=="smaller") { smaller(); }
-if (part=="two_halves")
+if (part=="Valve")
 {
   bigger();
   smaller();
 }
-if (part=="main_pump_holder") { pump(); }
-if (part=="filter_pump_type1_holder") { filterpump(1); }
-if (part=="filter_pump_type2_holder") { filterpump(2); }
-if (part=="filter_attachment") { filter_attachment(); }
-if (part=="pcb_mount") { pcbholder(); }
+if (part=="Main_pump") { pump(); }
+if (part=="Filter_pump_type1") { filterpump(1); }
+if (part=="Filter_pump_type2") { filterpump(2); }
+if (part=="Filter_attachment") { filter_attachment(); }
+if (part=="PCB") { pcbholder(); }

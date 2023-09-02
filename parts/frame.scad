@@ -1,6 +1,11 @@
+// Frame parts for OpenAutoLab
+// X-mount connects two rods with non-complanar perpendicular axes, forming a shape similar to letter X
+// T-mount holds two rods with complanar axes, forming a shape similar to letter T
+// Nut spinner is a circular wrench, which may speed up threading nuts on long rods
+
 $fs=0.5/1;
 $fa=1/1;
-part="x-mount";// [x-mount,t-mount,nut_spinner]
+part="X-mount";// [X-mount, T-mount, OPTIONAL_Nut_spinner]
 rod_diameter=8;
 nut_width=16;
 nut_height=8;
@@ -52,12 +57,12 @@ module nutspinner(d1,d2,d3,d4,d5,h) {
   }
 }
 
-if (part=="x-mount") {
+if (part=="X-mount") {
   xmount(thickness=nut_width,diameter=d,half=true,slot=tightening_gap);
 }
-if (part=="t-mount") {
+if (part=="T-mount") {
   tmount(thickness=nut_width,diameter=d,half=true,slot=tightening_gap);
 }
-if (part=="nut_spinner") {
+if (part=="OPTIONAL_Nut_spinner") {
   nutspinner(50,40,nut_width+6,nut_width+2*air_gap,rod_diameter+air_gap*2,nut_height*2);
 }

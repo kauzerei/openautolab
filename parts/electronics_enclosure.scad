@@ -1,6 +1,8 @@
+// Box that encloses OpenAutoLab electronics.
+
 $fs=0.5/1;
 $fa=1/1;
-part="Box";//[Front,Box,Buttons]
+part="Front"; //[Front, Back, Buttons]
 tolerance=0.5;
 pcb_width=145;
 pcb_height=89;
@@ -71,5 +73,5 @@ module buttons() {
 }
 
 if (part=="Front") front();
-if (part=="Box") rotate([180,0,0])box();
+if (part=="Back") rotate([180,0,0])box();
 if (part=="Buttons") buttons();

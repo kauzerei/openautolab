@@ -1,6 +1,8 @@
+// Agitation module for OpenAutoLab
+
 $fs=0.5/1;
 $fa=1/1;
-part="Cap"; //[Cap,Rod,OPTIONAL_servo_gauge,all]
+part="Cap"; //[Cap, Rod, OPTIONAL_servo_gauge]
 outer_diameter= 70;
 outer_depth=17;
 extra_lip_width=1.5;
