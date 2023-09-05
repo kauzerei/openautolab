@@ -1,8 +1,8 @@
-// Upper rail parts of OpenAutoLab: mounting brackets for valves, pumps and electronic box
+// Upper rail parts of OpenAutoLab: mounting brackets for valves, for pumps and for electronic enclosure
 
 $fs=0.5/1;
 $fa=1/1;
-part = "Valve"; // [Valve, Main_pump, Filter_pump_type1, Filter_pump_type2, Filter_attachment, PCB]
+part = "Valve"; // [Valve, Main_pump, Filter_pump_type1, Filter_pump_type2, Filter_attachment, Enclosure]
 /* [Rail general parameters] */
 rod_diameter=8;
 rods_distance=62;
@@ -112,10 +112,10 @@ module pump_shape(type) {
     translate([-17,9])circle(d=8);
   }
   if (type==2) {
-    translate([13.5,-13.5])circle(d=8);
-    translate([-13.5,-13.5])circle(d=8);
-    translate([13.5,13.5])circle(d=8);
-    translate([-13.5,13.5])circle(d=8);
+    translate([14,-14])circle(d=8);
+    translate([-14,-14])circle(d=8);
+    translate([14,14])circle(d=8);
+    translate([-14,14])circle(d=8);
   }
 }
 
@@ -177,13 +177,12 @@ module pcbholder() {
   }
 }
 
-if (part=="Valve")
-{
+if (part=="Valve") {
   bigger();
   smaller();
 }
-if (part=="Main_pump") { pump(); }
-if (part=="Filter_pump_type1") { filterpump(1); }
-if (part=="Filter_pump_type2") { filterpump(2); }
-if (part=="Filter_attachment") { filter_attachment(); }
-if (part=="PCB") { pcbholder(); }
+if (part=="Main_pump") pump();
+if (part=="Filter_pump_type1") filterpump(1);
+if (part=="Filter_pump_type2") filterpump(2);
+if (part=="Filter_attachment") filter_attachment();
+if (part=="Enclosure") pcbholder();

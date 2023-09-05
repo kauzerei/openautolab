@@ -66,14 +66,8 @@ module rod() {
   }
 }
 
-if (part=="Cap") {
-  cap();
-}
-
-if (part=="Rod") {
-  rod();
-}
-
+if (part=="Cap") cap();
+if (part=="Rod") rod();
 if (part=="OPTIONAL_servo_gauge") {
   difference() {
     translate([0,0,2.5])cube([70,10,5],center=true);

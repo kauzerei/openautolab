@@ -3,9 +3,10 @@
 // This project uses threads-scad
 // https://github.com/rcolyer/threads-scad
 use <threads.scad>;
+
 $fs=0.5/1;
 $fa=1/1;
-part = "Main_body"; // [Main_body, Main_magnet_cover, Magnetic_holder, Holder_magnet_cover, Weight_gauge_mount, Hose_adapter, Hose_sleeve, Hollow_screw, Filter_support, OPTIONAL_Tapping_tool, OPTIONAL_Threading_tool, OPTIONAL_Wrench, testfit]
+part = "Interface"; // [Interface, Interface_cover, Magnetic_holder, Magnetic_holder_cover, Weight_gauge_bracket, Hose_adapter, Hose_sleeve, Hollow_screw, Filter_support, OPTIONAL_Tapping_tool, OPTIONAL_Threading_tool, OPTIONAL_Wrench]
 cut_view=false;
 override_dbr=false;
 rod_diameter=8;
@@ -205,7 +206,7 @@ module magnetic_holder() {
 }
 
 module wg_holder() {
-wgh_h=wg_ms_hole_distance+wg_width;
+  wgh_h=wg_ms_hole_distance+wg_width;
   difference() {
     union() {
       cube([wgh_h,dbr,nut_width],center=true);
@@ -300,19 +301,18 @@ module wrench() {
   }
 }
 difference() {
-if (part=="Hollow_screw") hollow_screw();
-if (part=="Main_body") main_body();
-if (part=="Main_magnet_cover") main_magnet_cover();
+if (part=="Interface") main_body();
+if (part=="Interface_cover") main_magnet_cover();
+if (part=="Magnetic_holder") magnetic_holder();
+if (part=="Magnetic_holder_cover") holder_magnet_cover();
+if (part=="Weight_gauge_bracket") rotate([0,90,0])wg_holder();
 if (part=="Hose_adapter") hose_adapter();
 if (part=="Hose_sleeve") hose_sleeve();
-if (part=="Magnetic_holder") magnetic_holder();
-if (part=="Holder_magnet_cover") holder_magnet_cover();
-if (part=="Weight_gauge_mount") rotate([0,90,0])wg_holder();
+if (part=="Hollow_screw") hollow_screw();
 if (part=="Filter_support") supports();
 if (part=="OPTIONAL_Tapping_tool") instrument();
 if (part=="OPTIONAL_Threading_tool") dieholder();
 if (part=="OPTIONAL_Wrench") wrench();
-if (part=="testfit") {magnetic_holder(); translate([0,0,magnet_height+hor_wall+0.1]){holder_magnet_cover();translate([0,0,wall_between_magnets+0.1]){main_magnet_cover();translate([0,0,wall_between_magnets+magnet_height])rotate([0,0,360*magnet_height/thread_pitch])difference(){ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);cylinder(d=4,h=2*thread_pitch);}}}
-if (part=="force_test") difference(){ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);cylinder(d=4,h=2*thread_pitch);}}
+if (part=="TEST_fit") {magnetic_holder(); translate([0,0,magnet_height+hor_wall+0.1]){holder_magnet_cover();translate([0,0,wall_between_magnets+0.1]){main_magnet_cover();translate([0,0,wall_between_magnets+magnet_height])rotate([0,0,360*magnet_height/thread_pitch])difference(){ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);cylinder(d=4,h=2*thread_pitch);}}}
 if (cut_view) translate([-50,0,-50])cube([100,100,100]);
 }
