@@ -9,14 +9,14 @@ The trickiest part is the hollow screw, as it is relatively highly loaded for it
 * to keep layers thin, speed low and temperature high, without cooling (make sure that layers are squished together and have enough time and temperature to fuse)
 * remelt in powder salt (tricky to fine tune the temperature and time, but may be worth it)
 However consider buying M8 plastic screws, drilling 4mm holes in them and shortening their heads, that may be way easier.  
-After printing, drill the inner hole to 4mm and thread the cylindrical part with an m8 die.  
-If you struggle with threading there are two helping tools for holding a dye and keeping the screw straight. They also work for the threaded hose adapter.
-## Frame vertices
-The frame vertices are not very heavily loaded given their thickness and orientation of layers, and their dimensions do not need to be precise. You can print the parts with any resolution (I tried up to 0.5mm layer with 0.8mm nozzle) with 2-layer shell and 20% infill and be fine. Just drill the holes to size after printing.
+After printing, drill the inner hole to 4mm and thread the cylindrical part with an M8 die.  
+If you struggle with threading there are two helping tools for holding a die and keeping the screw straight. They also work for the threaded hose adapter.
+## T-mounts and X-mounts
+They are relatively loaded, but their dimensions do not need to be precise. You can print the parts with any resolution (I tried up to 0.5mm layer with 0.8mm nozzle) with 100% infill. You may need to drill the holes to size after printing.
 ## Magnetic holders
-If you have calibrated layer expansion of your printer, you may want to turn it off for this print. It's better in this case to have guaranteed wall thickness and change expansion correction in the model itself. Default values are high enough that the threads move good even with large nozzles and layer heights; thread pitch is so large that the threads can be tightened even if the print expansion is small and there is a lot of tolerance between parts. I suggest 0.4mm nozzle and 0.2mm layer.
-### Main part  
-The main part of magnetic interface should be printed with the wall, top and bottom thickness of a couple millimeters to allow thread cutting and keeping the part water-tight.
+If you have calibrated layer expansion of your printer, you may want to turn it off for this print. It's better in this case to have guaranteed wall thickness and change expansion correction in the model itself. Default values are high enough that the threads move good even with large nozzles and layer heights; thread pitch is so large that the threads can be tightened even if the print expansion is small and there is a lot of tolerance between parts. I suggest 0.8mm nozzle and 0.2mm layer.  
+### Interfaces  
+The main part of magnetic interface should be printed with the wall, top and bottom thickness of a couple millimeters to allow thread cutting and keeping the part water-tight, or just print with 100% infill to be sure.  
 Two threads need to be tapped in each opening of the part. If it is hard to keep the tap aligned with the hole direction, you can print some helping tools that will guide the tap. There are 4 of them, for the tank interface and for vessel interfaces, for each of two threads on them. If you print with PLA, avoid cutting too fast, it is **really** easy to overheat the plastic with the friction alone and ruin the thread, one half-turn every 2 seconds is about the optimal speed.
 Depending on printing surface you may need to file, sand and polish the face that contacts the vessel. That side needs to have a good contact with silicone ring to avoid the leaks.
 ### Magnet covers

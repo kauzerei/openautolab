@@ -2,7 +2,7 @@
 
 $fs=0.5/1;
 $fa=1/1;
-part = "Valve"; // [Valve, Main_pump, Filter_pump_type1, Filter_pump_type2, Filter_attachment, Enclosure]
+part = "Valve_bracket"; // [Valve_bracket, Main_pump_bracket, Filter_pump_type1_bracket, Filter_pump_type2_bracket, Filter_attachment, Enclosure_bracket]
 /* [Rail general parameters] */
 rod_diameter=8;
 rods_distance=62;
@@ -177,12 +177,12 @@ module pcbholder() {
   }
 }
 
-if (part=="Valve") {
+if (part=="Valve_bracket") {
   bigger();
   smaller();
 }
-if (part=="Main_pump") pump();
-if (part=="Filter_pump_type1") filterpump(1);
-if (part=="Filter_pump_type2") filterpump(2);
+if (part=="Main_pump_bracket") pump();
+if (part=="Filter_pump_type1_bracket") filterpump(1);
+if (part=="Filter_pump_type2_bracket") filterpump(2);
 if (part=="Filter_attachment") filter_attachment();
-if (part=="Enclosure") pcbholder();
+if (part=="Enclosure_bracket") pcbholder();

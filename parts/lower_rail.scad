@@ -313,6 +313,18 @@ if (part=="Filter_support") supports();
 if (part=="OPTIONAL_Tapping_tool") instrument();
 if (part=="OPTIONAL_Threading_tool") dieholder();
 if (part=="OPTIONAL_Wrench") wrench();
-if (part=="TEST_fit") {magnetic_holder(); translate([0,0,magnet_height+hor_wall+0.1]){holder_magnet_cover();translate([0,0,wall_between_magnets+0.1]){main_magnet_cover();translate([0,0,wall_between_magnets+magnet_height])rotate([0,0,360*magnet_height/thread_pitch])difference(){ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);cylinder(d=4,h=2*thread_pitch);}}}
+if (part=="TEST_fit") {
+  magnetic_holder();
+  translate([0,0,magnet_height+hor_wall+0.1]) {
+    holder_magnet_cover();
+    translate([0,0,wall_between_magnets+0.1]) {
+      main_magnet_cover();
+      translate([0,0,wall_between_magnets+magnet_height])rotate([0,0,360*magnet_height/thread_pitch])difference() {
+        ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);
+        cylinder(d=4,h=2*thread_pitch);
+      }
+    }
+  }
+}
 if (cut_view) translate([-50,0,-50])cube([100,100,100]);
 }
