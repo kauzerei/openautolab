@@ -55,10 +55,18 @@ Servo mixer;
 HX711 scale;
 LiquidCrystal_I2C lcd(0x27,20,4);
 
+unsigned int getFreeMemory()
+{
+  uint8_t* temp = (uint8_t*)malloc(16);    // assumes there are no free holes so this is allocated at the end
+  unsigned int rslt = (uint8_t*)SP - temp;
+  free(temp);
+  return rslt;
+}
+
 void beep() {
-  st_pr=millis();
+  st_ag=millis();
   while (1) {
-    if((millis()-st_pr)%500UL<250UL) digitalWrite(buzzer,HIGH);
+    if((millis()-st_ag)%500UL<250UL) digitalWrite(buzzer,HIGH);
     else digitalWrite(buzzer,LOW);
     if(millis()-st_pr>5000) {digitalWrite(buzzer,LOW); break;} //here be time of beepeng on error
     if(digitalRead(button3)==LOW) {digitalWrite(buzzer,LOW); break;} //here be interrupt beeping and continuing
@@ -200,6 +208,7 @@ void agitate(unsigned long stage_duration, byte init_agit, byte agit_period, byt
   st_ag=millis(); //agitation-related times calculated from here
   if (agit_period==0) agit_period=255; //period equal to zero does not make sense, setting to infinity instead, should never happen
   lcd.setCursor(12,1);
+  //lcd.print(getFreeMemory());
   lcd.print("process ");
   while(millis()-st_st<stage_duration*1000ul) { //stage duration is calculated from beginning of pumping in to beginning of pumping out, not from agitation start
     lcd.setCursor(10,3);
@@ -734,12 +743,14 @@ void loop() {
 
     case 16:
     d76();
+    beep();
     waitkey();
     k=0;
     break;
 
     case 17:
     c41();
+    beep();
     waitkey();
     k=0;
     break;

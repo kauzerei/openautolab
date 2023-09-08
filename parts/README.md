@@ -37,7 +37,7 @@ If the parts listed are unavailable, feel free to modify the PCB to fit the comp
 - 6 M8x8 plastic screws and 4mm drill as a more practical alternative to 3d-printed screws. More on that in lower_rail section.
 - Sous Vide and a water-tight container for heating the vessels with water.
 ## Parts to 3d-print
-STL files for all mentioned parts can be generated using script, that calls OpenSCAD or downloaded from Thingiverse. STL files don't belong in github.  
+STL files for all mentioned parts can be generated using generate_stls.sh script.  
 ### Frame
 The machine consists of an L-shaped frame, which holds two rails: the lower rail holds the vessels and tank, the upper rail holds pumps, valves and electronics. The frame 3d-printable parts are generated from frame.scad and can be customized to use different threaded rod diameter.  
 - 16x x-mount. Each pair of parts holds two rods together, two rods are mounted on each of two sides of each of two rails, therefore 16 parts in total.
@@ -45,8 +45,8 @@ The machine consists of an L-shaped frame, which holds two rails: the lower rail
 ### Lower rail: vessel and tank interfaces and mounts
 To connect the vessels and the developing tank to valves and the pump magnetic hose interfaces are used. To attach those interfaces to the lower rail magnetic holders are used. The interface for the tank has also a light-trap that prevents fogging the film through the hole, to which the hose is connected. Magnetic holder for the tank is mounted to the weight gauge for measuring amount of fluid in it. All of those parts are generated from lower_rail.scad and can be customized to fit magnets of different size and force.  
 - 6x hollow_screw - to mount hose interface to vessels and tank through a hole.
-- 5x main_body - the interfaces for the vessels
-- main_body_light_trap - larger interface with light trap for the developing tank.
+- 5x interface - the interfaces for the vessels
+- interface_light_trap - larger interface with light trap for the developing tank.
 - 6x main_magnet_cover - mounts magnet to the interface.
 - 6x hose_adapter and hose_sleeve to make hose fittings.
 - 5x magnetic_holder to attach vessels to the rail.

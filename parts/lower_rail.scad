@@ -13,7 +13,7 @@ rod_diameter=8;
 distance_between_rods=24;
 air_gap=0.50;
 
-/* [Main body options] */
+/* [Interface options] */
 light_trap=false;
 main_part_holes=7;
 seal_length=8;
@@ -39,10 +39,10 @@ adapter_inner_diameter=4;
 screw_inner_diameter=4;
 
 /* [Magnetic holder options] */
-rod_mount=false;
+rod_mount=true;
 nut_width=16;
 mount_hole=rod_diameter+1*air_gap;
-weight_gauge_mount=false;
+weight_gauge_mount=not rod_mount;
 
 /* [Weight gauge measurements] */
 wg_hole_size=4;
