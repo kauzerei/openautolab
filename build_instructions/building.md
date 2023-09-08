@@ -168,20 +168,47 @@ Put the level sensor on the filter input so the filter never overflows.
 If you want to make the PCB yourself, or just to understand its work better better, refer to "main_board" subdirectory of this repository. It contains schematics and board layout in KiCAD format, along with some insights about its production. In this document it is supposed that you already have a PCB with all components soldered to it.  
 ### Mounting PCB
 Parts list:
-- PCB
-- 20x04 LCD display with i2c interface
-- Front half of the electronic enclosure
-- Back half of the electronic enclosure
-- 3x plastic buttons
-- 4x M4x20 screws
-- 4x M4x6 screws
-- 4x M4 nuts
-Place the board inside the back half of the box. Put 4 screws through the holes in the board and in the box. Put those screws sticking from the rear of the box through the brackets on the upper rail. Tighten it all with 4 nuts from the back.   
+| No | Part | Quantity | Filename if 3d-printable |
+| --- | --- | --- | --- |
+| 1 | PCB | 1 |  |
+| 2 | 20x04 LCD display with i2c interface | 1 |  |
+| 3 | Front half of the electronic enclosure | 1 | enclosure_front.stl |
+| 4 | Back half of the electronic enclosure | 1 | enclosure_back.stl |
+| 5 | plastic buttons | 3 | enclosure_buttons.stl |
+| 6 | M4x20 screws | 4 |  |
+| 7 | M4x6 screws | 4 |  |
+| 8 | M4 nuts | 4 |  |
+
+[pcb screwed to back of enclosure]
+Place the board inside the back half of the box. Put 4 screws through the holes in the board and in the box.  
+[putting enclosure onto brackets]  
+Put those screws sticking from the rear of the box through the brackets on the upper rail.  
+[mounting enclosure onto brackets]  
+Tighten it all with 4 nuts from the back.   
 ### Connecting power electronics  
-Before valves can be connected to the main board, the wires need to be prepared. The optimal way is crimping the ferrules. Covering ends of wires with solder using soldering iron is not optimal, since the solder slowly deforms under pressure with time and connection may become loose, but better than nothing. Screwing the wires as is is strongly not recommended.  
+Before valves can be connected to the main board, the wires need to be prepared.  
+[crimping wires]  
+The optimal way is crimping the ferrules. Covering ends of wires with solder using soldering iron is not optimal, since the solder slowly deforms under pressure with time and connection may become loose, but better than nothing. Screwing the wires as is is strongly not recommended.
+[connecting wires to pump]    
 If the pumps have already pre-soldered wires, you can use them or replace if the length is not enough. A nice way is to solder nothing to the pumps and use the contact terminals instead.     
-Put each pair of wires of each valve into the screw terminals and tighten them with screws. Polarity does not matter in case of valves. Connect the rightmost terminal to the power supply, here the polarity is important, make sure that the negative contact is on the left, and the positive is on the right.  
+[connecting valves to board]
+Put each pair of wires of each valve into the screw terminals and tighten them with screws. Polarity does not matter in case of valves.
+[connecting power]
+Connect the rightmost terminal to the power supply, here the polarity is important, make sure that the negative contact is on the left, and the positive is on the right.  
+[connect magnetic sensor,filter pump]
 To the left of the power terminal is magnetic sensor for the filter and further to the left is the filter pump, both cave no incorrect polarity, unless you are using a different from the recommended bidirectional pump.  
+[connecting main pump to the board]  
 Fourth terminal from the right is the main pump. Polarity is important here, but your pump **may** theoretically have different polarity. In case it does, don't worry, just do the test run in the end and check that the pump moves the water in the right direction and change the polarity of this pump. If the hoses are connected as depicted, connect the wires as depicted, negative on the left, positive on the right. If your pump runs in the wrong direction, either reverse wires polarity or reverse hoses connections.  
 ### Signal-level electronics and front panel
-Connect the force gauge, to 4-pin connector and the agitation module to a 3-pin connector as depicted, the polarity is very important. Place the top cover of the electronic box upside down and mount the screen and the pump switch to it. Insert three plastic buttons into their places. If you do not invert the box completely they do not fall out, but if you struggle with them, you can hold the box screen-down and invert the whole frame to put the box together. Attach the screen and switch connectors to the board and put the box together. Fix the box halves together with four side-mounted M4x6 screws. Plug in the servo of the agitation module.
+[connected force gauge and agitation module]
+Connect the force gauge, to 4-pin connector and the agitation module to a 3-pin connector as depicted, the polarity is very important.  
+[mounting screen]  
+Place the top cover of the electronic box upside down and mount the screen
+[mounting filter pump switch]  
+Mount the pump switch.  
+[putting buttons in place]  
+Insert three plastic buttons into their places. If you do not invert the box completely they do not fall out, but if you struggle with them, you can hold the box screen-down and invert the whole frame to put the box together.  
+[open enclosure, connected front wires]  
+Attach the screen and switch connectors to the board and put the box together.  
+[fix box halves with screws]  
+Fix the box halves together with four side-mounted M4x6 screws.
