@@ -8,15 +8,19 @@ do
     echo ${PART}
     if [[ "${PART}" != "OPTIONAL"* ]]; then
       FILENAME=$(echo stl/${MODULE}_${PART}.stl | tr '[:upper:]' '[:lower:]')
+      open -n -a OpenSCAD --args $(pwd)/${MODULE}.scad --D part=\"${PART}\" --o $(pwd)/${FILENAME}
     fi
-    open -n -a OpenSCAD --args $(pwd)/${MODULE}.scad --D part=\"${PART}\" --o $(pwd)/${FILENAME}
   done
 done
 #hack for parts with modifyers
 open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"Interface\" --D light_trap=\"true\" --o $(pwd)/stl/lower_rail_interface_light_trap.stl
 open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"Magnetic_holder\" --D rod_mount=false --o $(pwd)/stl/lower_rail_magnetic_holder_wg.stl
 #hack for optional instruments
-open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"OPTIONAL_Tapping_tool\" --o $(pwd)/stl/optional/tapping_tool_top_vessel.stl
-open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"OPTIONAL_Tapping_tool\" --D onside=true --o $(pwd)/stl/optional/tapping_tool_side_vessel.stl
-open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"OPTIONAL_Tapping_tool\" --D light_trap=true --o $(pwd)/stl/optional/tapping_tool_top_tank.stl
-open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"OPTIONAL_Tapping_tool\" --D light_trap=true --D onside=true --o $(pwd)/stl/optional/tapping_tool_side_tank.stl
+open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"OPTIONAL_tapping_tool\" --o $(pwd)/stl/optional/tapping_tool_top_vessel.stl
+open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"OPTIONAL_tapping_tool\" --D onside=true --o $(pwd)/stl/optional/tapping_tool_side_vessel.stl
+open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"OPTIONAL_tapping_tool\" --D light_trap=true --o $(pwd)/stl/optional/tapping_tool_top_tank.stl
+open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"OPTIONAL_tapping_tool\" --D light_trap=true --D onside=true --o $(pwd)/stl/optional/tapping_tool_side_tank.stl
+open -n -a OpenSCAD --args $(pwd)/agitation.scad --D part=\"OPTIONAL_servo_gauge\" --o $(pwd)/stl/optional/servo_gauge.stl
+open -n -a OpenSCAD --args $(pwd)/frame.scad --D part=\"OPTIONAL_nut_spinner\" --o $(pwd)/stl/optional/nut_spinner.stl
+open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"OPTIONAL_threading_tool\" --o $(pwd)/stl/optional/threading_tool.stl
+open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"OPTIONAL_wrench\" --o $(pwd)/stl/optional/wrench.stl

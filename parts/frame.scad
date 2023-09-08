@@ -5,7 +5,7 @@
 
 $fs=0.5/1;
 $fa=1/1;
-part="X-mount";// [X-mount, T-mount, OPTIONAL_Nut_spinner]
+part="X-mount";// [X-mount, T-mount, OPTIONAL_nut_spinner]
 rod_diameter=8;
 nut_width=16;
 nut_height=8;
@@ -63,6 +63,6 @@ if (part=="X-mount") {
 if (part=="T-mount") {
   tmount(thickness=nut_width,diameter=d,half=true,slot=tightening_gap);
 }
-if (part=="OPTIONAL_Nut_spinner") {
+if (part=="OPTIONAL_nut_spinner") {
   nutspinner(50,40,nut_width+6,nut_width+2*air_gap,rod_diameter+air_gap*2,nut_height*2);
 }

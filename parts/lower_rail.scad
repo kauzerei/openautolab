@@ -6,7 +6,7 @@ use <threads.scad>;
 
 $fs=0.5/1;
 $fa=1/1;
-part = "Interface"; // [Interface, Interface_cover, Magnetic_holder, Magnetic_holder_cover, Weight_gauge_bracket, Hose_adapter, Hose_sleeve, Hollow_screw, Filter_support, OPTIONAL_Tapping_tool, OPTIONAL_Threading_tool, OPTIONAL_Wrench]
+part = "Interface"; // [Interface, Interface_cover, Magnetic_holder, Magnetic_holder_cover, Weight_gauge_bracket, Hose_adapter, Hose_sleeve, Hollow_screw, Filter_support, OPTIONAL_tapping_tool, OPTIONAL_threading_tool, OPTIONAL_wrench]
 cut_view=false;
 override_dbr=false;
 rod_diameter=8;
@@ -310,9 +310,9 @@ if (part=="Hose_adapter") hose_adapter();
 if (part=="Hose_sleeve") hose_sleeve();
 if (part=="Hollow_screw") hollow_screw();
 if (part=="Filter_support") supports();
-if (part=="OPTIONAL_Tapping_tool") instrument();
-if (part=="OPTIONAL_Threading_tool") dieholder();
-if (part=="OPTIONAL_Wrench") wrench();
+if (part=="OPTIONAL_tapping_tool") instrument();
+if (part=="OPTIONAL_threading_tool") dieholder();
+if (part=="OPTIONAL_wrench") wrench();
 if (part=="TEST_fit") {
   magnetic_holder();
   translate([0,0,magnet_height+hor_wall+0.1]) {
