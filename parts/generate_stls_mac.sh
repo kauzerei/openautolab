@@ -13,7 +13,10 @@ do
   done
 done
 #hack for parts with modifyers
-open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"Interface\" --D light_trap=true --o $(pwd)/lower_rail_interface_light_trap.stl
-open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"Magnetic_holder\" --D rod_mount=false --o $(pwd)/lower_rail_magnetic_holder_wg.stl
+open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"Interface\" --D light_trap=\"true\" --o $(pwd)/stl/lower_rail_interface_light_trap.stl
+open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"Magnetic_holder\" --D rod_mount=false --o $(pwd)/stl/lower_rail_magnetic_holder_wg.stl
 #hack for optional instruments
-#open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"Interface\" --D light_trap=true --o $(pwd)/lower_rail_interface_light_trap.stl
+open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"OPTIONAL_Tapping_tool\" --o $(pwd)/stl/optional/tapping_tool_top_vessel.stl
+open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"OPTIONAL_Tapping_tool\" --D onside=true --o $(pwd)/stl/optional/tapping_tool_side_vessel.stl
+open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"OPTIONAL_Tapping_tool\" --D light_trap=true --o $(pwd)/stl/optional/tapping_tool_top_tank.stl
+open -n -a OpenSCAD --args $(pwd)/lower_rail.scad --D part=\"OPTIONAL_Tapping_tool\" --D light_trap=true --D onside=true --o $(pwd)/stl/optional/tapping_tool_side_tank.stl

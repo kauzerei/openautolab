@@ -42,7 +42,7 @@ screw_inner_diameter=4;
 rod_mount=true;
 nut_width=16;
 mount_hole=rod_diameter+1*air_gap;
-weight_gauge_mount=not rod_mount;
+weight_gauge_mount = !rod_mount;
 
 /* [Weight gauge measurements] */
 wg_hole_size=4;
