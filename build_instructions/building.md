@@ -53,18 +53,14 @@ Parts list:
 | 3 | force-gauge mounting brackets | 2 | lower_rail_weight_gauge_bracket.stl |
 | 4 | larger magnet covers with outer thread | 6 | lower_rail_magnetic_holder_cover.stl |
 | 5 | smaller magnet covers with inner thread | 6 | lower_rail_interface_cover.stl |
-| 6 | straight vessel interfaces | 5 | lower_rail_interface.stl |
-| 7 | Tank interface with a light-trap | 1 | lower_rail_interface_light_trap.stl |
-| 8 | hollow screw | 6 | lower_rail_hollow_screw.stl |
-| 9 | hose sleeve | 6 | lower_rail_hose_sleeve.stlv |
-| 10 | hose adapter | 6 | lower_rail_hose_adapter.stl	 |
-| 11 | filter supports | 2 | lower_rail_filter_support.stl |
-| 12 | magnets | 6 |  |
-| 13 | Waterproof force gauge | 1 |  |
-| 14 | threaded rods M8 of length 600mm | 2 |  |
-| 15 | M8 nuts | 24 |  |
-| 16 | M6 screws | 2 |  |
-| 17 | M5 screws | 2 |  |
+| 6 | filter supports | 2 | lower_rail_filter_support.stl |
+| 7 | magnets | 6 |  |
+| 8 | Waterproof force gauge | 1 |  |
+| 9 | threaded rods M8 of length 600mm | 2 |  |
+| 10 | M8 nuts | 24 |  |
+| 11 | M6 screws | 2 |  |
+| 12 | M5 screws | 2 |  |
+
 [one magnetic holder mounted on rail]  
 Take two threaded rods and place one nut on each of them about 8cm from the end. Push them through one magnetic holder and fix with two nuts on the other side.
 [five magnetic holders on rail]  
@@ -89,6 +85,7 @@ Parts list:
 | 3 | M8x210mm threaded rods | 2 |  |
 | 4 | M8x110mm threaded rods | 2 |  |
 | 5 | M8 nuts | 20 |  |
+
 You need to have two pairs of X-mounts on each of four rods to hold one rail on one side. Each pair should be able to be pressed together by two nuts in order to tightly hold the threaded rod of the rail.
 [four rods with t and x mounts and nuts]  
 To achieve said structure, loosely put the parts in the following order on each of four rods: nut, two X-mounts (two round cutouts facing each other), two nuts some distance apart, two more X-mounts (also cutouts together), nut.  
@@ -102,33 +99,71 @@ Now use 4 T-mounts to fix the rails together: each of the two newly mounted perp
 [inserting upper half into lower]
 The perpendicular rods of the upper rail are inserted between those pairs, which are then pressed against each other by tightening the nuts.  
 ## Building agitation module
+[agitation module near the tank]
 If you have some special developing tank and need to make parts that fit it, or 3d-printing them for the recommended AP developing tank, refer to modifying_parts.md, it has description of how to make the right rod and cap. In this document it is supposed that you already have the parts that fit your tank perfectly.  
-Mount the servo on tank cap in such a way, that its axis is in the center of the cap using the screws provided with the servo. Take a long screwdriver and fix the mixing rod to the servo with the M2.5 screw also provided with the servo.  
+[servo mounted on cap]  
+Mount the servo on tank cap in such a way, that its axis is in the center of the cap using the screws provided with the servo.  
+[mounting the rod]  
+Take a long screwdriver and fix the mixing rod to the servo with the M2.5 screw also provided with the servo.  
 ## Connecting hoses
+[assembled view of interface on vessel]  
+[blown view of interface assembly]  
 The vessels and the developing tank are connected to the hoses with interfaces, which are fancy L-shaped tubes with inner M8 threads on each end and a magnet on the bottom. The top thread is for the hollow screw, that is put through the hole in the bottom of the vessel, a gasket ring and then tightened to the interface itself.
 The side thread is for the hose adapter. This part is designed to be interchangeable, because of how easily it could be accidentally broken. For the same reason it is designed with redundant sleeve that holds the hose and adds to the strength of the part.      
 Parts list:
-- Silicone hose 6mm ID, 9mm OD
-- 5x T-connectors for 6mm hose
-- 6x hose adapters
-- 6x hose adapter sleeves
-- 6x hollow screws
-- 12x silicone rings
-- 5x straight interfaces
-- Interface for the tank with built-in light trap
-- 6x magnets
-- x cable ties
+| No | Part | Quantity | Filename if 3d-printable |
+| --- | --- | --- | --- |
+| 1 | Silicone hose 6mm ID, 9mm OD |  |  |
+| 2 | T-connectors for 6mm hose | 5 |  |
+| 3 | hose sleeve | 6 | lower_rail_hose_sleeve.stlv |
+| 4 | hose adapter | 6 | lower_rail_hose_adapter.stl |
+| 5 | hollow screw | 6 | lower_rail_hollow_screw.stl |
+| 6 | silicone rings | 12 |  |
+| 7 | straight vessel interfaces | 5 | lower_rail_interface.stl |
+| 8 | Tank interface with a light-trap | 1 | lower_rail_interface_light_trap.stl |
+| 9 | Filter attachments holder | 2 | upper_rail_filter_attachment.stl |
+| 10 | magnets | 6 |  |
+| 11 | cable ties |  |  |
+
 ### Mounting hose adapters
 Cut 6 hoses for vessels, filter and tank. Their lengths need to be enough to connect the upper rail and the lower rail and to allow comfortable handling of vessels, mounted to them. Recommended length is about 300mm. Now connect each hose to adapter as follows.  
-First, the sleeve is put on the hose, the side with hexagonal cutout facing the end of the hose. Then the narrow side of the adapter is put over the hose. Then holding the hose with one hand, slide the sleeve with the second hand. The pulling force will stretch the hose so it becomes narrower and it is easier to fit the sleeve on top of it, however it should be done carefully not to pull the hose away from the assembled adapter.  
+[two sleeves on two hoses, with two adapters: one lying near, another already put on]  
+First, the sleeve is put on the hose, the side with hexagonal cutout facing the end of the hose. Then the narrow side of the adapter is put over the hose.  
+[putting sleeve over adapter]  
+Then holding the hose with one hand, slide the sleeve with the second hand. The pulling force will stretch the hose so it becomes narrower and it is easier to fit the sleeve on top of it, however it should be done carefully not to pull the hose away from the assembled adapter.
+[adapter with hose screwed into interface]  
 Screw those adapters on the sides of the interfaces (not on top part which is opposite to the magnet). You can use TPFE tape, silicone or rubber ring (recommended) to make threaded connection water-tight. Keep in mind, that in case adapter is broken, you need to be able to unscrew the thread.  
-### Preparing vessels and tank  
-Put 6 magnets into the smaller magnetic covers in the same orientation you put them into magnetic holders. Screw those caps onto interfaces.  
-The machine is designed with AP developing tank, Ikea 500mL shakers and Brita water filter in mind. If you are building the machine from scratch you need to drill 8mm holes in each of those items: 20mm offset from center for the tank and dead center for the others. Then for each one of those repeat the following mounting process.  
+### Preparing vessels and tank
+[six magnets in six covers]    
+Put 6 magnets into the smaller magnetic covers in the same orientation you put them into magnetic holders.  
+[process of screwing cap on one interface, near lie assembled and disassembled]  
+Screw those caps onto interfaces.  
+[drill in tank, drill in interface, drill in filter]
+The machine is designed with AP developing tank, Ikea 500mL shakers and Brita water filter in mind. If you are building the machine from scratch you need to drill 8mm holes in each of those items: 20mm offset from center for the tank and dead center for the others.  
+Then for each one of those repeat the following mounting process.  
+[process of screwing vessel onto interface]  
 Put the hollow screw through the hole from the inner side, such that the thread is sticking outside. Put a silicone gasket on the thread. Screw the interface on, magnetic side down. Do not over-tight, especially if you have a 3d-printed screw. Tighten just that the interface is not unscrewing itself when forces are applied by the dangling hose during normal operation.
 ### Finishing the liquid connections
-Cut 5 pieces of hose, each of which is just long enough to connect a T-piece with a valve and put T-pieces on top of four leftmost valves. Cut one more slightly longer hose to connect the last valve to the side of the T-piece of the neighbouring one. From now on measure the length of the hose to be cut judging from the distance of components that it connects. Cut two more short hoses and connect 5 T-pieces together. Connect the main pump to the only T-piece left. Connect the other side of the pump to the tank. Connect the four hoses attached to two vessels, water filter to valves 1 through 6, the sixth valve is for dirty water output, it needs to be slightly longer, because it leads outside of the machine to your waste water container. Connect the pump to the tank. Secure each end of each hose with a cable ties.  
-Cut the hose for clean water input about the same size as the waste water hose, it should reach the source of clean water outside the machine. Connect it to the input of the filter pump. Cut about 300mm long hose for the filter input. Connect it to the output of the filter pump and fix its other side to the input of the filter. Put the level sensor on the filter input so the filter never overflows.
+[5 pieces of hose on 5 valves and 5 t-pieces, assembly progress]  
+Cut 5 pieces of hose, each of which is just long enough to connect a T-piece with a valve and put T-pieces on top of the five leftmost valves.  
+[last valve connected]  
+Cut one more slightly longer hose to connect the last valve to the side of the T-piece of the neighbouring one. From now on measure the length of the hose to be cut judging from the distance of components that it connects.  
+[connecting t-pieces together, assembly progress]  
+Cut two more short hoses and connect 5 T-pieces together.  
+[connecting main pump to valves]  
+Connect the main pump to the only T-piece left.  
+[connect main pump to tank]  
+Connect the other side of the pump to the tank.  
+[connecting hoses to vessels, assembly progress]  
+Connect the four hoses attached to two vessels, water filter to valves 1 through 6, the sixth valve is for dirty water output, it needs to be slightly longer, because it leads outside of the machine to your waste water container.  
+[two external hoses visible]  
+Cut the hose for clean water input about the same size as the waste water hose, it should reach the source of clean water outside the machine. Connect it to the input of the filter pump.
+[connect filter input hose]  
+Cut about 300mm long hose for the filter input. Connect it to the output of the filter pump and fix its other side to the input of the filter.  
+[securing hoses with ties, assembly progress]  
+Secure each end of each hose with a cable ties.  
+[level sensor on filter]
+Put the level sensor on the filter input so the filter never overflows.
 ## Mounting and connecting electronics
 If you want to make the PCB yourself, or just to understand its work better better, refer to "main_board" subdirectory of this repository. It contains schematics and board layout in KiCAD format, along with some insights about its production. In this document it is supposed that you already have a PCB with all components soldered to it.  
 ### Mounting PCB
