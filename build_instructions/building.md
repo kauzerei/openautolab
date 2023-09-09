@@ -1,5 +1,5 @@
 # Building OpenAutoLab
-This is a detailed description of building OpenAutoLab. If you have any pre-built modules like main board or one of the rails, just skip the section. If you are 3d-printing the parts yourself, please refer to "making_parts.MD", it contains useful information about the print settings and post-processing. If you want to change the measurements of some parts, due to differently sized magnets, hoses, threaded rods or other components, refer to "modifying parts.MD", it describes how to modify parametric models of all 3d-printable parts to meet your needs.   
+This is a detailed description of building OpenAutoLab. If you have any pre-built modules like main board or one of the rails, just skip the section. If you are 3d-printing the parts yourself, please refer to [making parts](making_parts.md), it contains useful information about the print settings and post-processing. If you want to change the measurements of some parts, due to differently sized magnets, hoses, threaded rods or other components, refer to [modifying parts](modifying_parts.md), it describes how to modify parametric models of all 3d-printable parts to meet your needs.   
 ## Building frame
 [picture of the frame]  
 By the end of this chapter you will have the skeleton of the machine with most components mounted on the frame.   
@@ -43,7 +43,7 @@ The distance between the brackets should be exactly the same as the distance bet
 By the end of this section you will have a water-tight bottom part of the machine. It is possible that you will have to change placement of some parts due to differences in placement of the structures inside the outer box.
 [two lower rails in two containers comparison]  
 The difference should not be drastic, the picture is a good reference anyway.
-If the force gauge was not originally waterproof, follow the instructions in making_parts.MD to make it waterproof first.  
+If the force gauge was not originally waterproof, follow the instructions in [making parts](making_parts.md) to make it waterproof first.  
 [picture of all mentioned parts]
 Parts list:  
 | No | Part | Quantity | Filename if 3d-printable |
@@ -100,7 +100,7 @@ Now use 4 T-mounts to fix the rails together: each of the two newly mounted perp
 The perpendicular rods of the upper rail are inserted between those pairs, which are then pressed against each other by tightening the nuts.  
 ## Building agitation module
 [agitation module near the tank]
-If you have some special developing tank and need to make parts that fit it, or 3d-printing them for the recommended AP developing tank, refer to modifying_parts.md, it has description of how to make the right rod and cap. In this document it is supposed that you already have the parts that fit your tank perfectly.  
+If you have some special developing tank and need to make parts that fit it, or 3d-printing them for the recommended AP developing tank, refer to [modifying parts](modifying_parts.md), it has description of how to make the right rod and cap. In this document it is supposed that you already have the parts that fit your tank perfectly.  
 [servo mounted on cap]  
 Mount the servo on tank cap in such a way, that its axis is in the center of the cap using the screws provided with the servo.  
 [mounting the rod]  
