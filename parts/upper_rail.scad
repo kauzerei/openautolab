@@ -104,14 +104,14 @@ module pump() {
 }
 
 module pump_shape(type) {
-  if (type==1) {
+  if (type==1) hull(){
     circle(d=34);
     translate([17,-9])circle(d=8);
     translate([17,9])circle(d=8);
     translate([-17,-9])circle(d=8);
     translate([-17,9])circle(d=8);
   }
-  if (type==2) {
+  if (type==2) hull(){
     translate([14,-14])circle(d=8);
     translate([-14,-14])circle(d=8);
     translate([14,14])circle(d=8);
@@ -127,7 +127,7 @@ module filterpump(type) {
         translate([rods_distance/2,9])circle(d=rod_diameter);
         translate([-rods_distance/2,9])circle(d=rod_diameter);
       }
-    hull() pump_shape(type);
+    pump_shape(type);
     translate([rods_distance/2,9])circle(d=rod_diameter);
     translate([-rods_distance/2,9])circle(d=rod_diameter);
     translate([0,9])square([2*rods_distance,1],center=true);

@@ -139,7 +139,7 @@ Put 6 magnets into the smaller magnetic covers in the same orientation you put t
 [process of screwing cap on one interface, near lie assembled and disassembled]  
 Screw those caps onto interfaces.  
 [drill in tank, drill in interface, drill in filter]  
-The machine is designed with AP developing tank, Ikea 500mL shakers and Brita water filter in mind. If you are building the machine from scratch you need to drill 8mm holes in each of those items: 20mm offset from center for the tank and dead center for the others.  
+The machine is designed with AP developing tank, Ikea 500mL shakers and Brita water filter in mind. If you are building the machine from scratch you need to drill 8mm holes in each of those items: 17mm offset from center for the tank and dead center for the others.  
 Then for each one of those repeat the following mounting process.  
 [process of screwing vessel onto interface]  
 Put the hollow screw through the hole from the inner side, such that the thread is sticking outside. Put a silicone gasket on the thread. Screw the interface on, magnetic side down. Do not over-tight, especially if you have a 3d-printed screw. Tighten just that the interface is not unscrewing itself when forces are applied by the dangling hose during normal operation.

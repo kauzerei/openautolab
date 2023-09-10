@@ -49,7 +49,7 @@ Those are not really necessary, especially if you already have experience and to
 0.8mm nozzle, 0.5mm layer height, 100% infill. You may want to use M3 thread inserts for the screen mount or screw directly. You may have to file the rectangular window to fit the screen inside.  
 ### Buttons
 They are easier printed in bulk with print cooling on max. That way you don't need to worry that each layer has enough time to cool before the next layer is printed. Print with smaller layer height about 0.1mm to increase layer bonding and the strength of the parts will be sufficient.
-## Tank agitation
+## Agitation
 0.8mm nozzle and 100% infill is recommended, but other diameters will do fine.
 ### Cap
 You may have to experiment and tweak the parameters of the model depending on the filament and the printer. In case you **really** don't want to touch any of the parametric models, sometimes you can manage small changes in part size just with scaling and small changes in wall thickness just with layer expansion in your slicer. Otherwise, refer to [modifying parts](modifying_parts.md) to learn using parametric model for generating the perfect STL.  
