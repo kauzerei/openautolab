@@ -10,7 +10,7 @@ To save the rendered part to an .stl file press F7.
 ***rods distance*** distance between rods of the upper rail.  
 ### Brackets
 ***part width*** width of the holders. Twice the size of the hole is a good start.  
-***part thickness*** Thickness of the brackets. About twice as thick as your comfortable wall thickness for not loaded parts.  
+***part thickness*** thickness of the brackets. About twice as thick as your comfortable wall thickness for not loaded parts.  
 ***air gap*** a gap between two halves of the mount. Gives a room for tightening them together on a rail and for printing two halves as one part without having them stuck together.  
 ***valve offset*** used to place the valves at certain distance from the plane of upper rail, for example to free some space for a decorative panel that covers parts of the machine.  
 ***pump offset*** how far mounting points of the pump are lifted above the surface of the brackets  
@@ -25,7 +25,7 @@ To save the rendered part to an .stl file press F7.
 ***offset h*** horizontal offset, distance from the axis of the floating switch to the inner filter wall.  
 ***hole*** diameter of the mounting diameter of the floating switch.  
 ### Advanced upper rail modification
-There are brackets for mounting two types of pumps for filling the filter. If you have some special pump you can edit ***pump shape*** function and add your own 2d shape.  
+There are brackets for mounting two types of pumps for filling the filter. If you have some special pump you can edit ***pump_shape*** function and add your own 2d shape.  
 ## Lower rail
 ***cut view*** just a visualization tool, only half of the part is rendered, so you can see the inner structure inside of OpenSCAD interface.  
 ***rod diameter*** diameter of the threaded rod  
@@ -102,12 +102,12 @@ Careful with last three parameters, it is supposed, that mounting rectangle and 
 ***screen rect*** the size of the protruding part of the screen, for which a rectangular slot should be cut on the front panel.  
 ### Advanced enclosure modification
 Most of the parameters for this part are the positions of different components on the main board. If you modified the board layout, measure X and Y coordinates of the components (and holes) from the upper-left corner of the board and write them inside the code. Unfortunately such arrays of values cannot be set with GUI. However if you understand how to modify the board in such a way it does not fit the box anymore, you'll manage to modify the array also :).  
-***pcb_holes pos*** array with coordinates of centers of the drilled holes on the PCB used for mounting it.  
-***buttons pos*** array with coordinates of the centers of buttons.  
-***connectors top*** array with coordinates of the centers of screw terminals. This model is made for connectors along the upper side of the board.  
-***connectors left*** array with coordinates of the necessary holes on the left side of the enclosure  
-***connectors right*** array with coordinates of the necessary holes on the right side of the enclosure  
-***switches pos*** array with coordinates of the centers of switches. There's only one switch currently, but there may be more in future.  
+***pcb_holes_pos*** array with coordinates of centers of the drilled holes on the PCB used for mounting it.  
+***buttons_pos*** array with coordinates of the centers of buttons.  
+***connectors_top*** array with coordinates of the centers of screw terminals. This model is made for connectors along the upper side of the board.  
+***connectors_left*** array with coordinates of the necessary holes on the left side of the enclosure  
+***connectors_right*** array with coordinates of the necessary holes on the right side of the enclosure  
+***switches_pos*** array with coordinates of the centers of switches. There's only one switch currently, but there may be more in future.  
 ## Agitation
 ### Cap
 ***outer diameter*** is an outer diameter of cylindrical part of the tank where the lid is normally mounted. No correction for part thickness is required.  
