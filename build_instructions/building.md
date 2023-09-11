@@ -38,6 +38,7 @@ Place the pump between the brackets, and mount them onto the rail, about 20mm aw
 Now mount the brackets for electronic enclosure. You may have to push around the valves to make space for correct placement of the brackets.  
 [enclosure brackets on rail and PCB for comparison]  
 The distance between the brackets should be exactly the same as the distance between the mounting points of the PCB and therefore of the enclosure. About 12mm to the right from the first and 3mm to the right from the fourth valves is a good place for the brackets, this way the wires from each of the valves should reach their respective connectors on the PCB without problems.  
+When you are sure that all parts fit nicely, tighten all the screws.  
 ### Building lower rail: vessel and tank interfaces and mounts
 [assembled lower rail]  
 By the end of this section you will have a water-tight bottom part of the machine. It is possible that you will have to change placement of some parts due to differences in placement of the structures inside the outer box.
@@ -49,24 +50,23 @@ Parts list:
 | No | Part | Quantity | Filename if 3d-printable |
 | --- | --- | --- | --- |
 | 1 | rod-mountable magnetic holders | 5 | lower_rail_magnetic_holder.stl |
-| 2 | Bar-mountable magnetic holder | 1 | lower_rail_magnetic_holder_wg.stl |
+| 2 | bar-mountable magnetic holder | 1 | lower_rail_magnetic_holder_wg.stl |
 | 3 | force-gauge mounting brackets | 2 | lower_rail_weight_gauge_bracket.stl |
 | 4 | larger magnet covers with outer thread | 6 | lower_rail_magnetic_holder_cover.stl |
-| 5 | smaller magnet covers with inner thread | 6 | lower_rail_interface_cover.stl |
-| 6 | filter supports | 2 | lower_rail_filter_support.stl |
-| 7 | magnets | 6 |  |
-| 8 | Waterproof force gauge | 1 |  |
-| 9 | threaded rods M8 of length 600mm | 2 |  |
-| 10 | M8 nuts | 24 |  |
-| 11 | M6 screws | 2 |  |
-| 12 | M5 screws | 2 |  |
+| 5 | filter supports | 2 | lower_rail_filter_support.stl |
+| 6 | magnets | 6 |  |
+| 7 | Waterproof force gauge | 1 |  |
+| 8 | threaded rods M8 of length 600mm | 2 |  |
+| 9 | M8 nuts | 24 |  |
+| 10 | M6x25 screws | 2 |  |
+| 11 | M4x12 screws | 2 |  |
 
 [one magnetic holder mounted on rail]  
-Take two threaded rods and place one nut on each of them about 8cm from the end. Push them through one magnetic holder and fix with two nuts on the other side.
-[five magnetic holders on rail]  
-Place two more nuts about 80mm to the right from the previous two. Repeat nuts-holder-nuts-space pattern for a total of 4 holders.  
-[six holders on rail with filter supports]  
-The fifth holder is for the filter and should be further away due to filter size and requires two additional supports due to its weight and instability. So, after the fourth holder keep about 150mm of space, then place parts in following order: nuts, support, nuts, holder, nuts, support, nuts. The idea is that each part is fixed on both sides and is in the contact with 4 nuts in total.  
+Take two threaded rods and place one nut on each of them about 135mm from the end. Push them through one magnetic holder and fix with two nuts on the other side.
+[four magnetic holders on rail]  
+Place two more nuts about 65mm to the right from the previous two. Repeat nuts-holder-nuts-space pattern for a total of 4 holders.  
+[five holders on rail with filter supports]  
+The rightmost holder is for the filter and should be further away due to filter size and requires two additional supports due to its weight and instability. So, after the fourth holder keep about 150mm of space, then place parts in following order: nuts, support, nuts, holder, nuts, support, nuts. The idea is that each part is fixed on both sides and is in the contact with 4 nuts in total.  
 [mounted force gauge with arrow visible]  
 Take the force gauge, and the pair of mounting brackets and fix the gauge on the left about 20mm from the very end of the rods by threading each screw through two brackets into the gauge. Mind the orientation of the gauge, the arrow must be on the free side and should point downwards, and the angle must be fine tuned later so that the tank is as far from touching any of the walls as possible.  
 [holder mounted to force gauge]  
