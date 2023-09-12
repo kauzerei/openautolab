@@ -87,7 +87,7 @@ Parts list:
 | 5 | M8 nuts | 20 |  |
 
 You need to have two pairs of X-mounts on each of four rods to hold one rail on one side. Each pair should be able to be pressed together by two nuts in order to tightly hold the threaded rod of the rail.
-[four rods with t and x mounts and nuts]  
+[four rods with x mounts and nuts]  
 To achieve said structure, loosely put the parts in the following order on each of four rods: nut, two X-mounts (two round cutouts facing each other), two nuts some distance apart, two more X-mounts (also cutouts together), nut.  
 Take the upper rail and two longer (210mm long) rods.  
 [upper rail on perpendicular rods]  
@@ -121,9 +121,10 @@ Parts list:
 | 6 | silicone rings | 12 |  |
 | 7 | straight vessel interfaces | 5 | lower_rail_interface.stl |
 | 8 | Tank interface with a light-trap | 1 | lower_rail_interface_light_trap.stl |
-| 9 | Filter attachments holder | 2 | upper_rail_filter_attachment.stl |
-| 10 | magnets | 6 |  |
-| 11 | cable ties |  |  |
+| 9 | interface magnet cover | 6 | lower_rail_interface_cover.stl |
+| 10 | Filter attachments holder | 2 | upper_rail_filter_attachment.stl |
+| 11 | magnets | 6 |  |
+| 12 | cable ties |  |  |
 
 ### Mounting hose adapters
 Cut 6 hoses for vessels, filter and tank. Their lengths need to be enough to connect the upper rail and the lower rail and to allow comfortable handling of vessels, mounted to them. Recommended length is about 300mm. Now connect each hose to adapter as follows.  
