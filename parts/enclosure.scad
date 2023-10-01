@@ -65,7 +65,7 @@ module box() {
   for (i=connectors_top)translate(i)translate([0,-5,pcb_offset+pcb_thickness+solder_thickness+walls-5])cube([10,18,10],center=true);
   for (i=connectors_left)translate(i)translate([0,0,pcb_offset+pcb_thickness+solder_thickness+walls-5-4])cube([20,10,18],center=true);
   for (i=connectors_right)translate(i)translate([0,0,pcb_offset+pcb_thickness+solder_thickness+walls-5-7])cube([20,10,19],center=true);
-#  for (i=[[-walls-tolerance-0.01,0,0],[-walls-tolerance-0.01,pcb_height-2*pcb_mount_holes,0],[pcb_width+tolerance-0.01,0,0],[pcb_width+tolerance-0.01,pcb_height-2*pcb_mount_holes,0]]) translate(i) translate([-0.01,pcb_mount_holes,pcb_mount_holes])rotate([0,90,0])cylinder(h=walls+0.04,d=pcb_mount_holes);
+  for (i=[[-walls-tolerance-0.01,0,0],[-walls-tolerance-0.01,pcb_height-2*pcb_mount_holes,0],[pcb_width+tolerance-0.01,0,0],[pcb_width+tolerance-0.01,pcb_height-2*pcb_mount_holes,0]]) translate(i) translate([-0.01,pcb_mount_holes,pcb_mount_holes])rotate([0,90,0])cylinder(h=walls+0.04,d=pcb_mount_holes);
   }
 }
 

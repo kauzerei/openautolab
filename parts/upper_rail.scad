@@ -99,7 +99,7 @@ module pump() {
     for (i=rodmounts) translate(i)cylinder(h=part_width+0.02,d=rod_diameter,center=true);
     translate(shift)rotate([0,0,rotation])cylinder(h=part_width+2*pump_offset+0.02,d=pumpdiameter,center=true);
     cube([2*rods_distance,air_gap,part_width+2],center=true);
-    translate([20,8,0])rotate([90,0,0])cylinder (d=4,h=30,center=true);
+    translate([20,0,0])rotate([90,0,0])cylinder (d=4,h=45,center=true);
   }
 }
 
