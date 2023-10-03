@@ -1,3 +1,4 @@
 main_board/openautolab-backups/*
 main_board/_autosave*
 *.json
+.DS_Store
