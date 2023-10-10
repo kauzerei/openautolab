@@ -22,9 +22,9 @@ connectors_right=[[144,67]];
 switches_pos=[[100,10],[85,10]];
 switches_diameter=7;
 screen_pos=[70,47];
-screen_mount=[92,55];
+screen_mount=[93,55];
 screen_mount_holes=3;
-screen_rect=[92,40];
+screen_rect=[98.5,41];
 
 module front() {
   difference() {
