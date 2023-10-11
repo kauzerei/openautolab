@@ -17,7 +17,7 @@ mount_hole=4;
 mount_hole_distance=38;
 pcb_angle=15;
 pcb_holes_distance=81;
-extra_room=6;
+extra_room=7;
 
 /* [Filter attachment options] */
 filter_wall=6;
@@ -166,8 +166,8 @@ module pcbholder() {
           rotate(pcb_angle)translate([-rods_distance-rod_diameter-part_thickness,0])circle(d=air_gap);
           }
         translate([0,-air_gap/2])square([pcb_holes_distance+rod_diameter/2+part_thickness+2*extra_room,air_gap]);
-        circle(d=rod_diameter);
-        rotate(pcb_angle)translate([-rods_distance,0])circle(d=rod_diameter);
+        circle(d=rod_diameter+air_gap);
+        rotate(pcb_angle)translate([-rods_distance,0])circle(d=rod_diameter+air_gap);
       }
     }
     translate([rod_diameter/2+part_thickness+extra_room,0,part_width/2])rotate([90,0,0])cylinder(d=mount_hole,h=2*part_thickness+2*air_gap,center=true);
