@@ -21,8 +21,8 @@ extra_room=7;
 
 /* [Filter attachment options] */
 filter_wall=6;
-offset_v=45;
-offset_h=20;
+offset_v=20;
+offset_h=12;
 hole=9;
 
 module whole() {

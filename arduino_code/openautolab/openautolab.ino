@@ -217,6 +217,9 @@ void agitate(unsigned long stage_duration, byte init_agit, byte agit_period, byt
     tohms((millis()-st_st)/1000);
     lcd.print(" / ");
     tohms(stage_duration);
+    //FILMING PURPOSES ONLY
+    if (digitalRead(button1)==LOW) st_st*=10000; //REMOVE
+
     if ((millis()<st_ag+toseconds(init_agit)*1000ul)
       || ((millis()-st_ag-toseconds(init_agit)*1000ul+toseconds(agit_duration)*1000ul)%(toseconds(agit_period)*1000ul)<toseconds(agit_duration)*1000ul) )
         mixer.write(((millis()-st_ag)%2000UL<1000UL)?180:0);
@@ -381,7 +384,6 @@ void setup() {
   lcd.init(); //display
   lcd.backlight();
   if(digitalRead(button1)==LOW && digitalRead(button2)==LOW && digitalRead(button3)==LOW) k=40; //service menu
-
 }
 void loop() {
   switch(k) {
@@ -754,5 +756,119 @@ void loop() {
     waitkey();
     k=0;
     break;
+
+    case 50:
+    while (true) {
+      if (digitalRead(button1)==LOW) digitalWrite(valve2,HIGH);
+      else digitalWrite(valve2,LOW);
+      if (digitalRead(button2)==LOW) digitalWrite(motorminus,HIGH);
+      else digitalWrite(motorminus,LOW);
+      if (digitalRead(button3)==LOW) digitalWrite(motorplus,HIGH);
+      else digitalWrite(motorplus,LOW);
+    }
+
+        case 52:
+    while (true) {
+      digitalWrite(valve1,HIGH);
+      delay(200);
+      digitalWrite(valve1,LOW);
+      delay(200);
+      digitalWrite(valve2,HIGH);
+      delay(200);
+      digitalWrite(valve2,LOW);
+      delay(200);
+      digitalWrite(valve3,HIGH);
+      delay(200);
+      digitalWrite(valve3,LOW);
+      delay(200);
+      digitalWrite(valve4,HIGH);
+      delay(200);
+      digitalWrite(valve4,LOW);
+      delay(200);
+      digitalWrite(valve5,HIGH);
+      delay(200);
+      digitalWrite(valve5,LOW);
+      delay(200);
+      digitalWrite(valve6,HIGH);
+      delay(200);
+      digitalWrite(valve6,LOW);
+      delay(200);
+    }
+
+        case 53:
+    while (true) {
+      int del=500;
+      digitalWrite(valve1,HIGH);
+      delay(del);
+      digitalWrite(valve1,LOW);
+      delay(del);
+      digitalWrite(valve2,HIGH);
+      delay(del);
+      digitalWrite(valve2,LOW);
+      delay(del);
+      digitalWrite(valve3,HIGH);
+      delay(del);
+      digitalWrite(valve3,LOW);
+      delay(del);
+      digitalWrite(valve4,HIGH);
+      delay(del);
+      digitalWrite(valve4,LOW);
+      delay(del);
+      digitalWrite(valve5,HIGH);
+      delay(del);
+      digitalWrite(valve5,LOW);
+      delay(del);
+      digitalWrite(valve6,HIGH);
+      delay(del);
+      digitalWrite(valve6,LOW);
+      delay(del);
+    }
+        case 54:
+    while (true) {
+      int del=200;
+      const int array[]={valve1,valve2,valve3,valve4,valve5,valve6};
+      for (int valve:array) {
+        for (int index=0;index<10;index++) {
+          digitalWrite(valve,HIGH);
+          delay(del);
+          digitalWrite(valve,LOW);
+          delay(del);
+        }
+      }
+    }
+            case 55:
+    while (true) {
+      int del=500;
+      const int array[]={valve1,valve2,valve3,valve4,valve5,valve6};
+      for (int valve:array) {
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print(valve);
+        lcd.setCursor(0,1);
+        lcd.print(del);
+        delay(200);
+        for (int index=0;index<1000000/del;index++) {
+          digitalWrite(valve,HIGH);
+          delayMicroseconds(del);
+          digitalWrite(valve,LOW);
+          delayMicroseconds(1);
+        }
+        delay(200);
+      }
+      delay(1000);
+    }
+                case 51:
+    while (true) {
+      for (int value=5;value<=255;value+=10) {
+          lcd.clear();
+          lcd.setCursor(0,0);
+          lcd.print(12.0*value/255-0.7);
+//          delay(200);
+          analogWrite(valve1,190);
+          delay(500);
+          analogWrite(valve1,0);
+          delay(500);
+        }
+    }
   }
 }
