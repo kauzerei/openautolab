@@ -383,10 +383,37 @@ void setup() {
   scale.set_offset(offset);
   lcd.init(); //display
   lcd.backlight();
-  if(digitalRead(button1)==LOW && digitalRead(button2)==LOW && digitalRead(button3)==LOW) k=40; //service menu
+  if(digitalRead(button1)==LOW && digitalRead(button2)==LOW && digitalRead(button3)==LOW) k=60; //service menu
 }
 void loop() {
-  switch(k) {
+  switch(k) { 
+    // 0-29   normal menu and setup
+    // 0 main menu
+    // 1 bw film count
+    // 2 bw dev time
+    // 3 bw fix time
+    // 4 c41 film count
+    // 5 prewash duration
+// 6 prewashes number
+// 7 wash duration
+// 8 washes number
+// 9 wetting agent
+// 10 initial agitation duration
+// 11 agitations period
+// 12 agitation duration
+// 13 tank capacity
+// 14 one-shot bw developer
+// 60 "service menu"
+// 61 scale calibration
+// 62 fill all vessels
+// 63 cleaning cycle
+
+// 30 d76
+// 31 c41
+    //
+    // 30-59  develop processes
+    // 60-89  advanced setup
+    // 90-119 hardware debug
     case 0: //main menu
     lcd.clear();
     lcd.setCursor(0,0);
@@ -464,7 +491,7 @@ void loop() {
     switch(waitkey()){
       case 1: bw_fix_time--; break;
       case 2: bw_fix_time++; break;
-      case 3: k=16; EEPROM.update(ess+1,bw_fix_time);
+      case 3: k=30; EEPROM.update(ess+1,bw_fix_time);
       }
     break;
 
@@ -480,7 +507,7 @@ void loop() {
     switch(waitkey()){
       case 1: c41_film_count=1; break;
       case 2: c41_film_count++; break;
-      case 3: k=17; c41_film_count++; EEPROM.update(ess+3,c41_film_count);}
+      case 3: k=31; c41_film_count++; EEPROM.update(ess+3,c41_film_count);}
     break;
 
     case 5: //prewash duration
@@ -657,15 +684,15 @@ void loop() {
       }
     break;
 
-    case 40: //service menu
+    case 60: //service menu
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print(F("Service menu"));
     delay(2000);
-    k=41;
+    k=61;
     break;
     
-    case 41: //scale calibration
+    case 61: //scale calibration
     lcd.setCursor(0,0);
     lcd.print(F("Service menu     1/3"));
     lcd.setCursor(0,2);
@@ -682,12 +709,12 @@ void loop() {
     for (byte i=0;i<255;i++) { //I forgot why this loop is there, probably has to do with screen blinking
       if(digitalRead(button1)==LOW) {offset=scale.read_average(10); scale.set_offset(offset); keypressed=true; scale_calibrated=true;}
       if(digitalRead(button2)==LOW) {scale.set_scale();divider=scale.get_units(10)/(10.f*tank_cap); scale.set_scale(divider); keypressed=true; scale_calibrated=true;}
-      if(digitalRead(button3)==LOW) {k=42; keypressed=true; if (scale_calibrated) {EEPROM.put(ess+14,divider);EEPROM.put(ess+18,offset);}}
+      if(digitalRead(button3)==LOW) {k=62; keypressed=true; if (scale_calibrated) {EEPROM.put(ess+14,divider);EEPROM.put(ess+18,offset);}}
       if(keypressed) break;
     }}
     break;
 
-    case 42: //pump in
+    case 62: //pump in
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print(F("Service menu     2/3"));
@@ -700,11 +727,11 @@ void loop() {
     switch(waitkey()){
       case 1: pumpallin(false); break;
       case 2: pumpallin(true); break;
-      case 3: k=43; EEPROM.update(ess+13,oneshot);
+      case 3: k=63; EEPROM.update(ess+13,oneshot);
       }
     break;
 
-    case 43: //cleaning cycle
+    case 63: //cleaning cycle
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print(F("Service menu     3/3"));
@@ -717,11 +744,11 @@ void loop() {
     switch(waitkey()){
       case 1: 
         st_pr=millis();
-        tank_cap=50;
+//        tank_cap=50;
         pumpallout();
-        tank_cap=40;
+//        tank_cap=40;
         pumpallin(false);
-        tank_cap=50;
+//        tank_cap=50;
         pumpallout();
         tank_cap=EEPROM.read(ess+10);
         lcd.setCursor(16,0);
@@ -730,34 +757,34 @@ void loop() {
         break;
       case 2: 
         st_pr=millis();
-        tank_cap=40;
+//        tank_cap=40;
         pumpallin(false);
-        tank_cap=50;
+//        tank_cap=50;
         pumpallout();
-        tank_cap=EEPROM.read(ess+10);
+//        tank_cap=EEPROM.read(ess+10);
         lcd.setCursor(16,0);
         lcd.print(F("Done"));
         waitkey();
         break;
-      case 3: k=0;
+      case 3: k=60;
       }
     break;
 
-    case 16:
+    case 30:
     d76();
     beep();
     waitkey();
     k=0;
     break;
 
-    case 17:
+    case 31:
     c41();
     beep();
     waitkey();
     k=0;
     break;
 
-    case 50:
+    case 90:
     while (true) {
       if (digitalRead(button1)==LOW) digitalWrite(valve2,HIGH);
       else digitalWrite(valve2,LOW);
@@ -767,7 +794,7 @@ void loop() {
       else digitalWrite(motorplus,LOW);
     }
 
-        case 52:
+        case 92:
     while (true) {
       digitalWrite(valve1,HIGH);
       delay(200);
@@ -795,7 +822,7 @@ void loop() {
       delay(200);
     }
 
-        case 53:
+        case 93:
     while (true) {
       int del=500;
       digitalWrite(valve1,HIGH);
@@ -823,7 +850,7 @@ void loop() {
       digitalWrite(valve6,LOW);
       delay(del);
     }
-        case 54:
+        case 94:
     while (true) {
       int del=200;
       const int array[]={valve1,valve2,valve3,valve4,valve5,valve6};
@@ -836,7 +863,7 @@ void loop() {
         }
       }
     }
-            case 55:
+            case 95:
     while (true) {
       int del=500;
       const int array[]={valve1,valve2,valve3,valve4,valve5,valve6};
@@ -857,7 +884,7 @@ void loop() {
       }
       delay(1000);
     }
-                case 51:
+                case 91:
     while (true) {
       for (int value=5;value<=255;value+=10) {
           lcd.clear();
