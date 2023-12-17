@@ -8,12 +8,15 @@ int ess=0; //EEPROM starting address, change to ess+22 if settings saving and lo
 //pin numbers
 const byte motorplus =5; //positive pole of pump motor
 const byte motorminus=6; //negative pole of pump motor
+/*
 const byte valve1=9; //pins
 const byte valve2=11; //of
 const byte valve3=10; //valves
-const byte valve4=12;
+const byte valve4=12; // TODO: get rid of ugly variables and keep the array only
 const byte valve5=7;
 const byte valve6=8;
+*/
+const int valves[]={9,11,10,12,7,8}; //array of valves
 const byte servo=4; //servo pin
 const byte scaleclk=2; //pins of
 const byte scaledat=3; //scale
@@ -157,8 +160,8 @@ byte waitkey() { //waits for button press, implements delay. Function seems not 
 }
 
 void pump(boolean direction, byte vessel) {
-  byte pin;
-  switch (vessel) {
+  byte pin=valves[vessel-1];
+/*  switch (vessel) {
     case 1: pin=valve1; break;
     case 2: pin=valve2; break;
     case 3: pin=valve3; break;
@@ -166,6 +169,7 @@ void pump(boolean direction, byte vessel) {
     case 5: pin=valve5; break;
     case 6: pin=valve6; break;
     }
+    */
   lcd.setCursor(12,1);
   lcd.print("pump ");
   if (direction) lcd.print("in ");
@@ -355,22 +359,28 @@ void setup() {
   analogReference(INTERNAL);
   pinMode(motorplus,OUTPUT);
   pinMode(motorminus,OUTPUT);
+  for (int valve:valves) pinMode(valve,OUTPUT);
+  /*
   pinMode(valve1,OUTPUT);
   pinMode(valve2,OUTPUT);
   pinMode(valve3,OUTPUT);
   pinMode(valve4,OUTPUT);
   pinMode(valve5,OUTPUT);
   pinMode(valve6,OUTPUT);
+  */
   pinMode(buzzer,OUTPUT);
   pinMode(button1,INPUT_PULLUP);
   pinMode(button2,INPUT_PULLUP);
   pinMode(button3,INPUT_PULLUP);
+  for (int valve:valves) digitalWrite(valve,LOW);
+  /*
   digitalWrite(valve1,LOW);
   digitalWrite(valve2,LOW);
   digitalWrite(valve3,LOW);
   digitalWrite(valve4,LOW);
   digitalWrite(valve5,LOW);
   digitalWrite(valve6,LOW);
+  */
   digitalWrite(motorplus,LOW);
   digitalWrite(motorminus,LOW);
   digitalWrite(buzzer,LOW);
@@ -693,6 +703,7 @@ void loop() {
     break;
     
     case 61: //scale calibration
+    {
     lcd.setCursor(0,0);
     lcd.print(F("Service menu     1/3"));
     lcd.setCursor(0,2);
@@ -705,15 +716,15 @@ void loop() {
     lcd.print(F("Set:0  Set:"));
     lcd.print(tank_cap*10);
     lcd.print(F("g    >"));
-    {bool keypressed=false;
+    bool keypressed=false;
     for (byte i=0;i<255;i++) { //I forgot why this loop is there, probably has to do with screen blinking
       if(digitalRead(button1)==LOW) {offset=scale.read_average(10); scale.set_offset(offset); keypressed=true; scale_calibrated=true;}
       if(digitalRead(button2)==LOW) {scale.set_scale();divider=scale.get_units(10)/(10.f*tank_cap); scale.set_scale(divider); keypressed=true; scale_calibrated=true;}
       if(digitalRead(button3)==LOW) {k=62; keypressed=true; if (scale_calibrated) {EEPROM.put(ess+14,divider);EEPROM.put(ess+18,offset);}}
       if(keypressed) break;
-    }}
+    }
     break;
-
+    }
     case 62: //pump in
     lcd.clear();
     lcd.setCursor(0,0);
@@ -771,6 +782,8 @@ void loop() {
     break;
 
     case 30:
+    lcd.setCursor(0,0);
+    lcd.print(F("Test"));
     d76();
     beep();
     waitkey();
@@ -784,7 +797,7 @@ void loop() {
     k=0;
     break;
 
-    case 90:
+    /*case 90:
     while (true) {
       if (digitalRead(button1)==LOW) digitalWrite(valve2,HIGH);
       else digitalWrite(valve2,LOW);
@@ -793,8 +806,7 @@ void loop() {
       if (digitalRead(button3)==LOW) digitalWrite(motorplus,HIGH);
       else digitalWrite(motorplus,LOW);
     }
-
-        case 92:
+    case 92:
     while (true) {
       digitalWrite(valve1,HIGH);
       delay(200);
@@ -822,7 +834,7 @@ void loop() {
       delay(200);
     }
 
-        case 93:
+    case 93:
     while (true) {
       int del=500;
       digitalWrite(valve1,HIGH);
@@ -850,7 +862,7 @@ void loop() {
       digitalWrite(valve6,LOW);
       delay(del);
     }
-        case 94:
+    case 94:
     while (true) {
       int del=200;
       const int array[]={valve1,valve2,valve3,valve4,valve5,valve6};
@@ -863,11 +875,12 @@ void loop() {
         }
       }
     }
-            case 95:
+    */
+    /*
+    case 95:
     while (true) {
       int del=500;
-      const int array[]={valve1,valve2,valve3,valve4,valve5,valve6};
-      for (int valve:array) {
+      for (int valve:valves) {
         lcd.clear();
         lcd.setCursor(0,0);
         lcd.print(valve);
@@ -884,18 +897,46 @@ void loop() {
       }
       delay(1000);
     }
-                case 91:
+    break;
+    */
+    /*
+    case 91:
     while (true) {
       for (int value=5;value<=255;value+=10) {
-          lcd.clear();
-          lcd.setCursor(0,0);
-          lcd.print(12.0*value/255-0.7);
-//          delay(200);
-          analogWrite(valve1,190);
-          delay(500);
-          analogWrite(valve1,0);
-          delay(500);
-        }
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print(12.0*value/255-0.7);
+        // delay(200);
+        analogWrite(valve1,190);
+        delay(500);
+        analogWrite(valve1,0);
+        delay(500);
+      }
     }
+    */
+    /*
+    case 96:
+    byte dc=100;
+    byte valve=1;
+    bool buttonpressed=false;
+    st_ag=micros();
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print(F("Test valves"));
+    lcd.setCursor(0,1);
+    lcd.print(F("Duty cycle: "));
+    lcd.print(dc);
+    lcd.setCursor(0,2);
+    lcd.print(F("Valve: "));
+    lcd.print(valve);
+    lcd.setCursor(0,3);
+    lcd.print(F("DC    Valve    Next>"));
+    while(!buttonpressed) {
+      if (digitalRead(button1)==LOW) {dc=max(50,(dc+10)%100); delay(200); buttonpressed=true; break;}
+      if (digitalRead(button2)==LOW) {valve++;if (valve==7) valve=1; delay(200); buttonpressed=true; break;}
+      if (digitalRead(button3)==LOW) {k=0; delay(200); buttonpressed=true; break;}
+      if ((micros()-st_ag)%1000<int(10)*int(dc)) digitalWrite(valves[valve],HIGH); else digitalWrite(valves[valve],LOW);
+    }
+    */
   }
 }
