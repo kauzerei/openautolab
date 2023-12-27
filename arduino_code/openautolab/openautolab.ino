@@ -44,6 +44,7 @@ byte tank_cap=EEPROM.read(ess+12);
 byte oneshot=EEPROM.read(ess+13);
 float divider; //because one can't use EEPROM.get outside of a function
 long offset;
+byte stages_count=0;
 
 //global variables, which store values during work
 byte k=0; //main menu state machine state index
@@ -222,7 +223,8 @@ void agitate(unsigned long stage_duration, byte init_agit, byte agit_period, byt
     lcd.print(" / ");
     tohms(stage_duration);
     //FILMING PURPOSES ONLY
-    if (digitalRead(button1)==LOW) st_st*=10000; //REMOVE
+    if (digitalRead(button1)==LOW) {st_st-=10000;st_pr-=10000;}; //REMOVE
+    if (digitalRead(button2)==LOW) stages_count=0; //REMOVE
 
     if ((millis()<st_ag+toseconds(init_agit)*1000ul)
       || ((millis()-st_ag-toseconds(init_agit)*1000ul+toseconds(agit_duration)*1000ul)%(toseconds(agit_period)*1000ul)<toseconds(agit_duration)*1000ul) )
@@ -261,7 +263,8 @@ void do_process (const struct Process &process) { //execution of a process. Numb
   lcd.print(F("               ")); //clear that part of display
   lcd.setCursor(0,0);
   lcd.print(process.display_name);
-  byte stages_count=sizeof(process.stages)/sizeof(process.stages[0]);
+//  byte stages_count=sizeof(process.stages)/sizeof(process.stages[0]); //remove!
+  stages_count=sizeof(process.stages)/sizeof(process.stages[0]);
   byte substages_count=0;
   byte substage=1;
   for (byte i=0;i<stages_count;i++) substages_count+=process.stages[i].repeat;
@@ -308,6 +311,18 @@ void c41() { //definition of c41 process, more of those can be written if needed
     (Stage){"Fixer",390ul,init_agit,agit_period,agit_duration,3,3,1},
     (Stage){"Wash ",toseconds(washes_duration),init_agit,agit_period,agit_duration,5,6,washes_count},
     (Stage){"Wet agent",toseconds(washes_duration),init_agit,agit_period,agit_duration,4,6,fotoflo}
+  }};
+  do_process(process);
+}
+
+void testcycle() { //definition of c41 process, more of those can be written if needed
+  struct Process process={"test_cycle", {
+    (Stage){"Water 1 ",60,1,3,1,5,6,1},
+    (Stage){"Vessel 1",60,1,3,1,1,1,1},
+    (Stage){"Vessel 2",60,1,3,1,2,2,1},
+    (Stage){"Vessel 3",60,1,3,1,3,3,1},
+    (Stage){"Vessel 4",60,1,3,1,4,4,1},
+    (Stage){"Water 2 ",60,1,3,1,5,6,1},
   }};
   do_process(process);
 }
@@ -738,7 +753,7 @@ void loop() {
     switch(waitkey()){
       case 1: pumpallin(false); break;
       case 2: pumpallin(true); break;
-      case 3: k=63; EEPROM.update(ess+13,oneshot);
+      case 3: k=63;
       }
     break;
 
@@ -755,30 +770,39 @@ void loop() {
     switch(waitkey()){
       case 1: 
         st_pr=millis();
-//        tank_cap=50;
+        tank_cap+=10;
         pumpallout();
-//        tank_cap=40;
+        tank_cap-=10;
         pumpallin(false);
-//        tank_cap=50;
+        tank_cap+=10;
         pumpallout();
-        tank_cap=EEPROM.read(ess+10);
+        tank_cap=EEPROM.read(ess+12);
         lcd.setCursor(16,0);
         lcd.print(F("Done"));
         waitkey();
         break;
       case 2: 
         st_pr=millis();
-//        tank_cap=40;
+        tank_cap+=10;
         pumpallin(false);
-//        tank_cap=50;
+        tank_cap-=10;
         pumpallout();
-//        tank_cap=EEPROM.read(ess+10);
+        tank_cap=EEPROM.read(ess+12);
         lcd.setCursor(16,0);
         lcd.print(F("Done"));
         waitkey();
         break;
       case 3: k=60;
       }
+    break;
+    
+    case 90: //cleaning cycle
+    lcd.clear();
+    lcd.setCursor(0,0);
+    st_pr=millis();
+    pumpallout();
+    pumpallin(false);
+    while(true) testcycle();
     break;
 
     case 30:
