@@ -1,5 +1,14 @@
 [book]
-authors = []
+title = "OpenAutoLab"
+authors = ["Kauzerei", "xythobuz"]
+description = "Building and Usage Documentation for the automatic film development machine OpenAutoLab."
 language = "en"
 multilingual = false
 src = "src"
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "light"
+git-repository-url = "https://github.com/kauzerei/openautolab"
+edit-url-template = "https://github.com/kauzerei/openautolab/edit/main/docs/{path}"
+
