@@ -1,6 +1,6 @@
 This repo is work in progress, it contains some ugly and weird solutions, especially after bugfixes made in stress before and during the congress ;). The building instructions however are ready and good, you can start to build the machine immediately.  
 # General information
-This document is a user manual for an already built OpenAutoLab. If you want to build the machine, refer to [`build_instructions`](build_instructions/README.md).
+This document is a user manual for an already built OpenAutoLab. If you want to build the machine, refer to [`build_instructions`](build_instructions.md).
 OpenAutoLab is a machine, designed to simplify film developing process. It pumps necessary chemicals into developing tank, agitates the film properly for correct amount of time, pumps the chemicals back, washes the film, and does all of that without interrupting the user. The user has to load the film into the tank, pour the chemicals into their vessels,
 connect to the source of clean water and drain for waste water, start the program, wait for the end of the program, and dry the developed film.
 The machine can be used in tempertaure-controlled water bath to achieve good results in color processing or without one if temperature precision is not critical.
