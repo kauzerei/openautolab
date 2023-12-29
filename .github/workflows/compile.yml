@@ -12,5 +12,4 @@ jobs:
             - name: Servo
             - source-url: https://github.com/johnrickman/LiquidCrystal_I2C
             - source-url: https://github.com/bogde/HX711
-          sketch-paths:
-            - arduino_code/openautolab
+          sketch-paths: "- arduino_code/openautolab"
