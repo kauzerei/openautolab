@@ -24,4 +24,4 @@ jobs:
         uses: actions/upload-artifact@v4.0.0
         with:
           name: openautolab.hex
-          path: ${{github.workspace}}/arduino_code/openautolab/*.hex
+          path: arduino_code/**/*.hex
