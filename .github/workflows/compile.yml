@@ -5,11 +5,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: arduino/compile-sketches@v1
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          path: openautolab
+      - name: Compile firmware
+        uses: arduino/compile-sketches@v1
         with:
           fqbn: "arduino:avr:nano"
           libraries: |
             - name: Servo
             - source-url: https://github.com/johnrickman/LiquidCrystal_I2C.git
             - source-url: https://github.com/bogde/HX711.git
-          sketch-paths: "- arduino_code/openautolab/openautolab.ino"
+          sketch-paths: "- openautolab/arduino_code"
