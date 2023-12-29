@@ -18,7 +18,8 @@ jobs:
           sketch-paths: "- arduino_code"
           enable-deltas-report: true
           enable-warnings-report: true
-          cli-compile-flags: ["--export-binaries"]
+          cli-compile-flags: |
+            - --export-binaries
       - name: Upload binary
         uses: actions/upload-artifact@v4.0.0
         with:
