@@ -1,4 +1,4 @@
-name: Compile
+name: Firmware
 on: [push, pull_request]
 
 jobs:
@@ -16,3 +16,11 @@ jobs:
             - source-url: https://github.com/johnrickman/LiquidCrystal_I2C.git
             - source-url: https://github.com/bogde/HX711.git
           sketch-paths: "- arduino_code"
+          enable-deltas-report: true
+          enable-warnings-report: true
+          cli-compile-flags: "--export-binaries"
+      - name: Upload binary
+        uses: actions/upload-artifact@v4.0.0
+        with:
+          name: openautolab.hex
+          path: ${{github.workspace}}/openautolab/*.hex
