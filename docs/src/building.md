@@ -7,7 +7,9 @@ By the end of this chapter you will have the skeleton of the machine with most c
 ![picture of the upper rail](img/IMG_0954.jpg)  
 By the end of this section you will have non-water-tight top part of the machine. It is possible that you will have to change placement of some parts due to individual differences in size of components sourced from different manufacturers. The difference should not be drastic, so the mentioned measurements are a good reference.  
 ![picture with all mentioned parts](img/IMG_0925.jpg)  
-Parts list:  
+
+## Parts list  
+
 | No | Part | Quantity | Filename if 3d-printable |
 | --- | --- | --- | --- |
 | 1 | Main pump | 1 | |  
@@ -45,8 +47,10 @@ By the end of this section you will have a water-tight bottom part of the machin
 ![two lower rails in two containers comparison](img/IMG_0962.jpg)  
 The difference should not be drastic, the picture is a good reference anyway.
 If the force gauge was not originally waterproof, follow the instructions in [making parts](making_parts.md) to make it waterproof first.  
-![picture of all mentioned parts](img/IMG_0989.jpg)  
-Parts list:  
+![picture of all mentioned parts](img/IMG_0989.jpg)
+
+## Parts list  
+
 | No | Part | Quantity | Filename if 3d-printable |
 | --- | --- | --- | --- |
 | 1 | rod-mountable magnetic holders | 5 | lower_rail_magnetic_holder.stl |
@@ -77,7 +81,9 @@ Place the magnets in the same orientation (all north pole up or all north pole d
 Screw a larger magnet cover with outer thread into each of the six magnetic holders.
 ### Bringing two rails together
 ![picture with all mentioned parts](img/IMG_1040.jpg)  
-Parts list:  
+
+## Parts list
+
 | No | Part | Quantity | Filename if 3d-printable |
 | --- | --- | --- | --- |
 | 1 | T-mounts | 4 | frame_t-mount.stl |
@@ -110,7 +116,9 @@ Take a long screwdriver and fix the mixing rod to the servo with the M2.5 screw 
 The vessels and the developing tank are connected to the hoses with interfaces, which are fancy L-shaped tubes with inner M8 threads on each end and a magnet on the bottom. The top thread is for the hollow screw, that is put through the hole in the bottom of the vessel, a gasket ring and then tightened to the interface itself.
 The side thread is for the hose adapter. This part is designed to be interchangeable, because of how easily it could be accidentally broken. For the same reason it is designed with redundant sleeve that holds the hose and adds to the strength of the part.
 ![all mentioned parts](img/IMG_1096.jpg)  
-Parts list:
+
+## Parts list
+
 | No | Part | Quantity | Filename if 3d-printable |
 | --- | --- | --- | --- |
 | 1 | Silicone hose 6mm ID, 9mm OD |  |  |
@@ -170,7 +178,9 @@ Put the level sensor on the filter input so the filter never overflows.
 ## Mounting and connecting electronics
 If you want to make the PCB yourself, or just to understand its work better better, refer to [main_board](../main_board/README.md) subdirectory of this repository. It contains schematics and board layout in KiCAD format, along with some insights about its production. In this document it is supposed that you already have a PCB with all components soldered to it.  
 ### Mounting PCB
-Parts list:
+
+## Parts list
+
 | No | Part | Quantity | Filename if 3d-printable |
 | --- | --- | --- | --- |
 | 1 | PCB | 1 |  |
