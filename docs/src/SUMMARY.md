@@ -6,7 +6,7 @@
   - [Building](./building.md)
   - [Making Parts](./making_parts.md)
   - [Modifying Parts](./modifying_parts.md)
-- [Main Board](./main_board.md)
+    - [Main Board](./main_board.md)
 
 # Use
 

@@ -47,7 +47,7 @@ By the end of this section you will have a water-tight bottom part of the machin
 ![two lower rails in two containers comparison](img/IMG_0962.jpg)  
 The difference should not be drastic, the picture is a good reference anyway.
 If the force gauge was not originally waterproof, follow the instructions in [making parts](making_parts.md) to make it waterproof first.  
-![picture of all mentioned parts](img/IMG_0989.jpg)  
+![picture of all mentioned parts](img/IMG_0989.jpg)
 
 ## Parts list  
 
