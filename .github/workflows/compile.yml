@@ -10,6 +10,6 @@ jobs:
           fqbn: "arduino:avr:nano"
           libraries: |
             - name: Servo
-            - source-url: https://github.com/johnrickman/LiquidCrystal_I2C
-            - source-url: https://github.com/bogde/HX711
+            - source-url: https://github.com/johnrickman/LiquidCrystal_I2C.git
+            - source-url: https://github.com/bogde/HX711.git
           sketch-paths: "- arduino_code/openautolab"
