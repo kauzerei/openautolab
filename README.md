@@ -2,6 +2,9 @@
 
 Free and open-source automatic film development machine.
 
+![Documentation](https://github.com/kauzerei/openautolab/actions/workflows/deploy.yml/badge.svg)
+![Firmware](https://github.com/kauzerei/openautolab/actions/workflows/compile.yml/badge.svg)
+
 OpenAutoLab is an attempt at making a cheap and simple film developing machine.
 Inspired by Jobo Autolab, but cheaper, more repairable and open source.
 Agitation is done by periodically moving fully submerged film, not rotating the drum constantly, so it is also more flexible, as it supports black-and-white processes.
