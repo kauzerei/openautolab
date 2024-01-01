@@ -1,12 +1,7 @@
 name: STLs
 
-# build for each push, pull request, also publish to new releases
-on:
-  push:
-  pull_request:
-  release:
-    types:
-      - created
+# build for each push and pull request
+on: [push, pull_request]
 
 jobs:
   render:
@@ -15,8 +10,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Install OpenSCAD
-        run: sudo apt-get install -y openscad
+      - name: Install dependencies
+        run: sudo apt-get install -y openscad zip
       - name: Render STLs
         run: |
           ./parts/generate_stls.sh
@@ -25,13 +20,13 @@ jobs:
         with:
           name: openautolab-stl
           path: parts/stl
+      - name: Archive release files
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          cd parts
+          zip -r openautolab-stl stl
       - name: Upload release files
-        if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: parts/stl
-          asset_name: openautolab-stl
-          asset_content_type: binary/octet-stream
+          files: openautolab-stl.zip

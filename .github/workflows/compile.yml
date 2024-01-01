@@ -1,12 +1,7 @@
 name: Firmware
 
-# build for each push, pull request, also publish to new releases
-on:
-  push:
-  pull_request:
-  release:
-    types:
-      - created
+# build for each push and pull request
+on: [push, pull_request]
 
 jobs:
   build:
@@ -32,13 +27,13 @@ jobs:
         with:
           name: openautolab.hex
           path: arduino_code/**/*.hex
+      - name: Archive release files
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          cd arduino_code/openautolab/build/arduino.avr.nano
+          zip openautolab-hex *.hex
       - name: Upload release files
-        if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: arduino_code/**/*.hex
-          asset_name: openautolab.hex
-          asset_content_type: binary/octet-stream
+          files: openautolab-hex.zip
