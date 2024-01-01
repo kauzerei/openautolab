@@ -1,0 +1,19 @@
+name: STLs
+on: [push, pull_request]
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install OpenSCAD
+        run: sudo apt-get install -y openscad
+      - name: Render STLs
+        run: |
+          ./parts/generate_stls.sh
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'parts/stl'
