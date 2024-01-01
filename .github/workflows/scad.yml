@@ -1,5 +1,12 @@
 name: STLs
-on: [push, pull_request]
+
+# build for each push, pull request, also publish to new releases
+on:
+  push:
+  pull_request:
+  release:
+    types:
+      - created
 
 jobs:
   render:
@@ -18,3 +25,13 @@ jobs:
         with:
           name: openautolab-stl
           path: parts/stl
+      - name: Upload release files
+        if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: parts/stl
+          asset_name: openautolab-stl
+          asset_content_type: binary/octet-stream

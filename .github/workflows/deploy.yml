@@ -1,4 +1,6 @@
 name: Documentation
+
+# only build single instance of docs for latest main branch
 on:
   push:
     branches:
