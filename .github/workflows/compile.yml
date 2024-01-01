@@ -36,4 +36,4 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          files: openautolab-hex.zip
+          files: arduino_code/openautolab/build/arduino.avr.nano/openautolab-hex.zip
