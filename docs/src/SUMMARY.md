@@ -17,3 +17,4 @@
 # Use
 
 - [Usage Instructions](./usage_instructions.md)
+- [Web Flashing Utility](./web_update.md)

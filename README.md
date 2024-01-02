@@ -2,8 +2,11 @@
 
 Free and open-source automatic film development machine.
 
-![Documentation](https://github.com/kauzerei/openautolab/actions/workflows/deploy.yml/badge.svg)
 ![Firmware](https://github.com/kauzerei/openautolab/actions/workflows/compile.yml/badge.svg)
+![STLs](https://github.com/kauzerei/openautolab/actions/workflows/scad.yml/badge.svg)
+![Documentation](https://github.com/kauzerei/openautolab/actions/workflows/deploy.yml/badge.svg)
+
+[![Demo Video](https://img.youtube.com/vi/qe7pgEp7S68/maxresdefault.jpg)](https://www.youtube.com/watch?v=qe7pgEp7S68)
 
 OpenAutoLab is an attempt at making a cheap and simple film developing machine.
 Inspired by Jobo Autolab, but cheaper, more repairable and open source.
@@ -16,3 +19,6 @@ Please take a look at the [OpenAutoLab documentation](https://kauzerei.github.io
   - [Main Board](https://kauzerei.github.io/openautolab/main_board.html) concentrates on main board schematics and PCB layouts.
   - [Arduino Code](https://kauzerei.github.io/openautolab/arduino_code.html) contains build instructions for the source code of the controller of the machine.
 - [Usage Instructions](https://kauzerei.github.io/openautolab/usage_instructions.html) explains how to use the finished machine.
+- [Web Updater](https://kauzerei.github.io/openautolab/web_update.html) allows firmware upgrades on the main board.
+
+You can find the latest released STL files and firmware binaries on the [GitHub releases page](https://github.com/kauzerei/openautolab/releases).

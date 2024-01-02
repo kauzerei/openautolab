@@ -1,0 +1,21 @@
+#uploadWrap {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+#wrapForm, #uploadForm {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+#logWrap {
+    height: 10em;
+    overflow: scroll;
+    border: 1px solid black;
+    padding: 2px;
+}
+
+#log {
+    font-size: 0.8em;
+    margin: 0;
+}
