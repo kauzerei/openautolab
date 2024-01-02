@@ -13,3 +13,4 @@ Agitation is done by periodically moving fully submerged film, not rotating the 
   - [Main Board](main_board.md) concentrates on main board schematics and PCB layouts.
   - [Arduino Code](arduino_code.md) contains build instructions for the source code of the controller of the machine.
 - [Usage Instructions](usage_instructions.md) explains how to use the finished machine.
+- [Web Updater](web_update.md) allows firmware upgrades on the main board.

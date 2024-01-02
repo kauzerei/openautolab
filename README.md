@@ -19,3 +19,6 @@ Please take a look at the [OpenAutoLab documentation](https://kauzerei.github.io
   - [Main Board](https://kauzerei.github.io/openautolab/main_board.html) concentrates on main board schematics and PCB layouts.
   - [Arduino Code](https://kauzerei.github.io/openautolab/arduino_code.html) contains build instructions for the source code of the controller of the machine.
 - [Usage Instructions](https://kauzerei.github.io/openautolab/usage_instructions.html) explains how to use the finished machine.
+- [Web Updater](https://kauzerei.github.io/openautolab/web_update.html) allows firmware upgrades on the main board.
+
+You can find the latest released STL files and firmware binaries on the [GitHub releases page](https://github.com/kauzerei/openautolab/releases).

@@ -11,4 +11,4 @@ default-theme = "light"
 preferred-dark-theme = "light"
 git-repository-url = "https://github.com/kauzerei/openautolab"
 edit-url-template = "https://github.com/kauzerei/openautolab/edit/main/docs/{path}"
-
+additional-css = ["src/css/flash.css"]

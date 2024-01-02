@@ -1,0 +1,6 @@
+[submodule "docs/avrgirl-arduino"]
+	path = docs/avrgirl-arduino
+	url = https://github.com/sudevkrishnan/avrgirl-arduino
+[submodule "docs/zip.js"]
+	path = docs/zip.js
+	url = https://github.com/gildas-lormeau/zip.js
