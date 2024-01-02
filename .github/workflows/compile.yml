@@ -8,7 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout repo submodules
+        run: git submodule update --init
+
       - name: Compile firmware
         uses: arduino/compile-sketches@v1
         with:
@@ -22,16 +28,19 @@ jobs:
           enable-warnings-report: true
           cli-compile-flags: |
             - --export-binaries
+
       - name: Upload binary
         uses: actions/upload-artifact@v4.0.0
         with:
           name: openautolab.hex
           path: arduino_code/**/*.hex
+
       - name: Archive release files
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           cd arduino_code/openautolab/build/arduino.avr.nano
           zip openautolab-hex *.hex
+
       - name: Upload release files
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
