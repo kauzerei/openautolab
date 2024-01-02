@@ -74,3 +74,6 @@ Make sure you use a [WebSerial compatible browser](https://developer.mozilla.org
 Connect the Arduino Nano on the OpenAutoLab mainboard to your PC using a USB cable.
 
 This should work on Linux, Mac OS X and Windows >= 10.
+
+The `Releases` downloads should always work.
+For the development `Builds` downloads you need to be logged-in to GitHub and they can not be too far in the past.
