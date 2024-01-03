@@ -6,6 +6,10 @@ on: [push, pull_request]
 jobs:
   render:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
