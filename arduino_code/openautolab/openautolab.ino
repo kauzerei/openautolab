@@ -8,14 +8,6 @@ int ess=0; //EEPROM starting address, change to ess+22 if settings saving and lo
 //pin numbers
 const byte motorplus =5; //positive pole of pump motor
 const byte motorminus=6; //negative pole of pump motor
-/*
-const byte valve1=9; //pins
-const byte valve2=11; //of
-const byte valve3=10; //valves
-const byte valve4=12; // TODO: get rid of ugly variables and keep the array only
-const byte valve5=7;
-const byte valve6=8;
-*/
 const int valves[]={9,11,10,12,7,8}; //array of valves
 const byte servo=4; //servo pin
 const byte scaleclk=2; //pins of
@@ -44,7 +36,6 @@ byte tank_cap=EEPROM.read(ess+12);
 byte oneshot=EEPROM.read(ess+13);
 float divider; //because one can't use EEPROM.get outside of a function
 long offset;
-byte stages_count=0;
 
 //global variables, which store values during work
 byte k=0; //main menu state machine state index
@@ -55,6 +46,7 @@ unsigned long t0; //start of pumping
 unsigned long ignore_until; //ignore keypress until this time, for key repeat implementation
 bool released; //true if no keys are pressed on waitkey() loop
 bool scale_calibrated=false; //store values to EEPROM only on change
+byte stages_count=0; //number of stages in process
 Servo mixer;
 HX711 scale;
 LiquidCrystal_I2C lcd(0x27,20,4);
@@ -162,15 +154,6 @@ byte waitkey() { //waits for button press, implements delay. Function seems not 
 
 void pump(boolean direction, byte vessel) {
   byte pin=valves[vessel-1];
-/*  switch (vessel) {
-    case 1: pin=valve1; break;
-    case 2: pin=valve2; break;
-    case 3: pin=valve3; break;
-    case 4: pin=valve4; break;
-    case 5: pin=valve5; break;
-    case 6: pin=valve6; break;
-    }
-    */
   lcd.setCursor(12,1);
   lcd.print("pump ");
   if (direction) lcd.print("in ");
@@ -222,10 +205,6 @@ void agitate(unsigned long stage_duration, byte init_agit, byte agit_period, byt
     tohms((millis()-st_st)/1000);
     lcd.print(" / ");
     tohms(stage_duration);
-    //FILMING PURPOSES ONLY
-    if (digitalRead(button1)==LOW) {st_st-=10000;st_pr-=10000;}; //REMOVE
-    if (digitalRead(button2)==LOW) stages_count=0; //REMOVE
-
     if ((millis()<st_ag+toseconds(init_agit)*1000ul)
       || ((millis()-st_ag-toseconds(init_agit)*1000ul+toseconds(agit_duration)*1000ul)%(toseconds(agit_period)*1000ul)<toseconds(agit_duration)*1000ul) )
         mixer.write(((millis()-st_ag)%2000UL<1000UL)?180:0);
@@ -263,7 +242,6 @@ void do_process (const struct Process &process) { //execution of a process. Numb
   lcd.print(F("               ")); //clear that part of display
   lcd.setCursor(0,0);
   lcd.print(process.display_name);
-//  byte stages_count=sizeof(process.stages)/sizeof(process.stages[0]); //remove!
   stages_count=sizeof(process.stages)/sizeof(process.stages[0]);
   byte substages_count=0;
   byte substage=1;
@@ -315,7 +293,7 @@ void c41() { //definition of c41 process, more of those can be written if needed
   do_process(process);
 }
 
-void testcycle() { //definition of c41 process, more of those can be written if needed
+/*void testcycle() { //definition of process
   struct Process process={"test_cycle", {
     (Stage){"Water 1 ",60,1,3,1,5,6,1},
     (Stage){"Vessel 1",60,1,3,1,1,1,1},
@@ -326,7 +304,14 @@ void testcycle() { //definition of c41 process, more of those can be written if 
   }};
   do_process(process);
 }
-
+*/
+/*void debugcycle() { //definition of process
+  struct Process process={"test_cycle", {
+    (Stage){"wash 1 ",150,1,3,1,5,6,5},
+  }};
+  do_process(process);
+}
+*/
 void pumpallout() { //definition of wash process
   lcd.clear();
   lcd.setCursor(0,0);
@@ -364,7 +349,7 @@ void pumpallin(bool tank) { //definition of wash process
     pump(false,i);
   }
   lcd.setCursor(0,1);
-    lcd.print(F("        "));
+  lcd.print(F("        "));
   lcd.setCursor(0,3);
   lcd.print(F("water to tank       "));
   if (tank) pump(true,5);
@@ -375,27 +360,11 @@ void setup() {
   pinMode(motorplus,OUTPUT);
   pinMode(motorminus,OUTPUT);
   for (int valve:valves) pinMode(valve,OUTPUT);
-  /*
-  pinMode(valve1,OUTPUT);
-  pinMode(valve2,OUTPUT);
-  pinMode(valve3,OUTPUT);
-  pinMode(valve4,OUTPUT);
-  pinMode(valve5,OUTPUT);
-  pinMode(valve6,OUTPUT);
-  */
   pinMode(buzzer,OUTPUT);
   pinMode(button1,INPUT_PULLUP);
   pinMode(button2,INPUT_PULLUP);
   pinMode(button3,INPUT_PULLUP);
   for (int valve:valves) digitalWrite(valve,LOW);
-  /*
-  digitalWrite(valve1,LOW);
-  digitalWrite(valve2,LOW);
-  digitalWrite(valve3,LOW);
-  digitalWrite(valve4,LOW);
-  digitalWrite(valve5,LOW);
-  digitalWrite(valve6,LOW);
-  */
   digitalWrite(motorplus,LOW);
   digitalWrite(motorminus,LOW);
   digitalWrite(buzzer,LOW);
@@ -411,34 +380,36 @@ void setup() {
   if(digitalRead(button1)==LOW && digitalRead(button2)==LOW && digitalRead(button3)==LOW) k=60; //service menu
 }
 void loop() {
-  switch(k) { 
+  switch(k) {
     // 0-29   normal menu and setup
+    // 30-59  develop processes
+    // 60-89  advanced setup
+    // 90-119 hardware debug
+
     // 0 main menu
     // 1 bw film count
     // 2 bw dev time
     // 3 bw fix time
     // 4 c41 film count
     // 5 prewash duration
-// 6 prewashes number
-// 7 wash duration
-// 8 washes number
-// 9 wetting agent
-// 10 initial agitation duration
-// 11 agitations period
-// 12 agitation duration
-// 13 tank capacity
-// 14 one-shot bw developer
-// 60 "service menu"
-// 61 scale calibration
-// 62 fill all vessels
-// 63 cleaning cycle
+    // 6 prewashes number
+    // 7 wash duration
+    // 8 washes number
+    // 9 wetting agent
+    // 10 initial agitation duration
+    // 11 agitations period
+    // 12 agitation duration
+    // 13 tank capacity
+    // 14 one-shot bw developer
 
-// 30 d76
-// 31 c41
-    //
-    // 30-59  develop processes
-    // 60-89  advanced setup
-    // 90-119 hardware debug
+    // 60 "service menu"
+    // 61 scale calibration
+    // 62 fill all vessels
+    // 63 cleaning cycle
+
+    // 30 d76
+    // 31 c41
+
     case 0: //main menu
     lcd.clear();
     lcd.setCursor(0,0);
@@ -716,7 +687,7 @@ void loop() {
     delay(2000);
     k=61;
     break;
-    
+
     case 61: //scale calibration
     {
     lcd.setCursor(0,0);
@@ -768,7 +739,7 @@ void loop() {
     lcd.setCursor(0,3);
     lcd.print(F("No     Yes    Done >"));
     switch(waitkey()){
-      case 1: 
+      case 1:
         st_pr=millis();
         tank_cap+=10;
         pumpallout();
@@ -781,7 +752,7 @@ void loop() {
         lcd.print(F("Done"));
         waitkey();
         break;
-      case 2: 
+      case 2:
         st_pr=millis();
         tank_cap+=10;
         pumpallin(false);
@@ -795,16 +766,17 @@ void loop() {
       case 3: k=60;
       }
     break;
-    
+
+    /*
     case 90: //cleaning cycle
     lcd.clear();
     lcd.setCursor(0,0);
     st_pr=millis();
     pumpallout();
     pumpallin(false);
-    while(true) testcycle();
+    while(true) debugcycle();
     break;
-
+*/
     case 30:
     lcd.setCursor(0,0);
     lcd.print(F("Test"));
@@ -815,6 +787,7 @@ void loop() {
     break;
 
     case 31:
+    //debugcycle();
     c41();
     beep();
     waitkey();
