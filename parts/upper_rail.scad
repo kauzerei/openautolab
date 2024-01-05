@@ -1,4 +1,19 @@
 // Upper rail parts of OpenAutoLab: mounting brackets for valves, for pumps and for electronic enclosure
+//
+// Copyright (c) 2023-2024 Kauzerei <mailto:openautolab@kauzerei.de>
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 $fs=0.5/1;
 $fa=1/1;
@@ -190,7 +205,7 @@ module battery_holder() {
              [part_thickness+part_width/2+76,-0.01,78-extra_room+part_thickness/2]])
       translate(tr)rotate([-90,0,0]) cylinder(d=mount_hole,h=part_thickness/2+0.02);
   }
-  
+
 }
 
 if (part=="Valve_bracket") {

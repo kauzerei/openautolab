@@ -22,3 +22,22 @@ Please take a look at the [OpenAutoLab documentation](https://kauzerei.github.io
 - [Web Updater](https://kauzerei.github.io/openautolab/web_update.html) allows firmware upgrades on the main board.
 
 You can find the latest released STL files and firmware binaries on the [GitHub releases page](https://github.com/kauzerei/openautolab/releases).
+
+## License
+The firmware, the design of 3d-printable files, the hardware design are licensed as GPLv3.
+The firmware links to Arduino Servo library which is licensed under LGPL-2.1, LiquidCrystal I2C by Frank de Brabander which is licensed under LGPL-2.1, the HX711 by Bogdan Necula which is licensed under MIT.
+For generation of 3d-printable .stl files Openscad is used, which is licensed under GPLv2.
+The project also uses avrgirl-arduino licensed under MIT and zip.js licensed under BSD for the possibility of flashing from browser.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see <https://www.gnu.org/licenses/>.
