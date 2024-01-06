@@ -6,7 +6,7 @@ Free and open-source automatic film development machine.
 ![STLs](https://github.com/kauzerei/openautolab/actions/workflows/scad.yml/badge.svg)
 ![Documentation](https://github.com/kauzerei/openautolab/actions/workflows/deploy.yml/badge.svg)
 
-[![Demo Video](https://img.youtube.com/vi/qe7pgEp7S68/maxresdefault.jpg)](https://www.youtube.com/watch?v=qe7pgEp7S68)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Ryzbz89Sy8g?si=3H4qjyLDUWWAq3zO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 OpenAutoLab is an attempt at making a cheap and simple film developing machine.
 Inspired by Jobo Autolab, but cheaper, more repairable and open source.
@@ -23,7 +23,14 @@ Please take a look at the [OpenAutoLab documentation](https://kauzerei.github.io
 
 You can find the latest released STL files and firmware binaries on the [GitHub releases page](https://github.com/kauzerei/openautolab/releases).
 
-## License
+# Disclaimer
+
+I do not take any responsibility for any damage done by mishandling chemicals.
+
+For most processes rubber gloves suffice to keep you safe, but please refer to documents provided with each chemical you use, some are more toxic than others. This document explains the details of using the machine itself, without much attention towards the handling of chemicals. Research online if you are unsure, use your brain and be safe.
+
+# License
+
 The firmware, the design of 3d-printable files, the hardware design are licensed as GPLv3.
 The firmware links to Arduino Servo library which is licensed under LGPL-2.1, LiquidCrystal I2C by Frank de Brabander which is licensed under LGPL-2.1, the HX711 by Bogdan Necula which is licensed under MIT.
 For generation of 3d-printable .stl files Openscad is used, which is licensed under GPLv2.
