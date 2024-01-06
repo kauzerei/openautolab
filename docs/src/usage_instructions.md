@@ -18,20 +18,9 @@ For most processes rubber gloves suffice to keep you safe, but please refer to d
 This document explains the details of using the machine itself, without much attention towards the handling of chemicals.
 Research online if you are unsure, use your brain and be safe.
 
-# Machine components and operation overview
+## Machine components and operation overview
 
-[TODO picture showing components]
-
-1. Devloping tank
-1. Force gauge
-1. Agitation module
-1. Vessels for chemicals
-1. Fiter for water
-1. Electronic enclosure
-1. Pump for clean water filter
-1. Pump for chemicals
-1. Valves for switching sources of liquids
-1. Filter level sensing float switch
+![Machine parts](img/oatl-parts.png) 
 
 Developing tank is a special light-tight container, that allows the liquids to be pumped into and from it, while keeping the film in complete darkness.
 The film should be loaded into the tank also in darkness and is not allowed to be exposed to the light until the end of the development.
@@ -50,7 +39,10 @@ For some processes the chemicals anf film need to be stabilized at certain tempe
 The machine was desidned with this in mind and its lower part is water-tight, so the user can submerge the vessels and the tank into water and keep it at desired temperature.
 For that a slow-cooker can be used (aka Sous Vide) or specialized film processing heater.
 
-# Praparation for film processing
+## Praparation for film processing
+
+Before processing any important film, especially if the machine was not in use for a long time, or after transportation, run an idle process without film, possibly with water instead of developing chemistry.
+For that I recommend entering [service menu](#service-menu), filling all the vessels with clean water and running a cleaning cycle to make sure that all the valves are working and that everything is water-tight.
 
 First of all you need to put the film in complete darkness onto the spiral inside of the developing tank.
 You can use the light-tight changing bag or the dark room.
@@ -76,7 +68,7 @@ Put the waste water output into another canister or put it directly into the sin
 Make sure it does not run away during the pumping.
 After all preparation is done you can start the machine.
 
-# Initial screen
+## Initial screen
 
     Agit: 30s/30s/5s
     Wash:0x10m+3x5m+WA
@@ -100,7 +92,7 @@ More on that in [settings](#settings).
 The fourth line on this machine always depicts what pressing each of the buttons does.
 In this case you can start black-and-white or c41 developing process or enter global settings.
 
-# Black and white process
+## Black and white process
 
     B&W developing
     Film count: 2
@@ -159,12 +151,12 @@ Not to be confuded with this substage timer is the process timer on the last lin
 When the processing is finished, the word "Done" appears on the second line of the screen and a sound signal brings users attention.
 You may now open the tank and get the film out for drying. Pressing any button will bring you to the initial screen.
 
-# C41 process
+## C41 process
 
-C41 developing
-Film count: 2
+    C41 developing
+    Film count: 2
 
-Reset    +    Next >
+    Reset    +    Next >
 
 If C41 process is chosen you land on film count page.
 Here you can reset the counter by pressing the first button or manually increment it by one with the second button.
@@ -180,7 +172,7 @@ The third button starts the development.
 The information on the screen as well as basic processing principles are the same as in black-and-white mode.
 The difference is only in number of chemicals involved and therefore number of substages.
 
-# Settings
+## Settings
 
     Settings        1/10
     Prewash duration
@@ -258,7 +250,7 @@ For how long the servomotor performs each agitation (except for the first one wh
 
 How much liquid should be pumped into the developing tank.
 Depends on the tank itself (some are wider than others) and type of film used (35mm film needs lower liquid level than 60mm medium format film).
-This value is also used for weight gauge calibration and for washing cycles (more on that topic is still to be written later).
+This value is also used for weight gauge calibration and for washing cycles (more on that topic in [service menu](#service-menu).
 
     Settings        10/10
     Discard B&W dev?
@@ -273,4 +265,13 @@ Third line shows the current value, first button sets to "No", second to "Yes" a
 
 Some settings and functions are hidden in service menu, which can be accessed by pressing all 3 buttons simultaneously on startup.
 The motivation of keeping those separate is that they can mess up internal calibration or chemicals that are in the machine's vessels if the wrong button is pressed.
-Instructions on those are to be written.
+If during startup all 3 buttons are pressed, you will see "Service menu" on the screen.
+Release the buttons immediately and you will see weight gauge calibration page.
+To calibrate the weight gauge you need to set it to zero by pressing the first button, then pour amount of liquid written on screen into developing tank (this amount can be changed in regular settings) and press the second button. If everything is done right the screen should show correct weight on the third line. To store new calibration values press the third button.
+
+Next pages contain debug and test procedures.
+At the moment of release there is a program that fills all the vessels (and if needed also the tank) with water and a program that empties the vessels (if needed), fills them up with water and emties again.
+Use the first one and turn off the machine for some time to test that all interfaces are water tight.
+Use the second one as a cleaning cycle.
+I run the first program to fill the vessels and tank, add some basic cleaning solution in each of them and run the second program to rinse.
+Those programs are work in progress.
