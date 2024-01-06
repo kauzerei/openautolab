@@ -6,7 +6,7 @@ Free and open-source automatic film development machine.
 ![STLs](https://github.com/kauzerei/openautolab/actions/workflows/scad.yml/badge.svg)
 ![Documentation](https://github.com/kauzerei/openautolab/actions/workflows/deploy.yml/badge.svg)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Ryzbz89Sy8g?si=3H4qjyLDUWWAq3zO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+[![Demo video](https://img.youtube.com/vi/qe7pgEp7S68/maxresdefault.jpg)<br>Demo video](https://www.youtube.com/watch?v=Ryzbz89Sy8g)
 
 OpenAutoLab is an attempt at making a cheap and simple film developing machine.
 Inspired by Jobo Autolab, but cheaper, more repairable and open source.
