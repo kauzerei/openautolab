@@ -1,9 +1,10 @@
 #!/bin/bash
-#
+
 # Script that generates 3d-printable .stl files from parametric .SCAD
 # models for OpenAutoLab
 #
 # Copyright (c) 2023-2024 Kauzerei <mailto:openautolab@kauzerei.de>
+# Copyright (c) 2023 - 2024 Thomas Buck <thomas@xythobuz.de>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
