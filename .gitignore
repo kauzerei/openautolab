@@ -6,3 +6,4 @@ main_board/_autosave*
 */.DS_Store
 docs/book
 parts/stl
+main_board/fabrication

@@ -4,6 +4,7 @@ Free and open-source automatic film development machine.
 
 ![Firmware](https://github.com/kauzerei/openautolab/actions/workflows/compile.yml/badge.svg)
 ![STLs](https://github.com/kauzerei/openautolab/actions/workflows/scad.yml/badge.svg)
+![PCB](https://github.com/kauzerei/openautolab/actions/workflows/kicad.yml/badge.svg)
 ![Documentation](https://github.com/kauzerei/openautolab/actions/workflows/deploy.yml/badge.svg)
 
 [![Demo video](https://img.youtube.com/vi/qe7pgEp7S68/maxresdefault.jpg)<br>Demo video](https://www.youtube.com/watch?v=Ryzbz89Sy8g)

@@ -1,5 +1,9 @@
 # Arduino Code Dependencies
 
+If you don't want to customize the software you can just use the [Web Flashing Utility](./web_update.md) to flash the latest OpenAutoLab firmware to the main board.
+
+These instructions are intended for people that want to modify the code.
+
 ## Arduino IDE
 
 The [Arduino Legacy IDE](https://www.arduino.cc/en/software) is the easiest way to program the board.

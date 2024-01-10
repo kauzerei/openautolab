@@ -1,4 +1,4 @@
-# scad.yml
+# kicad.yml
 #
 # Copyright (c) 2023 - 2024 Kauzerei <openautolab@kauzerei.de>
 # Copyright (c) 2023 - 2024 Thomas Buck <thomas@xythobuz.de>
@@ -16,13 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-name: STLs
+name: PCB
 
 # build for each push and pull request
 on: [push, pull_request]
 
 jobs:
-  render:
+  fabrication:
     runs-on: ubuntu-latest
 
     permissions:
@@ -38,26 +38,30 @@ jobs:
         run: git submodule update --init
 
       - name: Install dependencies
-        run: sudo apt-get install -y openscad zip
-
-      - name: Render STLs
         run: |
-          ./parts/generate_stls.sh
+          sudo add-apt-repository --yes ppa:kicad/kicad-7.0-releases
+          sudo apt update
+          sudo apt install -y --install-recommends kicad
+          sudo apt-get install -y zip
 
-      - name: Upload part files
+      - name: Generate fabrication files
+        run: |
+          ./main_board/generate_fab.sh
+
+      - name: Upload board files
         uses: actions/upload-artifact@v4.0.0
         with:
-          name: openautolab-stl
-          path: parts/stl
+          name: openautolab-pcb
+          path: main_board/fabrication
 
       - name: Archive release files
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          cd parts
-          zip -r openautolab-stl stl
+          cd main_board
+          zip -r openautolab-pcb fabrication
 
       - name: Upload release files
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          files: parts/openautolab-stl.zip
+          files: main_board/openautolab-pcb.zip
