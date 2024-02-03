@@ -15,4 +15,6 @@ Agitation is done by periodically moving fully submerged film, not rotating the 
 - [Usage Instructions](usage_instructions.md) explains how to use the finished machine.
 - [Web Updater](web_update.md) allows firmware upgrades on the main board.
 
+This site is automatically generated from [OpenAutoLab Github repository](https://github.com/kauzerei/openautolab).
+
 This is still work in progress, so some information may be missing or unclear. Feel free to ask questions via email <mailto:openautolab@kauzerei.de>
