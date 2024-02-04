@@ -10,7 +10,7 @@
 - 330uH 1A coil
 - 100uF 16V capacitor
 - 330uF 16V capacitor
-- 2x 1N5818, or any other Schottky diodes, that survive short 2A burst from the motor
+- 2x SB140, or any other Schottky diodes, that survive short 2A burst from the motor
 - 8x Phoenix PT 1,5/ 2-3.5 1x2 or similar P3.8 screw terminal blocks, for example
 - 4x Phoenix MKDS 3/ 2-5.08 1x2 or similar P5.08 screw terminal blocks
 - 3x 6x6mm push switches
