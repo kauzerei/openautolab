@@ -31,7 +31,7 @@ pump_offset=5;
 mount_hole=4;
 mount_hole_distance=38;
 pcb_angle=15;
-pcb_holes_distance=81;
+pcb_holes_distance=67.32;
 extra_room=7;
 
 /* [Filter attachment options] */

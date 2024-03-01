@@ -61,10 +61,9 @@ If it is hard to keep the tap aligned with the hole direction, you can print som
 There are 4 of them, for the tank interface and for vessel interfaces, for each of two threads on them.
 If you print with PLA, avoid cutting threads too fast, it is **really** easy to overheat the plastic with the friction alone and ruin the thread, one half-turn every 2 seconds is about the optimal speed.
 
-[TODO sanded and unsanded surface of interface]
+[TODO chamfer on holes]
 
-Depending on printing surface you may need to file, sand and polish the faces where the inner threads are.
-They need to have a good contact with silicone ring to avoid the leaks.
+To ensure that bumpy 3d-printed surface does not lead to leaks, chamfer all of the threaded holes with chamfer drill or conical abrasive stone, so that the rubber ring is pressed against smooth inclined surface.
 
 ### Fine parts
 

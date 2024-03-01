@@ -9,9 +9,9 @@
 - LM2575-5.0BT or similar (LM2576-5.0)
 - 330uH 1A coil
 - 100uF 16V capacitor
-- 330uF 16V capacitor
+- 330uF 25V capacitor
 - 2x SB140, or any other Schottky diodes, that survive short 2A burst from the motor
-- 8x Phoenix PT 1,5/ 2-3.5 1x2 or similar P3.8 screw terminal blocks, for example
+- 8x Phoenix PT 1,5/ 2-3.5 1x2 or similar P3.8 screw terminal blocks
 - 4x Phoenix MKDS 3/ 2-5.08 1x2 or similar P5.08 screw terminal blocks
 - 3x 6x6mm push switches
 - 2x ULN2064 or similar darlington transistor arrays (ULN2065, TD62064APG)
@@ -98,4 +98,16 @@ Parts compatible with other tanks should be designed individually for each one.
 
 ### Optional tools
 
-It can be hard to cut good threads in small hard plastic parts, to simplify this process, there are tapping and threading helping tools in the optinal folder. Four different tapping tools are there to keep the tap perpendicular to each of the four surfaces, where the threads need to be. Tapping tool holds the die coaxial to the hollow parts that need to be threaded. Wrench has two sides for holding hollow screws and hose adapters during threading. Nut spinner is small round wrench which makes it easier to put nuts on long threads. Servo gauge is a set of test holes to find out which one fits best to your servo.
+It can be hard to cut good threads in small hard plastic parts, to simplify this process, there are tapping and threading helping tools in the optinal folder. Four different tapping tools are there to keep the tap perpendicular to each of the four surfaces, where the threads need to be. Tapping tool holds the die coaxial to the hollow parts that need to be threaded.
+Wrench has two sides for holding hollow screws and hose adapters during threading. Nut spinner is small round wrench which makes it easier to put nuts on long threads.
+Servo gauge is a set of test holes to find out which one fits best to your servo.
+
+## Power supply
+
+The machine is intended to use 12V power supply, since the rated voltage of pumps and valves is 12v.
+The internal DC-DC converter can take up to 40V.
+It's better to provide stable 12V input.
+
+That being said, I've used 4 cells of 18650 type without voltage stabilisation, which can give more than 16V fully charged, multiple times and the hardware is fine.
+The battery holder and bracket for mounting on the upper rail is provided.
+But use it on your own risk or stabilize the battery output before the machine.
