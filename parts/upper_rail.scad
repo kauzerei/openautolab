@@ -192,6 +192,21 @@ module pcbholder(holes_distance) {
   }
 }
 
+module top_holder(holes_distance) {
+  difference() {
+    union() {
+      cylinder(d=part_thickness*2+air_gap+rod_diameter,h=part_width);
+      translate([(-rods_distance+mount_hole_distance+rod_diameter/2+part_thickness),-part_thickness-air_gap/2,0]) cube([holes_distance+rod_diameter/2+part_thickness+2*extra_room+rods_distance-mount_hole_distance-rod_diameter/2-part_thickness,2*part_thickness+air_gap,part_width]);
+    }
+    translate([0,0,-1/100])cylinder(d=rod_diameter,h=part_width+1/50);
+    translate([-rods_distance+mount_hole_distance+rod_diameter/2+part_thickness,-air_gap/2,-1/100]) cube([holes_distance+rod_diameter/2+part_thickness+2*extra_room+rods_distance-mount_hole_distance-rod_diameter/2-part_thickness,air_gap,part_width+1/50]);
+    translate([rod_diameter/2+part_thickness+extra_room,0,part_width/2])rotate([90,0,0])cylinder(d=mount_hole,h=2*part_thickness+2*air_gap,center=true);
+    translate([holes_distance+rod_diameter/2+part_thickness+extra_room,0,part_width/2])rotate([90,0,0])cylinder(d=mount_hole,h=2*part_thickness+2*air_gap,center=true);
+    translate([-rods_distance/2+mount_hole_distance/2,0,part_width/2])rotate([90,0,0])cylinder(d=mount_hole,h=2*part_thickness+2*air_gap,center=true);
+
+  }
+}
+
 module battery_holder() {
   difference() {
     union() {
@@ -208,14 +223,32 @@ module battery_holder() {
 
 }
 
+module valve_bracket() {
+  sq=rod_diameter+2*part_thickness;
+  difference() {
+    union() {
+    for (tr=[[rods_distance/2,0,0],[-rods_distance/2,0,0]]) translate(tr)
+      cylinder(d=sq, h=sq, center=true);
+    hull() for (tr=[[0,sq/4,sq/4],[0,-sq/4,-sq/4]]) 
+      translate(tr) cube([rods_distance,sq/2,sq/2],center=true);
+    }
+    for (tr=[[rods_distance/2,0,0],[-rods_distance/2,0,0]]) translate(tr)
+      cylinder(d=rod_diameter, h=sq+1/100, center=true);
+    rotate([-20,0,0]) translate([0,sq/2+air_gap/4,0]) cube([rods_distance+rod_diameter+2*part_thickness+1/100,sq+air_gap/2,2*sq],center=true);
+    for (tr=[[-mount_hole_distance/2,0,0],[mount_hole_distance/2,0,0]]) translate(tr) rotate([45,0,0])
+      cylinder(d=mount_hole,h=2*sq,center=true);
+  }
+}
+
 if (part=="Valve_bracket") {
-  bigger();
-  smaller();
+  *bigger();
+  *smaller();
+  valve_bracket();
 }
 if (part=="Main_pump_bracket") pump();
 if (part=="Filter_pump_type1_bracket") filterpump(1);
 if (part=="Filter_pump_type2_bracket") filterpump(2);
 if (part=="Filter_attachment") filter_attachment();
-if (part=="Enclosure_bracket") pcbholder(pcb_holes_distance);
-if (part=="battery_bracket") pcbholder(78-2*extra_room+part_thickness/2);
+if (part=="Enclosure_bracket") top_holder(pcb_holes_distance);
+if (part=="battery_bracket") top_holder(78-2*extra_room+part_thickness/2);
 if (part=="battery_holder") battery_holder();

@@ -31,9 +31,28 @@ buttons_pos=[[22,69.6],[54.6,69.6],[86.8,69.6]];
 buttons_outer=10;
 buttons_inner=4;
 buttons_height=5;
-connectors_top=[[10.67,8],[19.56,8],[28.45,8],[37.34,8],[46.23,8],[55.12,8],[64,8],[72.9,8],[83.82,8],[96.52,8]];
-connectors_left=[[0,30.5],[0,48.26]];
-connectors_right=[[109,21.59],[109,40.64],[109,55.88]];
+//array of connectors, each connector=[[posx,posy,posz],[sizex,sizey,sizez]]
+small_offset_z=pcb_offset+pcb_thickness+solder_thickness+walls-5;
+wide_offset_z=pcb_offset+pcb_thickness+solder_thickness+walls-9;
+connectors=[ //top:
+             [[10.67,0,small_offset_z],[7,18,10]],
+             [[19.56,0,small_offset_z],[7,18,10]],
+             [[28.45,0,small_offset_z],[7,18,10]],
+             [[37.34,0,small_offset_z],[7,18,10]],
+             [[46.23,0,small_offset_z],[7,18,10]],
+             [[55.12,0,small_offset_z],[7,18,10]],
+             [[64,0,small_offset_z],[7,18,10]],
+             [[72.0,0,small_offset_z],[7,18,10]],
+             [[83.82,0,small_offset_z],[7,18,10]],
+             [[96.52,0,small_offset_z],[7,18,10]],
+             //left:
+             [[0,30.5,small_offset_z],[20,10,10]],
+             [[0,48.26,wide_offset_z],[20,10,18]],
+             //right:
+             [[109,21.59,small_offset_z],[20,10,10]],
+             [[109,40.64,wide_offset_z],[20,10,18]],
+             [[109,55.88,small_offset_z],[20,10,10]]
+           ];
 switches_pos=[];//[100,10],[85,10]];
 switches_diameter=7;
 screen_pos=[54.5,35];
@@ -77,9 +96,12 @@ module box() {
       translate([0,0,pcb_offset+2*pcb_thickness+solder_thickness+walls+0.01])for (i=pcb_holes_pos)translate(i)cylinder(d=pcb_mount_holes*2,h=solder_thickness);
     }
   translate([0,0,pcb_offset+2*pcb_thickness+solder_thickness+walls-0.01])for (i=pcb_holes_pos)translate(i)cylinder(d=pcb_mount_holes,h=walls+solder_thickness+0.02);
-  for (i=connectors_top)translate(i)translate([0,-5,pcb_offset+pcb_thickness+solder_thickness+walls-5])cube([7,18,10],center=true);
-  for (i=connectors_left)translate(i)translate([0,0,pcb_offset+pcb_thickness+solder_thickness+walls-5-4])cube([20,10,18],center=true);
-  for (i=connectors_right)translate(i)translate([0,0,pcb_offset+pcb_thickness+solder_thickness+walls-5-7])cube([20,10,19],center=true);
+  for (i=connectors) {
+    pose=i[0];
+    size=i[1];
+    translate(pose) cube(size,center=true);
+  }
+  for (pose=[[91,0,11],[78,0,11]]) translate(pose) rotate([90,0,0])cylinder(d=8,h=10,center=true); //switches
   for (i=[[-walls-tolerance-0.01,0,0],[-walls-tolerance-0.01,pcb_height-2*pcb_mount_holes,0],[pcb_width+tolerance-0.01,0,0],[pcb_width+tolerance-0.01,pcb_height-2*pcb_mount_holes,0]]) translate(i) translate([-0.01,pcb_mount_holes,pcb_mount_holes])rotate([0,90,0])cylinder(h=walls+0.04,d=pcb_mount_holes);
   }
 }

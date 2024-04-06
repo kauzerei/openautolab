@@ -23,18 +23,18 @@ int ess=0; //EEPROM starting address, change to ess+22 if settings saving and lo
 #include <EEPROM.h>
 
 //pin numbers
-const byte motorplus =5; //positive pole of pump motor
-const byte motorminus=6; //negative pole of pump motor
-const int valves[]={9,11,10,12,7,8}; //array of valves
+const byte motorplus =12; //positive pole of pump motor
+const byte motorminus=13; //negative pole of pump motor
+const int valves[]={7,6,5,A0,8,9,10,11}; //array of valves
 const byte servo=4; //servo pin
 const byte scaleclk=2; //pins of
 const byte scaledat=3; //scale
 const byte buzzer=13; //buzzer pin
 const byte displayclk=A4; //pins of
 const byte displaydio=A5; //display
-const byte button1=A0; //buttons
-const byte button2=A1;
-const byte button3=A2;
+const byte button1=A3; //buttons
+const byte button2=A2;
+const byte button3=A1;
 
 //global variables and EEPROM adresses, which store settings
 byte bw_dev_time=EEPROM.read(ess+0);
