@@ -33,6 +33,7 @@ If the parts listed are unavailable, feel free to modify the PCB to fit the comp
 - Brita filter for water
 - Any pump that can work for prolonged periods without overheating
 - Float switch
+- 6x 12v valves
 ![reference picturs of pumps and valves to scale]
 
 ### Other parts to buy
@@ -43,7 +44,7 @@ If the parts listed are unavailable, feel free to modify the PCB to fit the comp
 - 5x T-pipes, one for each valve minus one.
 - Developing tank. AP developing tank is recommended.
 - 4x Vessels for chemicals. I suggest STANDARDMÅTT from IKEA.
-- 12x 12x2 cylindrical neodymium magnets.
+- 12x 3 cylindrical neodymium magnets.
 - Borrow or buy M8 tap, a tap holder and M8 die for cutting threads. I wouldn't even try to make 3d-printed water-tight hose connections, so tapping and threading should be done by hand.
 - 6x M8x8 plastic screws and 4mm drill as a more practical alternative to 3d-printed screws. More on that in lower_rail section.
 - Sous Vide and a water-tight container for heating the vessels with water.

@@ -32,10 +32,11 @@ Make the holes bigger and bend the jumper wires' ends in the direction of the tr
 |  | Pololu DRV8874 | 1 | - |
 |  | Inductor 330uH | 1 | AIUR-06-331K-ND |
 |  | Schottky diode | 2 | 1655-SB140CT-ND |
-|  | Capacitor 330uF | 1 | P10378TB-ND |
-|  | Capacitor 100uF | 1 | P10413TB-ND |
+|  | Capacitor 330uF | 1 | 399-ESK337M016AE3AA-ND |
+|  | Capacitor 100uF | 1 | 399-6102-ND |
 |  | Tactile switch 6mm | 3 | 450-1650-ND |
 |  | Terminal block small | 8 | A98036-ND |
 |  | Terminal block large | 4 | 277-1667-ND |
 |  | Pin sockets | 2 | 2057-SMC-1-40-1-GT-ND |
-|  | Pin headers | 1 |2057-PH1-07-UA-ND |
+|  | Pin headers | 1 | 2057-PH1-07-UA-ND |
+|  | SPDT switch | 2 | EG2447-ND |
