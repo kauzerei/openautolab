@@ -240,8 +240,10 @@ module valve_bracket() {
     for (tr=[[rods_distance/2,0,0],[-rods_distance/2,0,0]]) translate(tr)
       cylinder(d=rod_diameter, h=sq+1/100, center=true);
     rotate([-20,0,0]) translate([0,sq/2+air_gap/4,0]) cube([rods_distance+rod_diameter+2*part_thickness+1/100,sq+air_gap/2,2*sq],center=true);
-    for (tr=[[-mount_hole_distance/2,0,0],[mount_hole_distance/2,0,0]]) translate(tr) rotate([45,0,0])
+    for (tr=[[-mount_hole_distance/2,0,2],[mount_hole_distance/2,0,2]]) rotate([45,0,0]) translate(tr) {
       cylinder(d=mount_hole,h=2*sq,center=true);
+      cylinder(d=mount_hole*2,h=sq,$fn=6);
+    }
   }
 }
 
