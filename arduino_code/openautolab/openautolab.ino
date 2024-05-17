@@ -771,9 +771,8 @@ void loop() {
         break;
       case 2:
         st_pr=millis();
-        tank_cap+=10;
         pumpallin(false);
-        tank_cap-=10;
+        tank_cap+=10;
         pumpallout();
         tank_cap=EEPROM.read(ess+12);
         lcd.setCursor(16,0);
