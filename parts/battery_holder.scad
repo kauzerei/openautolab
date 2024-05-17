@@ -1,7 +1,7 @@
 //parametric battery cell holder
 //Project: released for camera stab, designed for drill battery pack
-$fs=0.7/1;
-$fa=0.01/1;
+$fs=1/2;
+$fa=1/1;
 diameter=19;
 number=4;
 module holder(diameter=18,battery_length=65,piptik_height=1,piptik_width=6,slit=2,wall=2,floor=2) {
@@ -17,7 +17,6 @@ difference() {
   translate([diameter/2-piptik_width/2,-0.01,floor+diameter/2+piptik_width/2])cube([piptik_width,wall+0.02,slit]);
   translate([diameter/2-piptik_width/2,-0.01+wall+length,floor+diameter/2-piptik_width/2-slit])cube([piptik_width,wall+0.02,slit]);
   translate([diameter/2-piptik_width/2,-0.01+wall+length,floor+diameter/2+piptik_width/2])cube([piptik_width,wall+0.02,slit]);
-*  translate([diameter/2,diameter/2,-0.01])cylinder(d=piptik_width,h=diameter);
 }
 translate([diameter/2,wall,diameter/2+floor])rotate([0,90,0])linear_extrude(piptik_width,center=true)polygon([[-piptik_width/2,0],[piptik_width/2,0],[0,piptik_height]]);
 translate([diameter/2,wall+length,diameter/2+floor])rotate([0,90,0])linear_extrude(piptik_width,center=true)polygon([[-piptik_width/2,0],[piptik_width/2,0],[0,-piptik_height]]);

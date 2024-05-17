@@ -53,7 +53,7 @@ connectors=[ //top:
              [[109,40.64,wide_offset_z],[20,10,18]],
              [[109,55.88,small_offset_z],[20,10,10]]
            ];
-switches_pos=[];//[100,10],[85,10]];
+switches_pos=[[91,0,11],[78,0,11]];
 switches_diameter=7;
 screen_pos=[54.5,35];
 screen_mount=[93,55];
@@ -63,7 +63,6 @@ screen_rect=[98.5,41];
 module front() {
   difference() {
     translate([-tolerance-walls,-tolerance-walls,0.01])cube([pcb_width+2*tolerance+2*walls,pcb_height+2*tolerance+2*walls,walls]);
-    for(tr=switches_pos) translate(tr) cylinder(d=switches_diameter,h=walls+0.02);
     for (i=[[[1,0],[0,1]],[[-1,0],[0,1]],[[1,0],[0,-1]],[[-1,0],[0,-1]]])translate(screen_pos)translate(i*screen_mount/2)cylinder(d=screen_mount_holes,h=walls+0.02);
     translate(screen_pos-screen_rect/2)cube([screen_rect[0],screen_rect[1],walls+0.02]);
     for(tr=buttons_pos) translate(tr) cylinder(d=buttons_inner+2*tolerance,h=pcb_offset-buttons_height-2+walls+0.02);
@@ -101,7 +100,7 @@ module box() {
     size=i[1];
     translate(pose) cube(size,center=true);
   }
-  for (pose=[[91,0,11],[78,0,11]]) translate(pose) rotate([90,0,0])cylinder(d=8,h=10,center=true); //switches
+  for (pose=switches_pos) translate(pose) rotate([90,0,0])cylinder(d=8,h=10,center=true); //switches
   for (i=[[-walls-tolerance-0.01,0,0],[-walls-tolerance-0.01,pcb_height-2*pcb_mount_holes,0],[pcb_width+tolerance-0.01,0,0],[pcb_width+tolerance-0.01,pcb_height-2*pcb_mount_holes,0]]) translate(i) translate([-0.01,pcb_mount_holes,pcb_mount_holes])rotate([0,90,0])cylinder(h=walls+0.04,d=pcb_mount_holes);
   }
 }

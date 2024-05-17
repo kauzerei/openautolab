@@ -23,10 +23,8 @@ $fa=1/1;
 part="X-mount";// [X-mount, T-mount, OPTIONAL_nut_spinner]
 rod_diameter=8;
 nut_width=16;
-nut_height=8;
 air_gap=0.5;
 tightening_gap=2;
-d=rod_diameter+air_gap*2;
 
 module hole(mount_hole=4.5,layer=0.4) { //hole for clamping with threaded screw
   translate([0,0,layer])cylinder(d=mount_hole,h=nut_width);
@@ -38,26 +36,12 @@ module xmount(thickness=16,diameter=8,air_gap=0.5,half=false,slot=2) {
     cube([thickness, 1.5*thickness+diameter/2,thickness]);
     translate([thickness/2,thickness/2,-0.01])cylinder(d=diameter+2*air_gap,h=thickness+0.02);
     translate([-0.01,thickness+diameter/2,thickness/2])rotate([0,90,0])cylinder(d=diameter,h=thickness+0.02);
-    if(half) {
-      translate([-0.01,-0.01,(thickness)/2])cube([thickness+0.02, 1.5*thickness+diameter/2+0.02,thickness]);
-      translate([-0.01,(thickness-diameter)/2,(thickness-slot)/2])cube([thickness+0.02, 1.5*thickness+diameter/2+0.02,thickness]);
-    }
+    translate([-0.01,-0.01,(thickness)/2])cube([thickness+0.02, 1.5*thickness+diameter/2+0.02,thickness]);
+    translate([-0.01,(thickness-diameter)/2,(thickness-slot)/2])cube([thickness+0.02, 1.5*thickness+diameter/2+0.02,thickness]);
   }
 }
 
-module tmount_legacy(thickness=16,diameter=8,air_gap=0.5,half=false,slot=2) {
-  difference() {
-    cube([thickness, 1.5*thickness+diameter/2,thickness]);
-    translate([thickness/2,thickness/2,-0.01])cylinder(d=diameter,h=thickness+0.02);
-    translate([thickness/2,thickness/2,thickness/2])rotate([-90,0,0])cylinder(d=diameter,h=thickness*2);
-    if(half) {
-      translate([-0.01,-0.01,(thickness)/2])cube([thickness+0.02, 1.5*thickness+diameter/2+0.02,thickness]);
-      translate([-0.01,(thickness-diameter)/2,(thickness-slot)/2])cube([thickness+0.02, 1.5*thickness+diameter/2+0.02,thickness]);
-    }
-  }
-}
-
-module tmount(thickness=16,diameter=8,half=false,slot=2) {
+module tmount(thickness=16,diameter=8,slot=2) {
   difference() {
     hull() {
       cube([thickness*2,thickness,thickness],center=true);
@@ -67,7 +51,7 @@ module tmount(thickness=16,diameter=8,half=false,slot=2) {
     rotate([0,90,0])cylinder (d=diameter,h=thickness*2+0.01,center=true);
     translate([diameter,diameter,-air_gap-nut_width/4]) hole();
     translate([-diameter,diameter,-air_gap-nut_width/4]) hole();
-    if(half) translate([-thickness-0.01,-thickness/2-0.01,-slot/2])cube([2*thickness+0.02, 2.5*thickness+0.02,thickness]);
+    translate([-thickness-0.01,-thickness/2-0.01,-slot/2])cube([2*thickness+0.02, 2.5*thickness+0.02,thickness]);
   }
 }
 
@@ -91,11 +75,11 @@ module nutspinner(d1,d2,d3,d4,d5,h) {
 }
 
 if (part=="X-mount") {
-  xmount(thickness=nut_width,diameter=rod_diameter,air_gap=air_gap,half=true,slot=tightening_gap);
+  xmount(thickness=nut_width,diameter=rod_diameter,air_gap=air_gap,slot=tightening_gap);
 }
 if (part=="T-mount") {
-  tmount(thickness=nut_width,diameter=rod_diameter,half=true,slot=tightening_gap);
+  tmount(thickness=nut_width,diameter=rod_diameter,slot=tightening_gap);
 }
 if (part=="OPTIONAL_nut_spinner") {
-  nutspinner(50,40,nut_width+6,nut_width+2*air_gap,rod_diameter+air_gap*2,nut_height*2);
+  nutspinner(50,40,nut_width+6,nut_width+2*air_gap,rod_diameter+air_gap*2,nut_width);
 }
