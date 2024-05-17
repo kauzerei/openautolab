@@ -28,6 +28,11 @@ air_gap=0.5;
 tightening_gap=2;
 d=rod_diameter+air_gap*2;
 
+module hole(mount_hole=4.5,layer=0.4) { //hole for clamping with threaded screw
+  translate([0,0,layer])cylinder(d=mount_hole,h=nut_width);
+  mirror([0,0,1])cylinder(d=mount_hole*2,h=nut_width,$fn=6);
+}
+
 module xmount(thickness=16,diameter=8,air_gap=0.5,half=false,slot=2) {
   difference() {
     cube([thickness, 1.5*thickness+diameter/2,thickness]);
@@ -60,8 +65,8 @@ module tmount(thickness=16,diameter=8,half=false,slot=2) {
     }
     rotate([-90,0,0])cylinder (d=diameter,h=thickness*2+0.01);
     rotate([0,90,0])cylinder (d=diameter,h=thickness*2+0.01,center=true);
-    translate([diameter,diameter,0])cylinder (d=4,h=thickness+0.01,center=true);
-    translate([-diameter,diameter,0])cylinder (d=4,h=thickness+0.01,center=true);
+    translate([diameter,diameter,-air_gap-nut_width/4]) hole();
+    translate([-diameter,diameter,-air_gap-nut_width/4]) hole();
     if(half) translate([-thickness-0.01,-thickness/2-0.01,-slot/2])cube([2*thickness+0.02, 2.5*thickness+0.02,thickness]);
   }
 }

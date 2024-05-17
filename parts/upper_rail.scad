@@ -30,9 +30,7 @@ valve_offset=0;
 pump_offset=5;
 mount_hole=4;
 mount_hole_distance=38;
-pcb_angle=15;
 pcb_holes_distance=67.32;
-extra_room=7;
 
 /* [Filter attachment options] */
 filter_wall=6;
@@ -145,12 +143,12 @@ module top_holder() {
 module battery_holder() {
   difference() {
     union() {
-      cube([battery_w+part_thickness,23+part_thickness,battery_h+part_thickness/2]);
+      cube([battery_w+part_thickness,battery_d+part_thickness,battery_h+part_thickness/2]);
       translate([-part_width,0,0])cube([battery_w+part_thickness+2*part_width,part_thickness/2,battery_h+part_thickness/2]);
     }
-    translate([part_thickness/2,part_thickness/2,part_thickness/2+0.01]) cube([battery_w,23,battery_h]);
-    for (tr=[[-part_width/2,-0.01,extra_room],
-             [part_thickness+part_width/2+battery_w,-0.01,extra_room],
+    translate([part_thickness/2,part_thickness/2,part_thickness/2+0.01]) cube([battery_w,battery_d,battery_h]);
+    for (tr=[[-part_width/2,-0.01,part_width/2],
+             [part_thickness+part_width/2+battery_w,-0.01,part_width/2],
              ])
       translate(tr)rotate([-90,0,0]) cylinder(d=mount_hole,h=part_thickness/2+0.02);
   }
