@@ -17,7 +17,7 @@
 
 $fs=0.5/1;
 $fa=1/1;
-part = "Valve_bracket"; // [Valve_bracket, Main_pump_bracket, Filter_pump_type1_bracket, Filter_pump_type2_bracket, Filter_attachment, Small_bracket, Battery_holder]
+part = "Valve_bracket"; // [Valve_bracket, Main_pump_bracket, Filter_pump_type1_bracket, Filter_pump_type2_bracket, Filter_attachment, Battery_holder]
 /* [Rail general parameters] */
 rod_diameter=8;
 rods_distance=62;
@@ -164,5 +164,4 @@ if (part=="Main_pump_bracket") main_pump_bracket();
 if (part=="Filter_pump_type1_bracket") filterpump(1);
 if (part=="Filter_pump_type2_bracket") filterpump(2);
 if (part=="Filter_attachment") filter_attachment();
-if (part=="Small_bracket") top_holder();
 if (part=="Battery_holder") battery_holder();
