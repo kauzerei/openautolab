@@ -60,8 +60,8 @@ module pumpholes() {
 module main_pump_bracket() {
   pumpmounts=[[21,0],[-31,0]];
   rodmounts=[[rods_distance/2,0],[-rods_distance/2,0]];
-  shift=[-5,-6];
-  rotation=140;
+  shift=[-5,6];
+  rotation=-140;
   pumpdiameter=34;
   difference() {
     union() {
@@ -76,8 +76,7 @@ module main_pump_bracket() {
     for (i=rodmounts) translate(i)cylinder(h=part_width+0.02,d=rod_diameter,center=true);
     translate(shift)rotate([0,0,rotation])cylinder(h=part_width+2*pump_offset+0.02,d=pumpdiameter,center=true);
     cube([2*rods_distance,air_gap,part_width+2],center=true);
-    *translate([18,0,0])rotate([90,0,-10]) cylinder (d=4,h=2*rods_distance,center=true);
-    rotate([-90,0,-14])translate([18,0,-part_thickness]) hole();
+    rotate([90,0,14])translate([18,0,-part_thickness]) hole();
   }
 }
 
