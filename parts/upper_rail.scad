@@ -23,12 +23,11 @@ rod_diameter=8;
 rods_distance=62;
 
 /* [mounts parameters] */
-part_width=10;
+mount_hole=4.5;
 part_thickness=3;
-air_gap=1;
-valve_offset=0;
+part_width=2*mount_hole+part_thickness;
+tightening_gap=1;
 pump_offset=5;
-mount_hole=4;
 mount_hole_distance=38;
 pcb_holes_distance=67.32;
 
@@ -42,9 +41,9 @@ battery_h=78;
 battery_w=78;
 battery_d=23;
 
-module hole() { //hole for clamping with threaded screw
-  cylinder(d=mount_hole,h=2*rods_distance,center=true);
-  mirror([0,0,1])cylinder(d=mount_hole*2,h=2*rods_distance,$fn=6);
+module hole(mount_hole=4.5) { //hole for clamping with threaded screw
+  cylinder(d=mount_hole,h=100,center=true);
+  mirror([0,0,1])cylinder(d=mount_hole*2,h=100,$fn=6);
 }
 
 module pumpholes() {
@@ -75,8 +74,8 @@ module main_pump_bracket() {
     translate(shift)rotate([0,0,rotation])for (i=pumpmounts) translate(i)cylinder(h=part_width+2*pump_offset+0.02,d=mount_hole,center=true);
     for (i=rodmounts) translate(i)cylinder(h=part_width+0.02,d=rod_diameter,center=true);
     translate(shift)rotate([0,0,rotation])cylinder(h=part_width+2*pump_offset+0.02,d=pumpdiameter,center=true);
-    cube([2*rods_distance,air_gap,part_width+2],center=true);
-    rotate([90,0,14])translate([18,0,-part_thickness]) hole();
+    cube([2*rods_distance,tightening_gap,part_width+2],center=true);
+    rotate([90,0,18])translate([19,0,-part_thickness]) hole(mount_hole=mount_hole);
   }
 }
 
@@ -109,9 +108,8 @@ module filterpump(type) {
     translate([-rods_distance/2,9])circle(d=rod_diameter);
     translate([0,9])square([2*rods_distance,1],center=true);
     }
-  translate([rods_distance/2-rod_diameter/2-2,0,part_width/2])rotate([-90,0,0])hole();
-  translate([-rods_distance/2+rod_diameter/2+2,0,part_width/2])rotate([-90,0,0])hole();
-*  translate([-rods_distance/2+rod_diameter/2+3,0,part_width/2])rotate([90,0,0])cylinder(d=4,h=rods_distance,center=true);
+  translate([26,0,part_width/2])rotate([-90,0,10])hole(mount_hole=mount_hole);
+  translate([-26,0,part_width/2])rotate([-90,0,-10])hole(mount_hole=mount_hole);
   }
 }
 
@@ -151,7 +149,7 @@ module valve_bracket() {
     }
     for (tr=[[rods_distance/2,0,0],[-rods_distance/2,0,0]]) translate(tr)
       cylinder(d=rod_diameter, h=sq+1/100, center=true);
-    rotate([-20,0,0]) translate([0,sq/2+air_gap/4,0]) cube([rods_distance+rod_diameter+2*part_thickness+1/100,sq+air_gap/2,2*sq],center=true);
+    rotate([-20,0,0]) translate([0,sq/2+tightening_gap/4,0]) cube([rods_distance+rod_diameter+2*part_thickness+1/100,sq+tightening_gap/2,2*sq],center=true);
     for (tr=[[-mount_hole_distance/2,0,2],[mount_hole_distance/2,0,2]]) rotate([45,0,0]) translate(tr) {
       cylinder(d=mount_hole,h=2*sq,center=true);
       cylinder(d=mount_hole*2,h=sq,$fn=6);

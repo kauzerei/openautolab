@@ -34,7 +34,7 @@ The difference should not be drastic, so the mentioned measurements are a good r
 | 3 | Fresh water pump | 1 | |
 | 4 | Two-part bracket for the fresh water pump | 1 | upper_rail_filter_pump_type1_bracket.stl or type2 |
 | 5 | magnetic valves | 6 | |
-| 6 | two-part brackets for the valves | 6 | upper_rail_valve_bracket.stl |
+| 6 | brackets for the valves | 12 | upper_rail_valve_bracket.stl |
 | 7 | two-part brackets for the electronic enclosure | 2 | upper_rail_small_bracket.stl |
 | 8 | M4x15 screws | 18 | |
 | 9 | M4x20 screws | 3 | |
