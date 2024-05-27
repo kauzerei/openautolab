@@ -17,7 +17,7 @@
 
 $fs=0.5/1;
 $fa=1/1;
-part = "Valve_bracket"; // [Valve_bracket, Main_pump_bracket, Filter_pump_type1_bracket, Filter_pump_type2_bracket, Filter_attachment, Small_bracket, battery_holder]
+part = "Valve_bracket"; // [Valve_bracket, Main_pump_bracket, Filter_pump_type1_bracket, Filter_pump_type2_bracket, Filter_attachment, Small_bracket, Battery_holder]
 /* [Rail general parameters] */
 rod_diameter=8;
 rods_distance=62;
@@ -126,19 +126,6 @@ module filter_attachment() {
   }
 }
 
-module top_holder() {
-  difference() {
-    union() {
-      cylinder(d=part_thickness*2+air_gap+rod_diameter,h=part_width);
-      translate([-rod_diameter/2-part_width,-part_thickness-rod_diameter/2-air_gap/2,0]) cube([rod_diameter+2*part_width,2*part_thickness+rod_diameter+air_gap,part_width]);
-    }
-    translate([0,0,-1/100])cylinder(d=rod_diameter,h=part_width+1/50);
-    translate([-rod_diameter/2-part_width-1/100,-air_gap/2,-1/100]) cube([rod_diameter+2*part_width+1/50,air_gap,part_width+1/50]);
-    translate([rod_diameter/2+part_width/2,part_thickness/2+rod_diameter/4+air_gap/2,part_width/2])rotate([90,0,0])hole();
-    translate([-rod_diameter/2-part_width/2,part_thickness/2+rod_diameter/4+air_gap/2,part_width/2])rotate([90,0,0])hole();
-  }
-}
-
 module battery_holder() {
   difference() {
     union() {
@@ -178,4 +165,4 @@ if (part=="Filter_pump_type1_bracket") filterpump(1);
 if (part=="Filter_pump_type2_bracket") filterpump(2);
 if (part=="Filter_attachment") filter_attachment();
 if (part=="Small_bracket") top_holder();
-if (part=="battery_holder") battery_holder();
+if (part=="Battery_holder") battery_holder();
