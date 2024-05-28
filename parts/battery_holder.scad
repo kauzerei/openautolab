@@ -4,8 +4,8 @@ bissl = 1 / 100;
 $fn = 64 / 1;
 
 wall = 1.6;
-contact = 1.6;
-piptik_depth = 1.6;
+contact_thickness = 1.6;
+contact_depth = 1.6;
 battery_d = 19;
 battery_l = 65;
 unit = (battery_d + wall) / 14;
@@ -44,41 +44,41 @@ module spring_flat() {
 }
 
 module spring() {
-  piptik_size = battery_d * 2 / 7;
+  contact_width = battery_d * 2 / 7;
   difference() {
     linear_extrude(height = battery_d + wall, convexity = 8) spring_flat();
     translate([
-      -wall - bissl, (battery_d - piptik_size) / 2 + wall,
-      (battery_d - piptik_size) / 2 + wall +
-      piptik_size
-    ]) cube([ wall + 2 * bissl, piptik_size, contact ]);
+      -wall - bissl, (battery_d - contact_width) / 2 + wall,
+      (battery_d - contact_width) / 2 + wall +
+      contact_width
+    ]) cube([ wall + 2 * bissl, contact_width, contact_thickness ]);
     translate([
-      -wall - bissl, (battery_d - piptik_size) / 2 + wall,
-      (battery_d - piptik_size) / 2 + wall -
-      contact
-    ]) cube([ wall + 2 * bissl, piptik_size, contact ]);
+      -wall - bissl, (battery_d - contact_width) / 2 + wall,
+      (battery_d - contact_width) / 2 + wall -
+      contact_thickness
+    ]) cube([ wall + 2 * bissl, contact_width, contact_thickness ]);
   }
   translate([ 0, wall + battery_d / 2, wall + battery_d / 2 ])
-      rotate([ 90, 0, 0 ]) linear_extrude(height = piptik_size, center = true)
+      rotate([ 90, 0, 0 ]) linear_extrude(height = contact_width, center = true)
           polygon([
-            [ 0, piptik_size / 2 ], [ 0, -piptik_size / 2 ], [ piptik_depth, 0 ]
+            [ 0, contact_width / 2 ], [ 0, -contact_width / 2 ], [ contact_depth, 0 ]
           ]);
 }
 
 module holder() {
   difference() {
     union() {
-      cube([ battery_l + 2 * piptik_depth, wall, battery_d + wall ]);
+      cube([ battery_l + 2 * contact_depth, wall, battery_d + wall ]);
       translate([ 0, battery_d + wall, 0 ])
-          cube([ battery_l + 2 * piptik_depth, wall, battery_d + wall ]);
+          cube([ battery_l + 2 * contact_depth, wall, battery_d + wall ]);
     }
     translate([ battery_l / 2, -bissl, battery_l / 2 + battery_d / 3 ])
-        rotate([ -90, 0, 0 ]) cylinder(d = battery_l + piptik_depth,
+        rotate([ -90, 0, 0 ]) cylinder(d = battery_l + contact_depth,
                                        h = battery_d + 2 * wall + 2 * bissl);
   }
   translate([ wall, wall, 0 ])
-      cube([ battery_l - 2 * wall + 2 * piptik_depth, battery_d, wall ]);
-  translate([ battery_l + 2 * piptik_depth, 0, 0 ]) mirror([ 1, 0, 0 ])
+      cube([ battery_l - 2 * wall + 2 * contact_depth, battery_d, wall ]);
+  translate([ battery_l + 2 * contact_depth, 0, 0 ]) mirror([ 1, 0, 0 ])
       spring();
   spring();
 }

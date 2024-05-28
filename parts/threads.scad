@@ -4,7 +4,7 @@
 //
 // https://www.thingiverse.com/thing:1686322
 //
-// v2.1
+// derived from v2.1, small changes regarding convexity value
 
 
 screw_resolution = 0.2;  // in mm
@@ -181,7 +181,7 @@ function NutThickness(diameter) =
 //   [j][i], [j+1][(i+1)%P], [j][(i+1)%P]
 //   Then triangles are formed in a loop with the middle point of the first
 //   and last array.
-module ClosePoints(pointarrays) {
+module ClosePoints(pointarrays,convexity=1) {
   function recurse_avg(arr, n=0, p=[0,0,0]) = (n>=len(arr)) ? p :
     recurse_avg(arr, n+1, p+(arr[n]-p)/(n+1));
 
@@ -223,14 +223,14 @@ module ClosePoints(pointarrays) {
   ];
   faces = concat(faces_bot, faces_loop, faces_top);
 
-  polyhedron(points=points, faces=faces);
+  polyhedron(points=points, faces=faces,convexity=convexity);
 }
 
 
 
 // This creates a vertical rod at the origin with external threads.  It uses
 // metric standards by default.
-module ScrewThread(outer_diam, height, pitch=0, tooth_angle=30, tolerance=0.0, tip_height=0, tooth_height=0, tip_min_fract=0,screw_resolution=1) {
+module ScrewThread(outer_diam, height, pitch=0, tooth_angle=30, tolerance=0.0, tip_height=0, tooth_height=0, tip_min_fract=0,screw_resolution=1,convexity=1) {
 
   pitch = (pitch==0) ? ThreadPitch(outer_diam) : pitch;
   tooth_height = (tooth_height==0) ? pitch : tooth_height;
@@ -329,7 +329,7 @@ module ScrewThread(outer_diam, height, pitch=0, tooth_angle=30, tolerance=0.0, t
   ];
 
 
-  ClosePoints(pointarrays);
+  ClosePoints(pointarrays,convexity=convexity);
 }
 
 

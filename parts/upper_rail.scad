@@ -17,6 +17,7 @@
 
 $fs=0.5/1;
 $fa=1/1;
+bissl=1/100;
 part = "Valve_bracket"; // [Valve_bracket, Main_pump_bracket, Filter_pump_type1_bracket, Filter_pump_type2_bracket, Filter_attachment]
 /* [Rail general parameters] */
 rod_diameter=8;
@@ -67,9 +68,9 @@ module main_pump_bracket() {
       }
       translate(shift)rotate([0,0,rotation])for (i=pumpmounts) translate(i)translate([0,0,pump_offset/2])cylinder(h=part_width+pump_offset,d=mount_hole+2*part_thickness,center=true);
     }
-    translate(shift)rotate([0,0,rotation])for (i=pumpmounts) translate(i)cylinder(h=part_width+2*pump_offset+0.02,d=mount_hole,center=true);
-    for (i=rodmounts) translate(i)cylinder(h=part_width+0.02,d=rod_diameter,center=true);
-    translate(shift)rotate([0,0,rotation])cylinder(h=part_width+2*pump_offset+0.02,d=pumpdiameter,center=true);
+    translate(shift)rotate([0,0,rotation])for (i=pumpmounts) translate(i)cylinder(h=part_width+2*pump_offset+bissl,d=mount_hole,center=true);
+    for (i=rodmounts) translate(i)cylinder(h=part_width+bissl,d=rod_diameter,center=true);
+    translate(shift)rotate([0,0,rotation])cylinder(h=part_width+2*pump_offset+bissl,d=pumpdiameter,center=true);
     cube([2*rods_distance,tightening_gap,part_width+2],center=true);
     rotate([90,0,18])translate([19,0,-part_thickness]) hole(mount_hole=mount_hole);
   }
@@ -116,7 +117,7 @@ module filter_attachment() {
   translate([-filter_wall,0,offset_v])cube([filter_wall,2*hole,part_thickness]);
   difference() {
     cube([offset_h+hole ,2*hole,part_thickness]);
-    translate([offset_h,hole,part_thickness/2])cylinder(h=part_thickness+0.02,d=hole,center=true);
+    translate([offset_h,hole,part_thickness/2])cylinder(h=part_thickness+bissl,d=hole,center=true);
   }
 }
 

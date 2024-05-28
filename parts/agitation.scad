@@ -15,14 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-$fs=0.5/1;
+$fs=1/2;
 $fa=1/1;
+bissl=1/100;
 part="Cap"; //[Cap, Rod, OPTIONAL_servo_gauge]
 outer_diameter= 70;
 outer_depth=17;
 extra_lip_width=1.5;
 extra_lip_height=5;
-parts_thickness=1.5;
+wall=1.6;
 cutouts=10;
 cut_width=2;
 cut_depth=15;
@@ -55,24 +56,24 @@ module four_quarters(width,height){
 
 module cap() {
   difference() {
-    cylinder(d=outer_diameter+2*parts_thickness,h=outer_depth+parts_thickness);
-    translate([0,0,parts_thickness])cylinder(d=outer_diameter,h=outer_depth-extra_lip_height+0.01);
-    translate([0,0,parts_thickness+outer_depth-extra_lip_height])cylinder(d1=outer_diameter,d2=outer_diameter-2*extra_lip_width,h=extra_lip_height/3+0.01);
-    translate([0,0,parts_thickness+outer_depth-2*extra_lip_height/3])cylinder(d=outer_diameter-2*extra_lip_width,h=extra_lip_height/3+0.01);
-    translate([0,0,parts_thickness+outer_depth-extra_lip_height/3])cylinder(d1=outer_diameter-2*extra_lip_width,d2=outer_diameter,h=extra_lip_height/3+0.01);
-    for (a=[0:360/cutouts:360-360/cutouts])rotate([0,0,a])translate([0,outer_diameter/2+parts_thickness,outer_depth+parts_thickness])rotate([45,0,0])cube([cut_width,cut_depth*sqrt(2),cut_depth*sqrt(2)],center=true);
-    translate([0,5.5,parts_thickness/2]) {
-      cube([13,24,parts_thickness+2],center=true);
-      translate([0,27.5/2,0])cylinder(h=parts_thickness+2,d=2,center=true);
-      translate([0,-27.5/2,0])cylinder(h=parts_thickness+2,d=2,center=true);
+    cylinder(d=outer_diameter+2*wall,h=outer_depth+wall);
+    translate([0,0,wall])cylinder(d=outer_diameter,h=outer_depth-extra_lip_height+bissl);
+    translate([0,0,wall+outer_depth-extra_lip_height])cylinder(d1=outer_diameter,d2=outer_diameter-2*extra_lip_width,h=extra_lip_height/3+bissl);
+    translate([0,0,wall+outer_depth-2*extra_lip_height/3])cylinder(d=outer_diameter-2*extra_lip_width,h=extra_lip_height/3+bissl);
+    translate([0,0,wall+outer_depth-extra_lip_height/3])cylinder(d1=outer_diameter-2*extra_lip_width,d2=outer_diameter,h=extra_lip_height/3+bissl);
+    for (a=[0:360/cutouts:360-360/cutouts])rotate([0,0,a])translate([0,outer_diameter/2+wall,outer_depth+wall])rotate([45,0,0])cube([cut_width,cut_depth*sqrt(2),cut_depth*sqrt(2)],center=true);
+    translate([0,5.5,wall/2]) {
+      cube([13,24,wall+2],center=true);
+      translate([0,27.5/2,0])cylinder(h=wall+2,d=2,center=true);
+      translate([0,-27.5/2,0])cylinder(h=wall+2,d=2,center=true);
     }
   }
 }
 
 module rod() {
   difference() {
-    cylinder(d=rod_diameter,h=distance_to_coupling+coupling_length-servo_offset-0.01);
-    translate([0,0,4])cylinder(d=rod_diameter-2*parts_thickness,h=distance_to_coupling+coupling_length);
+    cylinder(d=rod_diameter,h=distance_to_coupling+coupling_length-servo_offset-bissl);
+    translate([0,0,4])cylinder(d=rod_diameter-2*wall,h=distance_to_coupling+coupling_length);
     hull(){translate([0,0,distance_to_coupling-servo_offset])rotate([90,0,0])cylinder(d=coupling_width,h=2+rod_diameter,center=true);
     translate([0,0,distance_to_coupling+coupling_length+2-servo_offset])rotate([90,0,0])cylinder(d=coupling_width,h=2+rod_diameter,center=true);}
     translate([0,0,distance_to_coupling+coupling_length/2-servo_offset])four_quarters(rod_diameter+2,coupling_length/2);
