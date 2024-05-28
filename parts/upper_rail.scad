@@ -17,7 +17,7 @@
 
 $fs=0.5/1;
 $fa=1/1;
-part = "Valve_bracket"; // [Valve_bracket, Main_pump_bracket, Filter_pump_type1_bracket, Filter_pump_type2_bracket, Filter_attachment, Battery_holder]
+part = "Valve_bracket"; // [Valve_bracket, Main_pump_bracket, Filter_pump_type1_bracket, Filter_pump_type2_bracket, Filter_attachment]
 /* [Rail general parameters] */
 rod_diameter=8;
 rods_distance=62;
@@ -36,10 +36,6 @@ filter_wall=6;
 offset_v=20;
 offset_h=12;
 hole=9;
-
-battery_h=78;
-battery_w=78;
-battery_d=23;
 
 module hole(mount_hole=4.5) { //hole for clamping with threaded screw
   cylinder(d=mount_hole,h=100,center=true);
@@ -124,20 +120,6 @@ module filter_attachment() {
   }
 }
 
-module battery_holder() {
-  difference() {
-    union() {
-      cube([battery_w+part_thickness,battery_d+part_thickness,battery_h+part_thickness/2]);
-      translate([-part_width,0,0])cube([battery_w+part_thickness+2*part_width,part_thickness/2,battery_h+part_thickness/2]);
-    }
-    translate([part_thickness/2,part_thickness/2,part_thickness/2+0.01]) cube([battery_w,battery_d,battery_h]);
-    for (tr=[[-part_width/2,-0.01,part_width/2],
-             [part_thickness+part_width/2+battery_w,-0.01,part_width/2],
-             ])
-      translate(tr)rotate([-90,0,0]) cylinder(d=mount_hole,h=part_thickness/2+0.02);
-  }
-}
-
 module valve_bracket() {
   sq=rod_diameter+2*part_thickness;
   difference() {
@@ -162,4 +144,3 @@ if (part=="Main_pump_bracket") main_pump_bracket();
 if (part=="Filter_pump_type1_bracket") filterpump(1);
 if (part=="Filter_pump_type2_bracket") filterpump(2);
 if (part=="Filter_attachment") filter_attachment();
-if (part=="Battery_holder") battery_holder();
