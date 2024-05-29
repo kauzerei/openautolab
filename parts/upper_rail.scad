@@ -30,7 +30,6 @@ part_width=2*mount_hole+part_thickness;
 tightening_gap=1;
 pump_offset=5;
 mount_hole_distance=38;
-pcb_holes_distance=67.32;
 
 /* [Filter attachment options] */
 filter_wall=6;

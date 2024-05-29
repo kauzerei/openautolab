@@ -25,25 +25,22 @@ To save the rendered part to an .stl file press F7.
  - ***rod diameter*** outer diameter of the threaded rod.
  - ***rods distance*** distance between rods of the upper rail.
 
-### Brackets
+### Mounts parameters
 
- - ***part width*** width of the holders. Twice the size of the hole is a good start.
- - ***part thickness*** thickness of the brackets. About twice as thick as your comfortable wall thickness for not loaded parts.
- - ***air gap*** a gap between two halves of the mount. Gives a room for tightening them together on a rail and for printing two halves as one part without having them stuck together.
+ - ***mount hole*** diameter of the screws that hold the valves, pumps, etc.
+ - ***part thickness*** minimal thickness of the load-bearing parts. About twice as thick as your comfortable wall thickness for not loaded parts.
+ - ***tightening gap*** a gap between two halves of the mount. Gives a room for tightening them together on a rail and for printing two halves as one part without having them stuck together.
  - ***valve offset*** used to place the valves at certain distance from the plane of upper rail, for example to free some space for a decorative panel that covers parts of the machine.
  - ***pump offset*** how far mounting points of the pump are lifted above the surface of the brackets
- - ***mount hole*** diameter of the screws that hold the valves.
  - ***mount hole distance*** distance between screws that hold the valve.
  - ***pcb angle*** angle in degrees at which electronic enclosure is inclined relative to vertical
- - ***pcb holes distance*** vertical distance between pcb mounting points
- - ***extra_room*** how far is mounting hole of the electronic enclosure from
 
 ### Filter attachment
 
- - ***filter wall*** size of air gap of the holding clip.
- - ***offset v*** vertical offset, distance from mounting plane of the floating switch to the top of the filter.
- - ***offset h*** horizontal offset, distance from the axis of the floating switch to the inner filter wall.
- - ***hole*** diameter of the mounting diameter of the floating switch.
+ - ***filter wall*** size of the negative space of the holding clip for the filter wall.
+ - ***offset v*** vertical offset, distance from mounting plane of the attachment to the top of the filter.
+ - ***offset h*** horizontal offset, distance from the axis of the attachment to the inner filter wall.
+ - ***hole*** diameter of the mounting diameter of the floating switch or the hose.
 
 ### Advanced upper rail modification
 
@@ -53,12 +50,12 @@ If you have some special pump you can edit ***pump_shape*** function and add you
 ## Lower rail
 
  - ***cut view*** just a visualization tool, only half of the part is rendered, so you can see the inner structure inside of OpenSCAD interface.
- - ***rod diameter*** diameter of the threaded rod
  - ***override dbr*** force specific distance between rods (DBR) for the lower rail.
  Optimal DBR is calculated to minimize height of magnetic holder, however depending on magnet size and machine depth it may be impossible to fit the rail of optimal size inside the frame.
+ - ***rod diameter*** diameter of the threaded rod
  - ***distance between rods*** if the previous parameter is set to true, sets the DBR for the lower rail.
  Make sure it is smaller, than the value returned by the frame.scad.
- - ***air gap*** affects several parts.
+ - ***tolerance*** affects several parts.
  It's distance between the walls of parts that are meant to go one inside another with some slack.
  Provides extra space for magnets, makes placing the vessels and the tank in their holders easier and allows helping tools for threading and tapping not to be stuck on the parts they help holding.
 
@@ -66,7 +63,7 @@ If you have some special pump you can edit ***pump_shape*** function and add you
 
  - ***light trap*** if the parameter is set, the hose interface is generated with extra bends inside, so the light can not pass through.
  Check for the developing tank interface, uncheck for all others.
- - ***main part holes*** diameter of inner tube of the interface.
+ - ***interface holes*** diameter of inner tube of the interface.
  Set this to inner diameter of the thread you want to cut in this part.
  - ***seal length*** length of the threaded part.
  - ***hor wall*** minimal thickness of a horizontal wall between inner tube and bottom in tank interface.
@@ -84,7 +81,7 @@ They do not affect the finer hose-mounting threads, which you need to cut with a
 It is recommended to turn off layer expansion correction in the slicer and fine tune the tolerances here in the model itself.
 The reason is to have guaranteed minimal wall thickness.
 If the tolerance in the model is too small and you make it larger while slicing, the wall between the valley of the inner thread and the opposite wall of the part can become too thin for printing.
-To better understand the thickness of walls and tolerances between all of the parts, render the part called "testfit" with the "cut view" option on, it will provide a visual clue.
+To better understand the thickness of walls and tolerances between all of the parts, render the part called "test fit" with the "cut view" option on, it will provide a visual clue.
 
  - ***thread pitch*** is the distance between two neighboring coils of the thread.
  It affects also how much horizontal space the thread takes, 3mm seems to be a good compromise between ease of print and material usage.
@@ -120,6 +117,7 @@ To better understand the thickness of walls and tolerances between all of the pa
  - ***rod mount*** true for mounting points for threaded rods, false for mounting onto weight gauge.
  The tank does not need rail mounts since it is mounted on a weight gauge.
  - ***nut width*** space for tightening the holder on the rail, largest width of the nut (from edge to edge).
+ - ***cutout*** size of the slot in the cover that helps screwing
 
 ### Weight gauge
 
@@ -145,30 +143,32 @@ To better understand the thickness of walls and tolerances between all of the pa
 
 ## Frame
 
-OpenAutoLab is designed in such a way that it could be partially submerged into container with water, which is held at a particular temperature.
-If you want to use cheap off-the-shelf container, rectangular plant container is a good option.
+OpenAutoLab is designed in such a way that it could be partially submerged into a heated water, which is held at a particular temperature.
+Rectangular plant container of sufficient size is a good option.
 
  - ***rod diameter*** diameter of threaded rod used to build the frame. M8 seems reasonable, but you can try thinner or thicker rods.
- - ***nut width*** is a largest width (from edge to edge) of the nut for the chosen rod diameter from with some tolerance.
- - ***nut height*** is a height of the nut for the chosen rod diameter with some tolerance.
- - ***air gap*** is here mostly for hole shrinkage compensation.
+ - ***nut width*** is a largest width (from edge to edge) of the nut for the smaller screws that clamp the horizontal and vertical rods together (T-mounts).
+ - ***mount_hole*** hole for the clamping screw
+ - ***thin_wall*** minimal distance from the edge of the nut to the edge of the part
+ - ***thick_wall*** minimal thickness of the load-bearing parts
  - ***tightening gap*** width of cut between halves of mounts, the more the tighter the halves can be pressed together.
+ - ***tolerance*** is here mostly for hole shrinkage compensation.
 
 ## Enclosure
 
 Careful with last three parameters, it is supposed, that mounting rectangle and viewing window share a center.
 If one is offset, make the slot bigger.
 
- - ***tolerance*** tolerances for the board itself, for halves of the panel, for the buttons.
+ - ***tolerance*** tolerances for the board itself, for halves of the enclosure, for the buttons.
  - ***pcb width*** with of the main board
  - ***pcb height*** height of the main board
  - ***pcb offset*** distance from the top of the board (component side) to the front side of the front panel.
- There should be enough clearance for both the components soldered on the board and for external ones: display and switch.
+ There should be enough clearance for both the components soldered on the board and for external ones: display and switches.
  - ***pcb thickness*** thickness of the board material itself
  - ***solder thickness*** distance from the bottom surface of the board to the furthest point on that side.
  Space occupied by soldered connections.
- - ***pcb mount holes*** diameter of mounting points of the PCB
- - ***walls*** wall thickness.
+ - ***mount hole*** diameter of the clamping screws and the mounting holes of the PCB
+ - ***wall*** wall thickness.
  - ***buttons outer*** diameter of the buttons as seen from the outside.
  - ***buttons inner*** outer diameter of inner structure holding those buttons.
  Twice the inner diameter is a good start.
@@ -179,6 +179,7 @@ If one is offset, make the slot bigger.
  - ***screen mount*** vertical and horizontal distance between the mounting holes of the screen.
  - ***screen mount holes*** diameter of the screws that hold the screen.
  - ***screen rect*** the size of the protruding part of the screen, for which a rectangular slot should be cut on the front panel.
+ - ***battery h, battery w, battery d*** outer measurements of the battery holder so it can be enclosed
 
 ### Advanced enclosure modification
 
@@ -189,12 +190,8 @@ However if you understand how to modify the board in such a way it does not fit 
 
  - ***pcb_holes_pos*** array with coordinates of centers of the drilled holes on the PCB used for mounting it.
  - ***buttons_pos*** array with coordinates of the centers of buttons.
- - ***connectors_top*** array with coordinates of the centers of screw terminals.
- This model is made for connectors along the upper side of the board.
- - ***connectors_left*** array with coordinates of the necessary holes on the left side of the enclosure
- - ***connectors_right*** array with coordinates of the necessary holes on the right side of the enclosure
+ - ***connectors*** array with coordinates and sizes of the holes on the sides of the enclosure for the wires to go through
  - ***switches_pos*** array with coordinates of the centers of switches.
- There's only one switch currently, but there may be more in future.
 
 ## Agitation
 

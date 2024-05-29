@@ -24,9 +24,9 @@ bissl=1/100;
 part="X-mount";// [X-mount, T-mount, Small_bracket, OPTIONAL_nut_spinner]
 rod_diameter=8;
 nut_width=9;
+mount_hole=4.5;
 thin_wall=2;
 thick_wall=4;
-mount_hole=4.5;
 tightening_gap=2;
 tolerance=0.5;
 

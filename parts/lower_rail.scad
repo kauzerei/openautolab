@@ -31,7 +31,7 @@ tolerance=0.5;
 
 /* [Interface options] */
 light_trap=false;
-main_part_holes=7;
+interface_holes=7;
 seal_length=8;
 hor_wall=3;
 offset=17;
@@ -84,8 +84,8 @@ rounded_handle=false;
 degre=onside?90:0;
 shape=(adapter_shape=="Round")?64:(adapter_shape=="Square")?4:6;
 coeff=  (adapter_shape == "Round") ? 1:(adapter_shape == "Square") ? 1.42:1.16;
-shiftx=light_trap?-(max(offset+(magnet_diameter+2*0.541*thread_pitch)/2,2.5*main_part_holes+seal_length)):-(seal_length+main_part_holes/2);
-shiftz=light_trap?coeff*(hose_outer_diameter+4)/2:seal_length+main_part_holes/2;
+shiftx=light_trap?-(max(offset+(magnet_diameter+2*0.541*thread_pitch)/2,2.5*interface_holes+seal_length)):-(seal_length+interface_holes/2);
+shiftz=light_trap?coeff*(hose_outer_diameter+4)/2:seal_length+interface_holes/2;
 shift=onside?shiftz:shiftx;
 tapping_tool_length=leader_length+tap_length+holding_depth;
 height_to_hold=magnet_height+thread_pitch*2+wall_between_magnets;
@@ -117,7 +117,7 @@ module hollow_screw() {
 }
 
 module filter_support() {
-  sl=-holeh+hor_wall+magnet_height+wall_between_magnets+height_to_hold+seal_length+main_part_holes/2+coeff*(hose_outer_diameter+4)/2;
+  sl=-holeh+hor_wall+magnet_height+wall_between_magnets+height_to_hold+seal_length+interface_holes/2+coeff*(hose_outer_diameter+4)/2;
   difference() {
     cube([dbr+nut_width,nut_width/2,sl+nut_width/2]);
     hull() {
@@ -134,30 +134,30 @@ module filter_support() {
 module interface(nothread=false){
   if (light_trap==false) difference() {
     union() {
-      cylinder(d=max(main_part_holes+2*seal_length,cyl1),h=seal_length+main_part_holes/2+coeff*(hose_outer_diameter+4)/2);
-      translate([0,-hose_outer_diameter/2-2,0]) cube([max(seal_length+main_part_holes/2,cyl1/2), hose_outer_diameter+4,seal_length+main_part_holes/2+coeff*(hose_outer_diameter+4)/2]);
-      translate([0,0,seal_length+main_part_holes/2+coeff*(hose_outer_diameter+4)/2]) ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);
-      if(nothread) translate([0,0,seal_length+main_part_holes/2+hose_outer_diameter/2+2]) cylinder(d=thread1+bissl,h=thread_pitch*2);
+      cylinder(d=max(interface_holes+2*seal_length,cyl1),h=seal_length+interface_holes/2+coeff*(hose_outer_diameter+4)/2);
+      translate([0,-hose_outer_diameter/2-2,0]) cube([max(seal_length+interface_holes/2,cyl1/2), hose_outer_diameter+4,seal_length+interface_holes/2+coeff*(hose_outer_diameter+4)/2]);
+      translate([0,0,seal_length+interface_holes/2+coeff*(hose_outer_diameter+4)/2]) ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);
+      if(nothread) translate([0,0,seal_length+interface_holes/2+hose_outer_diameter/2+2]) cylinder(d=thread1+bissl,h=thread_pitch*2);
     }
-    translate([0,0,-1])cylinder(d=main_part_holes,h=seal_length+main_part_holes/2+1);
-    translate([0,0,seal_length+main_part_holes/2])rotate([0,90,0])cylinder(d=main_part_holes, h=max(cyl1/2,seal_length+main_part_holes/2)+1);
-    translate([0,0,seal_length+main_part_holes/2])intersection(){cylinder(d=main_part_holes, h=main_part_holes,center=true);rotate([0,90,0])cylinder(d=main_part_holes, h=main_part_holes,center=true);}
+    translate([0,0,-1])cylinder(d=interface_holes,h=seal_length+interface_holes/2+1);
+    translate([0,0,seal_length+interface_holes/2])rotate([0,90,0])cylinder(d=interface_holes, h=max(cyl1/2,seal_length+interface_holes/2)+1);
+    translate([0,0,seal_length+interface_holes/2])intersection(){cylinder(d=interface_holes, h=interface_holes,center=true);rotate([0,90,0])cylinder(d=interface_holes, h=interface_holes,center=true);}
   }
   else difference() {
     union() {
-      cylinder(d1=cyl1,d2=hose_outer_diameter+4,h=coeff*(hose_outer_diameter+4)/2+1.5*main_part_holes+seal_length+hor_wall);
-      translate([offset,0,0])cylinder(d1=0,d2=cyl1,h=coeff*(hose_outer_diameter+4)/2+1.5*main_part_holes+seal_length+hor_wall);
-      translate([0,-hose_outer_diameter/2-2,0]) cube([max(offset+cyl1/2,2.5*main_part_holes+seal_length),hose_outer_diameter+4,coeff*(hose_outer_diameter+4)/2+1.5*main_part_holes+seal_length+hor_wall]);
-      translate([offset,0,coeff*(hose_outer_diameter+4)/2+1.5*main_part_holes+seal_length+hor_wall]) ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);
-      if(nothread)translate([offset,0,coeff*(hose_outer_diameter+4)/2+1.5*main_part_holes+seal_length+hor_wall]) cylinder(d=thread1+bissl,h=thread_pitch*2);
+      cylinder(d1=cyl1,d2=hose_outer_diameter+4,h=coeff*(hose_outer_diameter+4)/2+1.5*interface_holes+seal_length+hor_wall);
+      translate([offset,0,0])cylinder(d1=0,d2=cyl1,h=coeff*(hose_outer_diameter+4)/2+1.5*interface_holes+seal_length+hor_wall);
+      translate([0,-hose_outer_diameter/2-2,0]) cube([max(offset+cyl1/2,2.5*interface_holes+seal_length),hose_outer_diameter+4,coeff*(hose_outer_diameter+4)/2+1.5*interface_holes+seal_length+hor_wall]);
+      translate([offset,0,coeff*(hose_outer_diameter+4)/2+1.5*interface_holes+seal_length+hor_wall]) ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);
+      if(nothread)translate([offset,0,coeff*(hose_outer_diameter+4)/2+1.5*interface_holes+seal_length+hor_wall]) cylinder(d=thread1+bissl,h=thread_pitch*2);
     }
-    translate([0,0,-1])cylinder(d=main_part_holes,h=coeff*(hose_outer_diameter+4)/2+main_part_holes+seal_length+1);
-    translate([0,0,coeff*(hose_outer_diameter+4)/2+main_part_holes+seal_length])rotate([0,90,0])cylinder(d=main_part_holes,h=2*main_part_holes);
-    translate([2*main_part_holes,0,coeff*(hose_outer_diameter+4)/2])cylinder(d=main_part_holes,h=main_part_holes+seal_length);
-    translate([2*main_part_holes,0,coeff*(hose_outer_diameter+4)/2])rotate([0,90,0])cylinder(d=main_part_holes,h=offset+magnet_diameter/2+0.541*thread_pitch+seal_length);
-    translate([0,0,coeff*(hose_outer_diameter+4)/2+main_part_holes+seal_length])intersection(){cylinder(d=main_part_holes, h=main_part_holes,center=true);rotate([0,90,0])cylinder(d=main_part_holes, h=main_part_holes,center=true);}
-    translate([2*main_part_holes,0,coeff*(hose_outer_diameter+4)/2+main_part_holes+seal_length])intersection(){cylinder(d=main_part_holes, h=main_part_holes,center=true);rotate([0,90,0])cylinder(d=main_part_holes, h=main_part_holes,center=true);}
-    translate([2*main_part_holes,0,coeff*(hose_outer_diameter+4)/2])intersection(){cylinder(d=main_part_holes, h=main_part_holes,center=true);rotate([0,90,0])cylinder(d=main_part_holes, h=main_part_holes,center=true);}
+    translate([0,0,-1])cylinder(d=interface_holes,h=coeff*(hose_outer_diameter+4)/2+interface_holes+seal_length+1);
+    translate([0,0,coeff*(hose_outer_diameter+4)/2+interface_holes+seal_length])rotate([0,90,0])cylinder(d=interface_holes,h=2*interface_holes);
+    translate([2*interface_holes,0,coeff*(hose_outer_diameter+4)/2])cylinder(d=interface_holes,h=interface_holes+seal_length);
+    translate([2*interface_holes,0,coeff*(hose_outer_diameter+4)/2])rotate([0,90,0])cylinder(d=interface_holes,h=offset+magnet_diameter/2+0.541*thread_pitch+seal_length);
+    translate([0,0,coeff*(hose_outer_diameter+4)/2+interface_holes+seal_length])intersection(){cylinder(d=interface_holes, h=interface_holes,center=true);rotate([0,90,0])cylinder(d=interface_holes, h=interface_holes,center=true);}
+    translate([2*interface_holes,0,coeff*(hose_outer_diameter+4)/2+interface_holes+seal_length])intersection(){cylinder(d=interface_holes, h=interface_holes,center=true);rotate([0,90,0])cylinder(d=interface_holes, h=interface_holes,center=true);}
+    translate([2*interface_holes,0,coeff*(hose_outer_diameter+4)/2])intersection(){cylinder(d=interface_holes, h=interface_holes,center=true);rotate([0,90,0])cylinder(d=interface_holes, h=interface_holes,center=true);}
   }
 }
 
