@@ -1,4 +1,21 @@
-//3d-printable 4x18650 holder with flexing contacts
+//3d-printable 4x18650 holder with flexing contacts on both sides
+//heavily inspired by https://www.thingiverse.com/thing:456900
+//but actually does not use any of its code or math.
+//
+// Copyright (c) 2024 Kauzerei <mailto:openautolab@kauzerei.de>
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 bissl = 1 / 100;
 $fn = 64 / 1;
@@ -7,9 +24,10 @@ wall = 1.6;
 contact_thickness = 1.6;
 contact_depth = 1.6;
 battery_d = 19;
-battery_l = 65;
+battery_l = 64.5;
 unit = (battery_d + wall) / 14;
 
+//single 2d arc defined by center line radius, width and orientation of start and end in degrees
 module arc(radius, thickness, start, end, $fn = $fn) {
   points = [
     for (a = [start:360 / $fn:end])[(radius + wall / 2) * sin(a),
@@ -20,13 +38,15 @@ module arc(radius, thickness, start, end, $fn = $fn) {
   polygon(points);
 }
 
-module arcs(params) {
+//arc() wrapper that takes an array of the following parameters:
+//[x coordinate of circle center, y coordinate, center line radius, width, start and end in degrees]
+module arcs(params) { 
   for (param = params)
     translate([ param[0], param[1] ])
         arc(param[2], param[3], param[4], param[5]);
 }
 
-module spring_flat() {
+module spring_flat() { //2d shape of the spring
   translate([ -wall / 2, wall / 2 ]) arcs([
     [ -3 * unit, 3 * unit, 3 * unit, wall, -180, 0 ],
     [ -3 * unit, 11 * unit, 3 * unit, wall, -180, 0 ],
@@ -43,7 +63,7 @@ module spring_flat() {
       square([ 3 * unit + wall / 2, wall ]);
 }
 
-module spring() {
+module spring() { //3d shape of the spring with holes and a bump for the contact
   contact_width = battery_d * 2 / 7;
   difference() {
     linear_extrude(height = battery_d + wall, convexity = 8) spring_flat();
@@ -65,7 +85,7 @@ module spring() {
           ]);
 }
 
-module holder() {
+module holder() { //single battery holder with two springs
   difference() {
     union() {
       cube([ battery_l + 2 * contact_depth, wall, battery_d + wall ]);
@@ -83,7 +103,7 @@ module holder() {
   spring();
 }
 
-module holders(n) {
+module holders(n) { //several single holders stuck together sharing walls
   for (i = [0:n - 1])
     translate([ 0, i * (battery_d + wall), 0 ]) holder();
 }

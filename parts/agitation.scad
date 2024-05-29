@@ -34,7 +34,7 @@ distance_to_coupling=74;
 coupling_length=20;
 coupling_width=3;
 
-module quarter_rotation(width=10,height=10) {
+module quarter_rotation(width=10,height=10) { //a quarter of a pointy part of the rod
   intersection() {
     linear_extrude(height = height, convexity = 10, twist = 90, slices = 20, $fn = 16) {
       intersection() {
@@ -46,12 +46,8 @@ module quarter_rotation(width=10,height=10) {
   }
 }
 
-module four_quarters(width,height){
-  quarter_rotation(width,height);
-  mirror([1,0,0])quarter_rotation(width,height);
-  mirror([0,1,0]){
-  quarter_rotation(width,height);
-  mirror([1,0,0])quarter_rotation(width,height);}
+module four_quarters(width,height){ //pointy part of rod that helps coupling with centre column
+  for (i=[0,1]) mirror([0,i,0]) for (j=[0,1]) mirror([j,0,0]) quarter_rotation(width,height);
 }
 
 module cap() {

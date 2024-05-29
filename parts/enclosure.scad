@@ -91,7 +91,7 @@ module front() {
   }
 }
 
-module box() {
+module back() {
   difference() {
     translate([-tolerance-wall,-tolerance-wall,0])
     cube([pcb_width+2*wall+2*tolerance,pcb_height+2*wall+2*tolerance,pcb_offset+2*pcb_thickness+2*solder_thickness+2*wall]);
@@ -132,6 +132,6 @@ module battery_enclosure() {
 }
 
 if (part=="Front") front();
-if (part=="Back") rotate([180,0,0])box();
+if (part=="Back") rotate([180,0,0])back();
 if (part=="Buttons") buttons();
 if (part=="Battery enclosure") battery_enclosure();

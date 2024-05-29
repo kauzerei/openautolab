@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>. 
 
-$fs=0.5/1;
+$fs=1/2;
 $fa=1/1;
 bissl=1/100;
 part="X-mount";// [X-mount, T-mount, Small_bracket, OPTIONAL_nut_spinner]

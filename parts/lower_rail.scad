@@ -87,7 +87,7 @@ coeff=  (adapter_shape == "Round") ? 1:(adapter_shape == "Square") ? 1.42:1.16;
 shiftx=light_trap?-(max(offset+(magnet_diameter+2*0.541*thread_pitch)/2,2.5*main_part_holes+seal_length)):-(seal_length+main_part_holes/2);
 shiftz=light_trap?coeff*(hose_outer_diameter+4)/2:seal_length+main_part_holes/2;
 shift=onside?shiftz:shiftx;
-instrument_length=leader_length+tap_length+holding_depth;
+tapping_tool_length=leader_length+tap_length+holding_depth;
 height_to_hold=magnet_height+thread_pitch*2+wall_between_magnets;
 
 //calculating threads and cylinder diameters that fit nicely
@@ -116,7 +116,7 @@ module hollow_screw() {
   }
 }
 
-module supports() {
+module filter_support() {
   sl=-holeh+hor_wall+magnet_height+wall_between_magnets+height_to_hold+seal_length+main_part_holes/2+coeff*(hose_outer_diameter+4)/2;
   difference() {
     cube([dbr+nut_width,nut_width/2,sl+nut_width/2]);
@@ -131,7 +131,7 @@ module supports() {
   }
 }
 
-module main_body(nothread=false){
+module interface(nothread=false){
   if (light_trap==false) difference() {
     union() {
       cylinder(d=max(main_part_holes+2*seal_length,cyl1),h=seal_length+main_part_holes/2+coeff*(hose_outer_diameter+4)/2);
@@ -161,7 +161,7 @@ module main_body(nothread=false){
   }
 }
 
-module main_magnet_cover() {
+module interface_cover() {
   difference() {
     cylinder(d=cyl1,h=magnet_height+thread_pitch*2+wall_between_magnets);
     translate([0,0,wall_between_magnets]){ScrewThread(outer_diam=thread2,pitch=thread_pitch,height=magnet_height+thread_pitch*2+bissl);}
@@ -187,7 +187,7 @@ module hose_sleeve() {
   }
 }
 
-module holder_magnet_cover() {
+module magnetic_holder_coverover() {
   difference() {
     ScrewThread(outer_diam=thread3,pitch=thread_pitch,height=height_to_hold+wall_between_magnets,convexity=4);
     translate([0,0,wall_between_magnets])cylinder(d=cyl2,h=height_to_hold+bissl);
@@ -222,7 +222,7 @@ module magnetic_holder() {
   }
 }
 
-module wg_holder() {
+module wg_bracket() {
   wgh_h=wg_ms_hole_distance+wg_width;
   difference() {
     union() {
@@ -244,28 +244,28 @@ module wg_holder() {
   }
 }
 
-module instrument() {
+module tapping_tool() {
   difference() {
     union() {
       handle();
-      translate([-shift,0,0])linear_extrude(instrument_length,convexity=2)minkowski(){
-        projection(cut=true)rotate([0,degre,0])translate([shiftx,0,0])main_body();
+      translate([-shift,0,0])linear_extrude(tapping_tool_length,convexity=2)minkowski(){
+        projection(cut=true)rotate([0,degre,0])translate([shiftx,0,0])interface();
         circle(tolerance+holding_depth);
       }
     }
-    translate([-shift,0,instrument_length-holding_depth])minkowski(convexity=2){
+    translate([-shift,0,tapping_tool_length-holding_depth])minkowski(convexity=2){
       cube(2*tolerance,center=true);
       intersection() {
-        rotate([0,degre,0])translate([shiftx,0,0])main_body(nothread=true);
+        rotate([0,degre,0])translate([shiftx,0,0])interface(nothread=true);
         cylinder(d=500,h=holding_depth+1);
       }
     }
     translate([0,0,-1])cylinder(d=leader_diameter,h=leader_length+2);
-    translate([0,0,leader_length])cylinder(d=tap_diameter,h=instrument_length);
+    translate([0,0,leader_length])cylinder(d=tap_diameter,h=tapping_tool_length);
   }
 }
 
-module dieholder() {
+module threading_tool() {
   difference() {
     union() {
       translate([0,0,handle_thickness/2])cube([handle_thickness,handle_length,handle_thickness],center=true);
@@ -318,24 +318,24 @@ module wrench() {
   }
 }
 difference() {
-if (part=="Interface") main_body();
-if (part=="Interface_cover") main_magnet_cover();
+if (part=="Interface") interface();
+if (part=="Interface_cover") interface_cover();
 if (part=="Magnetic_holder") magnetic_holder();
-if (part=="Magnetic_holder_cover") holder_magnet_cover();
-if (part=="Weight_gauge_bracket") rotate([0,90,0])wg_holder();
+if (part=="Magnetic_holder_cover") magnetic_holder_coverover();
+if (part=="Weight_gauge_bracket") wg_bracket();
 if (part=="Hose_adapter") hose_adapter();
 if (part=="Hose_sleeve") hose_sleeve();
 if (part=="Hollow_screw") hollow_screw();
-if (part=="Filter_support") supports();
-if (part=="OPTIONAL_tapping_tool") instrument();
-if (part=="OPTIONAL_threading_tool") dieholder();
+if (part=="Filter_support") rotate([90,0,0])filter_support();
+if (part=="OPTIONAL_tapping_tool") tapping_tool();
+if (part=="OPTIONAL_threading_tool") threading_tool();
 if (part=="OPTIONAL_wrench") wrench();
 if (part=="TEST_fit") {
   magnetic_holder();
   translate([0,0,magnet_height+hor_wall+0.1]) {
-    holder_magnet_cover();
+    magnetic_holder_coverover();
     translate([0,0,wall_between_magnets+0.1]) {
-      main_magnet_cover();
+      interface_cover();
       translate([0,0,wall_between_magnets+magnet_height])rotate([0,0,360*magnet_height/thread_pitch])difference() {
         ScrewThread(outer_diam=thread1,pitch=thread_pitch,height=thread_pitch*2);
         cylinder(d=4,h=2*thread_pitch);

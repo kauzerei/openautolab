@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-$fs=0.5/1;
+$fs=1/2;
 $fa=1/1;
 bissl=1/100;
 part = "Valve_bracket"; // [Valve_bracket, Main_pump_bracket, Filter_pump_type1_bracket, Filter_pump_type2_bracket, Filter_attachment]
