@@ -26,12 +26,12 @@ If the parts listed are unavailable, feel free to modify the PCB to fit the comp
 
 ### Electromechanics
 
-- 6x normally-closed 12V valves. See the picture as a reference, those are cheap and good enough. Number of valves depends on what process you want to run. 1 valve for water, 1 valve for waste, plus 1 valve for each chemical. 6 is the maximum number supported by the board and it's nice to have all 6 connected even for simplified 3-bath processes: it's nice to have Fotoflo solution in the fourth vessel  
-- ZC-A210 or similar 12V gear pump, capable of running in two directions at a speed of about 2l/min for prolonged times.
-- Weight cell and HX711 ADC for it.
+- 6x normally-closed 12V valves. They are somewhat tricky to buy, as they have no proper name. Try including "6.2mm" which is outer diameter of connecting piece into your search query. See the picture as a reference, try to find the valves that look th same. Number of valves depends on what process you want to run. 1 valve for water, 1 valve for waste, plus 1 valve for each chemical. 8 is the maximum number supported by the current board
+- ZC-A210 or similar 12V gear pump, capable of running in two directions at a speed of about 2l/min for prolonged times
+- Weight cell and HX711 ADC for it
 - MG90 servo
 - Brita filter for water
-- Any pump that can work for prolonged periods without overheating
+- Any pump that can work for prolonged periods without overheating. See picture for reference, no part name just like with valves
 - Float switch
 - 6x 12v valves
 ![reference picturs of pumps and valves to scale]

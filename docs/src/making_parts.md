@@ -52,7 +52,7 @@ Default values are high enough that the threads move good even with large nozzle
 I suggest 0.8mm nozzle and 0.2mm layer.
 The threads do not need supports, the holder with rectangular mount does: so let the supports be generated for angles larger than inclination of thread walls, threshold of 70° will do.
 
-The parts should be printed with the wall, top and bottom thickness of a couple millimeters to allow thread cutting in interfaces and keeping the part water-tight, and to make sure that printed threads are solid. Or just print with 100% infill to be sure.
+The parts should be printed with the wall, top and bottom thickness of a couple millimeters to allow thread cutting in interfaces and keeping the part water-tight, and to make sure that printed threads are solid.
 
 [TODO tapping thread in interface]
 
@@ -77,7 +77,7 @@ The trickiest part is the hollow screw, as it is relatively highly loaded for it
 To make sure it's strong enough you may try several strategies:
 
  - print it sideways (supports needed and it may be tricky to cut thread on them afterwards)
- - to keep layers thin, speed low and temperature high, without cooling (make sure that layers are squished together and have enough time and temperature to fuse)
+ - to keep layers thin, speed low and temperature high, without cooling (this make sure that layers are squished together and have enough time and temperature to fuse)
  - remelt in powder salt (tricky to fine tune the temperature and time, but may be worth it)
 
 However I recommend buying M8 plastic screws, drilling 4mm holes in them and shortening their heads, that may be way easier.
@@ -91,7 +91,7 @@ If you struggle with threading there are two helping tools for holding a die and
 [TODO filing the adapter with round file]
 
 File the end of the thread of the adapter where the rubber ring goes with a round file, that decreases the chances of water leaks.
-As for the hose sleeve, there are some thin walls on top, usually they are not a problem if you print several at once, but if you are having troubles printing only one, set some minimal layer time and use print cooling for this part.
+As for the hose sleeve, there are some thin walls on top, usually they are not a problem if you print several at once, but if you are having troubles printing only one, set some minimal layer time and use lots of cooling for this part.
 
 ## Frame: T-mounts and X-mounts
 
