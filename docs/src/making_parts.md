@@ -54,14 +54,14 @@ The threads do not need supports, the holder with rectangular mount does: so let
 
 The parts should be printed with the wall, top and bottom thickness of a couple millimeters to allow thread cutting in interfaces and keeping the part water-tight, and to make sure that printed threads are solid.
 
-[TODO tapping thread in interface]
+![tapping thread in interface](img/IMG_3513.jpg)
 
 Two threads need to be tapped in each opening of the interfaces.
 If it is hard to keep the tap aligned with the hole direction, you can print some helping tools that will guide the tap.
 There are 4 of them, for the tank interface and for vessel interfaces, for each of two threads on them.
 If you print with PLA, avoid cutting threads too fast, it is **really** easy to overheat the plastic with the friction alone and ruin the thread, one half-turn every 2 seconds is about the optimal speed.
 
-[TODO chamfer on holes]
+![chamfer on holes](img/IMG_3518.jpg)
 
 To ensure that bumpy 3d-printed surface does not lead to leaks, chamfer all of the threaded holes with chamfer drill or conical abrasive stone, so that the rubber ring is pressed against smooth inclined surface.
 
@@ -83,12 +83,12 @@ To make sure it's strong enough you may try several strategies:
 However I recommend buying M8 plastic screws, drilling 4mm holes in them and shortening their heads, that may be way easier.
 Modified nylon screws is what I use personally and what you can see in those build instructions.
 
-[TODO cutting outer thread]
+![cutting outer thread](img/IMG_3515.jpg)
 
 For the hollow screw and adapter: after printing, drill the inner hole to 4mm and thread the cylindrical part with an M8 die.
 If you struggle with threading there are two helping tools for holding a die and keeping the screw straight.
 
-[TODO filing the adapter with round file]
+![filing the adapter with round file](img/IMG_3498.jpg)
 
 File the end of the thread of the adapter where the rubber ring goes with a round file, that decreases the chances of water leaks.
 As for the hose sleeve, there are some thin walls on top, usually they are not a problem if you print several at once, but if you are having troubles printing only one, set some minimal layer time and use lots of cooling for this part.
@@ -152,7 +152,7 @@ The part is loaded with a tiny 0.25 N·m servo, which rotates the film reel, so 
 If you intend to use the machine with heated water bath, the force gauge should be water-tight.
 There is an easy way of waterproofing the force gauge using silicone sealant and silicone tubing.
 
-[TODO sealing the force gauge]
+![sealing the force gauge](img/IMG_3585.jpg)
 
 Put the four wires of the force gauge into thin silicone hose (ID about 2mm), apply some amount of sealant directly to the wires where they meet the gauge, about 30mm is enough, so that the wires adhere to the hose when you slide it all the way towards the force gauge.
 Apply sealant on top of the tube, closing any exposed parts of the gauge completely and everything together.
