@@ -39,7 +39,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo add-apt-repository --yes ppa:kicad/kicad-7.0-releases
+          sudo add-apt-repository --yes ppa:kicad/kicad-8.0-releases
           sudo apt update
           sudo apt install -y --install-recommends kicad
           sudo apt-get install -y zip
