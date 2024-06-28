@@ -34,8 +34,7 @@ To save the rendered part to an .stl file press F7.
  - ***valve offset*** used to place the valves at certain distance from the plane of upper rail, for example to free some space for a decorative panel that covers parts of the machine.
  - ***pump offset*** how far mounting points of the pump are lifted above the surface of the brackets
  - ***mount hole distance*** distance between screws that hold the valve.
- - ***pcb angle*** angle in degrees at which electronic enclosure is inclined relative to vertical
-
+ 
 ### Filter attachment
 
  - ***filter wall*** size of the negative space of the holding clip for the filter wall.

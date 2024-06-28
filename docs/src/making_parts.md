@@ -98,10 +98,13 @@ If you struggle with threading there are two helping tools for holding a die and
 File the end of the thread of the adapter where the rubber ring goes with a round file, that decreases the chances of water leaks.
 As for the hose sleeve, there are some thin walls on top, usually they are not a problem if you print several at once, but if you are having troubles printing only one, set some minimal layer time and try using more cooling for this part.
 
-## Frame: T-mounts and X-mounts
+## Frame: T-mounts, X-mounts, and small brackets
 
 They are heavily loaded, but their dimensions do not need to be precise.
 You can print the parts with 0.8mm nozzle, 0.5mm layer height and up to 100% infill.
+Thin single layer sacrificial walls are here on purpose, the complicated holes are printed better without the need of supports.
+Drill them or just push through with the screw.
+Heat up the nuts before pressing them inside hexagonal holes to avoid cracking.
 
 ## Optional tools: Tapping tool, threading tool, wrench
 
