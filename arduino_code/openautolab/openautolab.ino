@@ -29,7 +29,7 @@ const int valves[]={7,6,5,A0,8,9,10,11}; //array of valves
 const byte servo=4; //servo pin
 const byte scaleclk=2; //pins of
 const byte scaledat=3; //scale
-const byte buzzer=13; //buzzer pin
+const byte buzzer=11; //buzzer pin
 const byte displayclk=A4; //pins of
 const byte displaydio=A5; //display
 const byte button1=A3; //buttons
@@ -56,6 +56,7 @@ long offset;
 
 //global variables, which store values during work
 byte k=0; //main menu state machine state index
+//byte k=94;
 unsigned long st_pr; // start of development time, to display for reference
 unsigned long st_st; // start of intermediate stage, to calculate when to pump out chemical
 unsigned long st_ag; // start of agitation, to calculate agitation cycles
@@ -810,77 +811,20 @@ void loop() {
     k=0;
     break;
 
-    /*case 90:
-    while (true) {
-      if (digitalRead(button1)==LOW) digitalWrite(valve2,HIGH);
-      else digitalWrite(valve2,LOW);
-      if (digitalRead(button2)==LOW) digitalWrite(motorminus,HIGH);
-      else digitalWrite(motorminus,LOW);
-      if (digitalRead(button3)==LOW) digitalWrite(motorplus,HIGH);
-      else digitalWrite(motorplus,LOW);
-    }
-    case 92:
-    while (true) {
-      digitalWrite(valve1,HIGH);
-      delay(200);
-      digitalWrite(valve1,LOW);
-      delay(200);
-      digitalWrite(valve2,HIGH);
-      delay(200);
-      digitalWrite(valve2,LOW);
-      delay(200);
-      digitalWrite(valve3,HIGH);
-      delay(200);
-      digitalWrite(valve3,LOW);
-      delay(200);
-      digitalWrite(valve4,HIGH);
-      delay(200);
-      digitalWrite(valve4,LOW);
-      delay(200);
-      digitalWrite(valve5,HIGH);
-      delay(200);
-      digitalWrite(valve5,LOW);
-      delay(200);
-      digitalWrite(valve6,HIGH);
-      delay(200);
-      digitalWrite(valve6,LOW);
-      delay(200);
-    }
-
     case 93:
-    while (true) {
-      int del=500;
-      digitalWrite(valve1,HIGH);
-      delay(del);
-      digitalWrite(valve1,LOW);
-      delay(del);
-      digitalWrite(valve2,HIGH);
-      delay(del);
-      digitalWrite(valve2,LOW);
-      delay(del);
-      digitalWrite(valve3,HIGH);
-      delay(del);
-      digitalWrite(valve3,LOW);
-      delay(del);
-      digitalWrite(valve4,HIGH);
-      delay(del);
-      digitalWrite(valve4,LOW);
-      delay(del);
-      digitalWrite(valve5,HIGH);
-      delay(del);
-      digitalWrite(valve5,LOW);
-      delay(del);
-      digitalWrite(valve6,HIGH);
-      delay(del);
-      digitalWrite(valve6,LOW);
-      delay(del);
-    }
+    while (true)
+   { digitalWrite(valves[0],HIGH);
+    delay(1000);
+    digitalWrite(valves[0],LOW);
+    delay(1000);
+  }
+  
     case 94:
     while (true) {
       int del=200;
-      const int array[]={valve1,valve2,valve3,valve4,valve5,valve6};
-      for (int valve:array) {
-        for (int index=0;index<10;index++) {
+//      const int array[]={valve1,valve2,valve3,valve4,valve5,valve6};
+      for (int valve:valves) {
+        for (int index=0;index<1;index++) {
           digitalWrite(valve,HIGH);
           delay(del);
           digitalWrite(valve,LOW);
@@ -888,7 +832,7 @@ void loop() {
         }
       }
     }
-    */
+    
     /*
     case 95:
     while (true) {

@@ -61,9 +61,9 @@ screen_mount=[93,55];
 screen_mount_holes=3;
 screen_rect=[98.5,41];
 
-battery_h=78;
-battery_w=78;
-battery_d=23;
+battery_h=90;
+battery_w=85;
+battery_d=22;
 
 module front() {
   difference() {
@@ -120,14 +120,14 @@ module battery_enclosure() {
   part_thickness=wall;
   difference() {
     union() {
-      cube([battery_w+part_thickness,battery_d+part_thickness,battery_h+part_thickness/2]);
-      translate([-part_width,0,0])cube([battery_w+part_thickness+2*part_width,part_thickness/2,battery_h+part_thickness/2]);
+      cube([battery_w+2*wall,battery_d+2*wall,battery_h+wall]);
+      translate([-part_width,0,0])cube([battery_w+2*wall+2*part_width,wall,battery_h+wall]);
     }
-    translate([part_thickness/2,part_thickness/2,part_thickness/2+bissl]) cube([battery_w,battery_d,battery_h]);
+    translate([wall,wall,wall+bissl]) cube([battery_w,battery_d,battery_h]);
     for (tr=[[-part_width/2,-bissl,part_width/2],
-             [part_thickness+part_width/2+battery_w,-bissl,part_width/2],
+             [2*wall+part_width/2+battery_w,-bissl,part_width/2],
              ])
-      translate(tr)rotate([-90,0,0]) cylinder(d=mount_hole,h=part_thickness/2+2*bissl);
+      translate(tr)rotate([-90,0,0]) cylinder(d=mount_hole,h=wall+2*bissl);
   }
 }
 
