@@ -1,22 +1,23 @@
 # Modifying Parts
 
 All 3d-printable parts of the machine are designed in OpenSCAD and the original `.scad` files are included in [the repository](https://github.com/kauzerei/openautolab).
-That means that you can modify the parts using OpenSCAD or FreeCAD with OpenSCAD extension.
+That means that you can modify the parts using OpenSCAD (or FreeCAD with OpenSCAD extension, I'm not here to judge).
 
 You do not need to be familiar with any CAD software to fine tune the parts.
-Most of the dimensions you may wish to change such as inner and outer diameters of the hoses or height of the frame etc, can be edited using graphic interface.
+Most of the dimensions you may wish to change such as inner and outer diameters of the hoses can be edited using graphical interface.
 The shape of each part is calculated from the parameters that have default value, but can be changed to fit your needs.
 
-To make a 3d-printable .stl file you need to open .openscad file that contains the model, make "Parameters" section visible if it is hidden, choose the part you need from the drop-down list and change the parameters you want.
+To make a 3d-printable .stl file in OpenSCAD, you need to open .scad file that contains the model, make "Parameters" section visible if it is hidden, choose the part you need from the drop-down list and change the parameters you want.
 
-Depending on OpenSCAD version and your computer, the process of generating the part from parameters may take some time.
+Depending on OpenSCAD version and your computer, the process of generating the part from parameters may take some time. 
 Usually after you change some parameter, preview is automatically generated.
 Preview is a way to estimate if the changes that you make are the changes you want, it is faster, than generating the printable part but can contain some artifacts like missing or extra faces.
 Preview generation is also triggered by pressing F5.
 
 To generate the actual part, press F6.
 It is usually slower than preview, but generates nice parts without artifacts.
-To speed up this process, use the latest nightly-build of OpenSCAD and turn on Manifold library usage, it is so much faster, that you can ignore preview and always render the part completely after each change.
+So-called nightly builds (or development snapshots) of OpenSCAD with Manifold library usage turned on are at the moment of wrighting way faster, although considered not stable.
+Or use any version you have, it's not that important for someone who is not an OpenSCAD-nerd like me.
 
 To save the rendered part to an .stl file press F7.
 
