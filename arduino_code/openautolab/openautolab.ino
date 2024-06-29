@@ -56,7 +56,6 @@ long offset;
 
 //global variables, which store values during work
 byte k=0; //main menu state machine state index
-//byte k=94;
 unsigned long st_pr; // start of development time, to display for reference
 unsigned long st_st; // start of intermediate stage, to calculate when to pump out chemical
 unsigned long st_ag; // start of agitation, to calculate agitation cycles
@@ -311,31 +310,13 @@ void c41() { //definition of c41 process, more of those can be written if needed
   do_process(process);
 }
 
-/*void testcycle() { //definition of process
-  struct Process process={"test_cycle", {
-    (Stage){"Water 1 ",60,1,3,1,5,6,1},
-    (Stage){"Vessel 1",60,1,3,1,1,1,1},
-    (Stage){"Vessel 2",60,1,3,1,2,2,1},
-    (Stage){"Vessel 3",60,1,3,1,3,3,1},
-    (Stage){"Vessel 4",60,1,3,1,4,4,1},
-    (Stage){"Water 2 ",60,1,3,1,5,6,1},
-  }};
-  do_process(process);
-}
-*/
-/*void debugcycle() { //definition of process
-  struct Process process={"test_cycle", {
-    (Stage){"wash 1 ",150,1,3,1,5,6,5},
-  }};
-  do_process(process);
-}
-*/
 void pumpallout() { //definition of wash process
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print(F("Emptying vessels"));
   lcd.setCursor(0,1);
   lcd.print(F("from tank"));
+  st_pr=millis();
   pump(false,6);
   for (byte i=1;i<=4;i++) {
     lcd.setCursor(0,1);
@@ -361,15 +342,18 @@ void pumpallin(bool tank) { //definition of wash process
     lcd.print(i);
     lcd.setCursor(0,2);
     lcd.print(F("water to tank       "));
+    st_pr=millis();
     pump(true,5);
     lcd.setCursor(0,2);
     lcd.print(F("from tank to vessel"));
+    st_pr=millis();
     pump(false,i);
   }
   lcd.setCursor(0,1);
   lcd.print(F("        "));
   lcd.setCursor(0,3);
   lcd.print(F("water to tank       "));
+  st_pr=millis();
   if (tank) pump(true,5);
 }
 
@@ -804,25 +788,15 @@ void loop() {
     break;
 
     case 31:
-    //debugcycle();
     c41();
     beep();
     waitkey();
     k=0;
     break;
-
-    case 93:
-    while (true)
-   { digitalWrite(valves[0],HIGH);
-    delay(1000);
-    digitalWrite(valves[0],LOW);
-    delay(1000);
-  }
   
     case 94:
     while (true) {
       int del=200;
-//      const int array[]={valve1,valve2,valve3,valve4,valve5,valve6};
       for (int valve:valves) {
         for (int index=0;index<1;index++) {
           digitalWrite(valve,HIGH);
@@ -832,68 +806,5 @@ void loop() {
         }
       }
     }
-    
-    /*
-    case 95:
-    while (true) {
-      int del=500;
-      for (int valve:valves) {
-        lcd.clear();
-        lcd.setCursor(0,0);
-        lcd.print(valve);
-        lcd.setCursor(0,1);
-        lcd.print(del);
-        delay(200);
-        for (int index=0;index<1000000/del;index++) {
-          digitalWrite(valve,HIGH);
-          delayMicroseconds(del);
-          digitalWrite(valve,LOW);
-          delayMicroseconds(1);
-        }
-        delay(200);
-      }
-      delay(1000);
-    }
-    break;
-    */
-    /*
-    case 91:
-    while (true) {
-      for (int value=5;value<=255;value+=10) {
-        lcd.clear();
-        lcd.setCursor(0,0);
-        lcd.print(12.0*value/255-0.7);
-        // delay(200);
-        analogWrite(valve1,190);
-        delay(500);
-        analogWrite(valve1,0);
-        delay(500);
-      }
-    }
-    */
-    /*
-    case 96:
-    byte dc=100;
-    byte valve=1;
-    bool buttonpressed=false;
-    st_ag=micros();
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print(F("Test valves"));
-    lcd.setCursor(0,1);
-    lcd.print(F("Duty cycle: "));
-    lcd.print(dc);
-    lcd.setCursor(0,2);
-    lcd.print(F("Valve: "));
-    lcd.print(valve);
-    lcd.setCursor(0,3);
-    lcd.print(F("DC    Valve    Next>"));
-    while(!buttonpressed) {
-      if (digitalRead(button1)==LOW) {dc=max(50,(dc+10)%100); delay(200); buttonpressed=true; break;}
-      if (digitalRead(button2)==LOW) {valve++;if (valve==7) valve=1; delay(200); buttonpressed=true; break;}
-      if (digitalRead(button3)==LOW) {k=0; delay(200); buttonpressed=true; break;}
-      if ((micros()-st_ag)%1000<int(10)*int(dc)) digitalWrite(valves[valve],HIGH); else digitalWrite(valves[valve],LOW);
-    }
-    */
   }
 }
