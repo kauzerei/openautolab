@@ -138,7 +138,7 @@ Screw a larger magnet cover with outer thread into each of the six magnetic hold
 ### Bringing two rails together
 
 ![picture with all mentioned parts](img/IMG_1040.jpg)
-TODO: replace this picture
+<!-- TODO: replace this picture -->
 
 #### Parts list
 
@@ -160,7 +160,6 @@ To achieve said structure, loosely put the parts in the following order on each 
 Take the upper rail and two longer (210mm long) rods.
 
 ![upper rail on perpendicular rods](img/IMG_2456.jpg)
-TODO: fix this picture
 
 Place both ends of the rail (left and right) between pairs of X-mounts and tighten the nuts.
 Make sure that perpendicular rods are in front of the rail, not on the rear side.
@@ -283,7 +282,6 @@ Tighten just that the interface is not unscrewing itself when forces are applied
 ### Finishing the liquid connections
 
 ![pieces hose on valves and t-pieces, assembly progress](img/IMG_3317.jpg)
-TODO: fix this picture
 
 Cut 5 pieces of hose, each of which is just long enough to connect a T-piece with a valve and put T-pieces on top of the five leftmost (nearest to the main pump) valves.
 Note that the picture is taken from the back side of the machine.
@@ -307,18 +305,19 @@ Connect the other side of the pump to the tank.
 Connect the four hoses attached to two vessels, water filter to valves 1 through 6, the sixth valve is for dirty water output, it needs to be slightly longer, because it leads outside of the machine to your waste water container.
 
 ![two external hoses visible](img/IMG_3383.jpg)
-TODO: which way around is correct?
 
 Cut the hose for clean water input about the same size as the waste water hose, it should reach the source of clean water outside the machine.
 Connect it to the input of the filter pump.
+Input connecting pipe is typically the one further from the axis of the pump.
 
 ![connect filter input hose](img/IMG_1243.jpg)
 
 Cut about 300mm long hose for the filter input.
 Connect it to the output of the filter pump and fix its other side to the input of the filter.
+Output connecting pipe is typically the one closer the axis of the pump.
 
 ![securing hoses with ties, assembly progress](img/IMG_1248.jpg)
-TODO: update this picture
+<!-- TODO: update this picture -->
 
 Secure each end of each hose with a cable ties.
 
@@ -335,7 +334,7 @@ In this document it is supposed that you already have a PCB with all components 
 ### Mounting PCB
 
 ![parts for enclosure](img/IMG_3389.jpg)
-TODO: add display to this picture
+<!-- TODO: add display to this picture -->
 
 #### Parts list
 
@@ -370,7 +369,6 @@ Covering ends of wires with solder using soldering iron is not optimal, since th
 Screwing the wires as is is strongly not recommended.
 
 ![connecting wires to pump](img/IMG_3409.jpg)
-TODO: fix that picture
 
 If the pumps have already pre-soldered wires, you can use them or replace if the length is not enough.
 A nice way is to solder nothing to the pumps and use the contact terminals instead.
