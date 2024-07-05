@@ -138,7 +138,6 @@ Screw a larger magnet cover with outer thread into each of the six magnetic hold
 ### Bringing two rails together
 
 ![picture with all mentioned parts](img/IMG_1040.jpg)
-<!-- TODO: replace this picture -->
 
 #### Parts list
 
@@ -334,7 +333,6 @@ In this document it is supposed that you already have a PCB with all components 
 ### Mounting PCB
 
 ![parts for enclosure](img/IMG_3389.jpg)
-<!-- TODO: add display to this picture -->
 
 #### Parts list
 

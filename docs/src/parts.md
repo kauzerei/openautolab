@@ -27,17 +27,33 @@ If the parts listed are unavailable, feel free to modify the PCB to fit the comp
 ### Electromechanics
 
 - 6x normally-closed 12V valves. They are somewhat tricky to buy, as they have no proper name. Try including "6.2mm" which is outer diameter of connecting piece into your search query. See the picture as a reference, try to find the valves that look the same. Number of valves depends on what process you want to run. 1 valve for water, 1 valve for waste, plus 1 valve for each chemical. 8 is the maximum number supported by the current board
-![valve with ruler for scale](img/IMG_3550.jpg)
+
 - ZC-A210 or similar 12V gear pump, capable of running in two directions at a speed of about 2l/min for prolonged times
-![gear pump with ruler for scale](img/IMG_3525.jpg)
 - Weight cell and HX711 ADC for it
-![weight cell with ruler for scale](img/IMG_3569.jpg)
 - MG90 servo
 - Brita filter for water
 - Any pump that can work for prolonged periods without overheating. See picture for reference, no part name just like with valves
-![filter pump with ruler for scale](img/IMG_3537.jpg)
 - Float switch
+
+![valve with ruler for scale](img/IMG_3550.jpg)
+
+Solenoid valve
+
+![gear pump with ruler for scale](img/IMG_3525.jpg)
+
+Bidirectional gear pump
+
+![weight cell with ruler for scale](img/IMG_3569.jpg)
+
+Weight cell
+
+![filter pump with ruler for scale](img/IMG_3537.jpg)
+
+Membrane pump (clean water pump)
+
 ![float switch with ruler for scale](img/IMG_3556.jpg)
+
+Float swich
 
 ### Other parts to buy
 
