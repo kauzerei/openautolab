@@ -1,6 +1,6 @@
 # Mainboard PCB
 
-Schematics and PCB layouts are stored in KiCAD 7.0 format.
+Schematics and PCB layouts are stored in KiCAD 8 format.
 
 ## Ordering the board online
 
