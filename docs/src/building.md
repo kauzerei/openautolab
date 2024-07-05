@@ -399,7 +399,7 @@ Connect the force gauge, to 4-pin connector and the agitation module to a 3-pin 
 
 Place the top cover of the electronic box upside down and mount the screen.
 
-![mounting filter pump switch](img/IMG_3740.jpg)
+![mounting filter pump switch](img/IMG_3470.jpg)
 
 Mount the pump switch.
 

@@ -7,7 +7,7 @@ Free and open-source automatic film development machine.
 ![PCB](https://github.com/kauzerei/openautolab/actions/workflows/kicad.yml/badge.svg)
 ![Documentation](https://github.com/kauzerei/openautolab/actions/workflows/deploy.yml/badge.svg)
 
-[![Demo video](https://img.youtube.com/vi/qe7pgEp7S68/maxresdefault.jpg)<br>Demo video](https://www.youtube.com/watch?v=Ryzbz89Sy8g)
+[![Demo video](docs/src/img/IMG_3671.jpg)<br>Demo video](https://www.youtube.com/watch?v=Ryzbz89Sy8g)
 
 OpenAutoLab is an attempt at making a cheap and simple film developing machine.
 Inspired by Jobo Autolab, but cheaper, more repairable and open source.
