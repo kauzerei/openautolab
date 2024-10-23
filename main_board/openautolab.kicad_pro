@@ -505,26 +505,7 @@
       "version": 3
     },
     "net_colors": null,
-    "netclass_assignments": {
-      "Net-(A1-A0)": "signal",
-      "Net-(A1-A1)": "signal",
-      "Net-(A1-A2)": "signal",
-      "Net-(A1-A3)": "signal",
-      "Net-(A1-A4)": "signal",
-      "Net-(A1-A5)": "signal",
-      "Net-(A1-D10)": "signal",
-      "Net-(A1-D11)": "signal",
-      "Net-(A1-D12)": "signal",
-      "Net-(A1-D13)": "signal",
-      "Net-(A1-D2)": "signal",
-      "Net-(A1-D3)": "signal",
-      "Net-(A1-D4)": "signal",
-      "Net-(A1-D5)": "signal",
-      "Net-(A1-D6)": "signal",
-      "Net-(A1-D7)": "signal",
-      "Net-(A1-D8)": "signal",
-      "Net-(A1-D9)": "signal"
-    },
+    "netclass_assignments": null,
     "netclass_patterns": [
       {
         "netclass": "Default",

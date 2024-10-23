@@ -4,3 +4,6 @@
 [submodule "docs/zip.js"]
 	path = docs/zip.js
 	url = https://github.com/gildas-lormeau/zip.js
+[submodule "main_board/KiCad-RP-Pico"]
+	path = main_board/KiCad-RP-Pico
+	url = https://github.com/ncarandini/KiCad-RP-Pico
