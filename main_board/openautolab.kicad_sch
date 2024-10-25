@@ -3863,6 +3863,12 @@
 		(uuid "386e984b-9ed5-4174-91ef-061850e011e0")
 	)
 	(junction
+		(at 273.05 30.48)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "412780bb-ea62-4320-aaf7-a0875c4106c9")
+	)
+	(junction
 		(at 214.63 26.67)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3911,12 +3917,6 @@
 		(uuid "5ebcc8e9-b9e0-43a0-8d37-ac68f7909cbf")
 	)
 	(junction
-		(at 264.16 27.94)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "5ebfeaf8-c7a8-47d7-a36c-b2ca0c487e02")
-	)
-	(junction
 		(at 139.7 185.42)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3951,6 +3951,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8266ada8-e585-42e3-8fa2-d247aed3c9b2")
+	)
+	(junction
+		(at 264.16 27.94)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8407437c-45c1-40f1-a49a-1c9e5f776f8a")
 	)
 	(junction
 		(at 138.43 41.91)
@@ -4011,12 +4017,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "b568cffa-7119-4103-8e06-38317d13aba8")
-	)
-	(junction
-		(at 273.05 30.48)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "bc1865bb-66b6-4902-93f5-965eac772c9a")
 	)
 	(junction
 		(at 54.61 31.75)
@@ -4225,16 +4225,6 @@
 			(type default)
 		)
 		(uuid "1539275b-0ada-4fe2-8ab9-6d4e85ade15d")
-	)
-	(wire
-		(pts
-			(xy 264.16 30.48) (xy 273.05 30.48)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1786b67b-e671-4e15-a37a-490d3cdc1593")
 	)
 	(wire
 		(pts
@@ -5615,6 +5605,16 @@
 			(type default)
 		)
 		(uuid "da1b0c7a-b85b-4edc-95d2-963418152930")
+	)
+	(wire
+		(pts
+			(xy 264.16 30.48) (xy 273.05 30.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "da830144-7046-4704-9131-12f8f7801549")
 	)
 	(wire
 		(pts
@@ -7907,7 +7907,8 @@
 	)
 	(symbol
 		(lib_id "Connector:Screw_Terminal_01x02")
-		(at 259.08 30.48 180)
+		(at 259.08 27.94 0)
+		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -7915,7 +7916,7 @@
 		(dnp no)
 		(uuid "5f54ad7a-3696-4a6a-a88f-5055be169657")
 		(property "Reference" "J10"
-			(at 260.35 33.02 0)
+			(at 260.35 25.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7924,7 +7925,7 @@
 			)
 		)
 		(property "Value" "FILTER_PUMP"
-			(at 261.62 25.4 0)
+			(at 261.62 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7933,7 +7934,7 @@
 			)
 		)
 		(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-3-2-5.08_1x02_P5.08mm_Horizontal"
-			(at 259.08 30.48 0)
+			(at 259.08 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7942,7 +7943,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 259.08 30.48 0)
+			(at 259.08 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7951,7 +7952,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 259.08 30.48 0)
+			(at 259.08 27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8142,7 +8143,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 46.99 109.5248 0)
 			(effects
 				(font
@@ -8162,6 +8163,15 @@
 		)
 		(property "Description" "Unpolarized capacitor"
 			(at 43.18 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C5378"
+			(at 153.67 153.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8378,6 +8388,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C7471878"
+			(at 0 363.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "29dbb71a-8e6b-43ee-a4c0-f5f712be88db")
 		)
@@ -8440,6 +8459,15 @@
 		)
 		(property "Description" ""
 			(at 243.84 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C2941005"
+			(at 269.24 269.24 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12125,6 +12153,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C10152"
+			(at -33.02 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "36c036b8-9002-4aec-bf11-513d2a6d9306")
 		)
@@ -12253,6 +12290,15 @@
 		)
 		(property "Description" ""
 			(at 109.22 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C125977"
+			(at 0 358.14 0)
 			(effects
 				(font
 					(size 1.27 1.27)
