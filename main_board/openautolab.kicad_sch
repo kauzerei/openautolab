@@ -8142,7 +8142,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 46.99 109.5248 0)
 			(effects
 				(font
@@ -8342,7 +8342,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "330"
+		(property "Value" "330uF"
 			(at 151.13 184.15 0)
 			(effects
 				(font
@@ -12090,7 +12090,7 @@
 				)
 			)
 		)
-		(property "Value" "330"
+		(property "Value" "330uH"
 			(at 144.78 180.34 90)
 			(effects
 				(font
@@ -12224,8 +12224,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "200"
-			(at 102.87 180.34 0)
+		(property "Value" "200uf"
+			(at 101.092 180.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
