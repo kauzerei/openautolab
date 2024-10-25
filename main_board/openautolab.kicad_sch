@@ -3821,12 +3821,6 @@
 		(uuid "10d8d644-158d-418a-bf85-83e9ae9bb5ce")
 	)
 	(junction
-		(at 44.45 170.18)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "1a4f481a-06bd-4a76-96df-dd8bace3fb13")
-	)
-	(junction
 		(at 87.63 26.67)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3843,6 +3837,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "260948ec-9d2e-46c8-87d8-c8194bb7d9a7")
+	)
+	(junction
+		(at 265.43 35.56)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "29c0e181-f583-4fc4-89ca-87fd94b1981c")
 	)
 	(junction
 		(at 189.23 41.91)
@@ -3909,6 +3909,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "5ebcc8e9-b9e0-43a0-8d37-ac68f7909cbf")
+	)
+	(junction
+		(at 264.16 27.94)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5ebfeaf8-c7a8-47d7-a36c-b2ca0c487e02")
 	)
 	(junction
 		(at 139.7 185.42)
@@ -3983,12 +3989,6 @@
 		(uuid "9badc3b1-db97-4787-8f29-2d5073b5c28c")
 	)
 	(junction
-		(at 44.45 161.29)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "a48134ef-4a2f-4669-a08a-37c7dd7829aa")
-	)
-	(junction
 		(at 36.83 41.91)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4001,10 +4001,22 @@
 		(uuid "af109607-ab60-4be2-a9e1-d7b936ecf4b2")
 	)
 	(junction
+		(at 273.05 45.72)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "af6efdfe-bd30-4b3f-be6d-0d7f0376cf8e")
+	)
+	(junction
 		(at 154.94 24.13)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "b568cffa-7119-4103-8e06-38317d13aba8")
+	)
+	(junction
+		(at 273.05 30.48)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "bc1865bb-66b6-4902-93f5-965eac772c9a")
 	)
 	(junction
 		(at 54.61 31.75)
@@ -4216,6 +4228,16 @@
 	)
 	(wire
 		(pts
+			(xy 264.16 30.48) (xy 273.05 30.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1786b67b-e671-4e15-a37a-490d3cdc1593")
+	)
+	(wire
+		(pts
 			(xy 36.83 24.13) (xy 35.56 24.13)
 		)
 		(stroke
@@ -4263,6 +4285,26 @@
 			(type default)
 		)
 		(uuid "21f526f1-dfa9-474b-b114-97bcd8fd59c0")
+	)
+	(wire
+		(pts
+			(xy 273.05 27.94) (xy 271.78 27.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "23a5d88e-dabc-426b-847b-30c9d3b1906d")
+	)
+	(wire
+		(pts
+			(xy 243.84 33.02) (xy 243.84 30.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "247374d1-e2d7-4a06-8639-03f44dde44e7")
 	)
 	(wire
 		(pts
@@ -4316,16 +4358,6 @@
 	)
 	(wire
 		(pts
-			(xy 41.91 184.15) (xy 52.07 184.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2ea90575-1593-48d9-8f8b-58ad1360322b")
-	)
-	(wire
-		(pts
 			(xy 78.74 19.05) (xy 78.74 24.13)
 		)
 		(stroke
@@ -4333,6 +4365,16 @@
 			(type default)
 		)
 		(uuid "307d9219-aa35-4380-a63e-9e66284452d0")
+	)
+	(wire
+		(pts
+			(xy 273.05 30.48) (xy 273.05 27.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "30d402c5-8216-412b-9849-5e1175e74fc6")
 	)
 	(wire
 		(pts
@@ -4353,6 +4395,16 @@
 			(type default)
 		)
 		(uuid "327cff41-df61-430f-ac49-6303898cde96")
+	)
+	(wire
+		(pts
+			(xy 265.43 35.56) (xy 265.43 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "33bbbc2c-f583-4525-a9aa-de73369f525a")
 	)
 	(wire
 		(pts
@@ -4413,16 +4465,6 @@
 			(type default)
 		)
 		(uuid "3984fd60-0ec2-42b3-84b6-55fe88149e14")
-	)
-	(wire
-		(pts
-			(xy 41.91 167.64) (xy 36.83 167.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3a649f64-a0f1-41f0-b0fc-1e0c86e72c3e")
 	)
 	(wire
 		(pts
@@ -4586,16 +4628,6 @@
 	)
 	(wire
 		(pts
-			(xy 41.91 181.61) (xy 44.45 181.61)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4ca81745-418d-49a5-adc6-e862e57ffcc9")
-	)
-	(wire
-		(pts
 			(xy 175.26 116.84) (xy 179.07 116.84)
 		)
 		(stroke
@@ -4613,16 +4645,6 @@
 			(type default)
 		)
 		(uuid "4db92057-4c58-4cb3-a08d-e352d17722b3")
-	)
-	(wire
-		(pts
-			(xy 36.83 170.18) (xy 44.45 170.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4e92c07a-0fa4-4f61-9f00-cb53da4000b4")
 	)
 	(wire
 		(pts
@@ -4726,16 +4748,6 @@
 	)
 	(wire
 		(pts
-			(xy 44.45 161.29) (xy 44.45 158.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6071166f-2839-4c18-9427-94c32dd3049d")
-	)
-	(wire
-		(pts
 			(xy 62.23 41.91) (xy 62.23 43.18)
 		)
 		(stroke
@@ -4763,16 +4775,6 @@
 			(type default)
 		)
 		(uuid "63323f21-0c6e-4784-ac0b-da6444b53929")
-	)
-	(wire
-		(pts
-			(xy 41.91 161.29) (xy 44.45 161.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "63aa6d30-e13f-40ba-b359-2a2d5849cca1")
 	)
 	(wire
 		(pts
@@ -4863,16 +4865,6 @@
 			(type default)
 		)
 		(uuid "756e4fb3-c272-4809-b55e-ef0771075cf0")
-	)
-	(wire
-		(pts
-			(xy 76.2 160.02) (xy 76.2 163.83)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "76092d27-165d-4ab9-9410-2d1e399ecd4a")
 	)
 	(wire
 		(pts
@@ -5006,6 +4998,16 @@
 	)
 	(wire
 		(pts
+			(xy 238.76 35.56) (xy 256.54 35.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8d334faa-35c6-4d39-a2fb-2319bae502e8")
+	)
+	(wire
+		(pts
 			(xy 163.83 41.91) (xy 163.83 43.18)
 		)
 		(stroke
@@ -5013,6 +5015,26 @@
 			(type default)
 		)
 		(uuid "8dc6d25c-dbf6-4b1b-89d5-8023db0ebcf1")
+	)
+	(wire
+		(pts
+			(xy 273.05 40.64) (xy 273.05 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8dd09103-b1e8-46eb-a84e-65b7710e0f9e")
+	)
+	(wire
+		(pts
+			(xy 265.43 45.72) (xy 273.05 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8e9aa103-3c60-4ea7-871e-dde14ecf5149")
 	)
 	(wire
 		(pts
@@ -5033,6 +5055,16 @@
 			(type default)
 		)
 		(uuid "90481698-9e72-4805-a996-21b2719bb8c5")
+	)
+	(wire
+		(pts
+			(xy 265.43 45.72) (xy 265.43 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "92419185-d1c4-4521-a217-b1e9967d5fb8")
 	)
 	(wire
 		(pts
@@ -5146,6 +5178,16 @@
 	)
 	(wire
 		(pts
+			(xy 273.05 45.72) (xy 273.05 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a26c5fa6-eb1e-4c32-89d4-54f982ad3429")
+	)
+	(wire
+		(pts
 			(xy 138.43 24.13) (xy 137.16 24.13)
 		)
 		(stroke
@@ -5186,16 +5228,6 @@
 	)
 	(wire
 		(pts
-			(xy 44.45 170.18) (xy 44.45 168.91)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a99a9b14-2865-4dcc-a348-b134b2b9a2b4")
-	)
-	(wire
-		(pts
 			(xy 156.21 41.91) (xy 156.21 40.64)
 		)
 		(stroke
@@ -5206,7 +5238,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 173.99) (xy 76.2 176.53)
+			(xy 76.2 168.91) (xy 76.2 176.53)
 		)
 		(stroke
 			(width 0)
@@ -5266,6 +5298,16 @@
 	)
 	(wire
 		(pts
+			(xy 238.76 33.02) (xy 243.84 33.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b517a7a1-3f4a-4300-a1a6-335a9f246a16")
+	)
+	(wire
+		(pts
 			(xy 154.94 19.05) (xy 154.94 24.13)
 		)
 		(stroke
@@ -5273,16 +5315,6 @@
 			(type default)
 		)
 		(uuid "b606a69d-41b9-4bc7-aa4b-2a94eeb358bf")
-	)
-	(wire
-		(pts
-			(xy 44.45 180.34) (xy 44.45 181.61)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b64cec70-7427-491c-aff2-c8922f3ec1f8")
 	)
 	(wire
 		(pts
@@ -5466,6 +5498,16 @@
 	)
 	(wire
 		(pts
+			(xy 264.16 22.86) (xy 264.16 27.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d193b506-88ba-4485-85a0-fc38d4b5915b")
+	)
+	(wire
+		(pts
 			(xy 29.21 41.91) (xy 36.83 41.91)
 		)
 		(stroke
@@ -5646,6 +5688,16 @@
 	)
 	(wire
 		(pts
+			(xy 264.16 35.56) (xy 265.43 35.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eacf696a-3d08-4a2b-9982-bda49b0c2201")
+	)
+	(wire
+		(pts
 			(xy 29.21 31.75) (xy 29.21 33.02)
 		)
 		(stroke
@@ -5773,16 +5825,6 @@
 			(type default)
 		)
 		(uuid "fafe3243-4bbe-4cfc-bbbb-c994c914f296")
-	)
-	(wire
-		(pts
-			(xy 41.91 167.64) (xy 41.91 161.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb27b261-89fa-4efb-8b42-85fa05c3890b")
 	)
 	(wire
 		(pts
@@ -6372,6 +6414,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+5V")
+		(at 243.84 20.32 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2305a758-5ccf-4e81-8bf7-989d20aa13d6")
+		(property "Reference" "#PWR027"
+			(at 243.84 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+5V"
+			(at 243.84 15.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 243.84 20.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 243.84 20.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 243.84 20.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "33284aeb-72cb-41a3-92d9-0f5ed7d8859a")
+		)
+		(instances
+			(project "openautolab"
+				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
+					(reference "#PWR027")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Diode:1N5819WS")
 		(at 31.75 24.13 0)
 		(unit 1)
@@ -6769,74 +6877,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:Screw_Terminal_01x02")
-		(at 36.83 181.61 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "352e9647-5d65-4ae4-a812-7e5d1b998a57")
-		(property "Reference" "J11"
-			(at 36.83 186.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "FILTER_SENSOR"
-			(at 36.83 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-3-2-5.08_1x02_P5.08mm_Horizontal"
-			(at 36.83 181.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 36.83 181.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 36.83 181.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "1eeb8478-6715-4c27-a5ae-8ef8bb011075")
-		)
-		(pin "2"
-			(uuid "b5a556de-ee31-4989-b7c3-dd623d043132")
-		)
-		(instances
-			(project "openautolab"
-				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
-					(reference "J11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:+12V")
 		(at 205.74 19.05 0)
 		(unit 1)
@@ -6926,7 +6966,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Button_Switch_THT:SW_PUSH_6mm"
+		(property "Footprint" "Button_Switch_SMD:SW_SPST_B3S-1000"
 			(at 187.96 93.98 0)
 			(effects
 				(font
@@ -7110,6 +7150,75 @@
 	)
 	(symbol
 		(lib_id "Device:R")
+		(at 265.43 40.64 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3ed4193b-ea85-493d-a9d1-b5b6171599ae")
+		(property "Reference" "R18"
+			(at 266.7 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 266.7 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 263.652 40.64 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 265.43 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 265.43 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "83dc94b5-8bc2-4d2d-a363-8bdb8f5d8d46")
+		)
+		(pin "2"
+			(uuid "2bb439db-dec0-493f-a208-45e95e4101a3")
+		)
+		(instances
+			(project "openautolab"
+				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
+					(reference "R18")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
 		(at 201.93 31.75 90)
 		(unit 1)
 		(exclude_from_sim no)
@@ -7242,6 +7351,81 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:TSM2302CX")
+		(at 270.51 35.56 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "44a55c70-816b-4b92-b33d-0a68f55df9ad")
+		(property "Reference" "Q9"
+			(at 266.7 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "TSM2302CX"
+			(at 276.86 40.64 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
+			(at 275.59 37.465 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.taiwansemi.com/products/datasheet/TSM2302CX_E1608.pdf"
+			(at 270.51 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 270.51 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "608b1819-b32a-41e4-b50d-67c745001350")
+		)
+		(pin "2"
+			(uuid "7a29724c-8f5d-4be7-8fa0-8094147f4972")
+		)
+		(pin "3"
+			(uuid "e31d84ba-ed05-4423-8c7d-59cdec63df42")
+		)
+		(instances
+			(project "openautolab"
+				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
+					(reference "Q9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_FET:TSM2302CX")
 		(at 85.09 31.75 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -7310,72 +7494,6 @@
 			(project "openautolab"
 				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
 					(reference "Q3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDPWR")
-		(at 52.07 184.15 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "4694a3c3-a585-4ed9-b80d-38b02a7fe924")
-		(property "Reference" "#PWR0105"
-			(at 52.07 189.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GNDPWR"
-			(at 51.943 189.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 52.07 185.42 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 52.07 185.42 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 52.07 184.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "7d94171e-aecb-4471-87e9-fb184be118ab")
-		)
-		(instances
-			(project "openautolab"
-				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
-					(reference "#PWR0105")
 					(unit 1)
 				)
 			)
@@ -7584,6 +7702,273 @@
 			(project "openautolab"
 				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
 					(reference "#PWR02")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Diode:1N5819WS")
+		(at 267.97 27.94 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "599f88aa-3362-4f3e-9fc4-894a8056d2ef")
+		(property "Reference" "D11"
+			(at 269.748 22.352 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1N5819WS"
+			(at 270.51 24.638 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-323"
+			(at 267.97 32.385 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/2204281430_Guangdong-Hottech-1N5819WS_C191023.pdf"
+			(at 267.97 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 267.97 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "08372995-cf73-456f-854e-c8c9476acb8f")
+		)
+		(pin "2"
+			(uuid "1cf9b8ed-92f6-4566-be71-de174848d37f")
+		)
+		(instances
+			(project "openautolab"
+				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
+					(reference "D11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+12V")
+		(at 264.16 22.86 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d4812c9-3954-4abf-8e0d-3d4d25605aaf")
+		(property "Reference" "#PWR025"
+			(at 264.16 26.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+12V"
+			(at 264.16 18.288 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 264.16 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 264.16 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 264.16 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c5036a57-861a-4e3d-854f-dc1880d0e2f5")
+		)
+		(instances
+			(project "openautolab"
+				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
+					(reference "#PWR025")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GNDPWR")
+		(at 273.05 46.99 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "5ecaebdf-a19f-486b-be91-090d59bd5c3c")
+		(property "Reference" "#PWR026"
+			(at 273.05 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GNDPWR"
+			(at 272.923 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 273.05 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 273.05 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 273.05 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6300ceaf-20ef-40af-ba02-012286463b15")
+		)
+		(instances
+			(project "openautolab"
+				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
+					(reference "#PWR026")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:Screw_Terminal_01x02")
+		(at 259.08 30.48 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5f54ad7a-3696-4a6a-a88f-5055be169657")
+		(property "Reference" "J10"
+			(at 260.35 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "FILTER_PUMP"
+			(at 261.62 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-3-2-5.08_1x02_P5.08mm_Horizontal"
+			(at 259.08 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 259.08 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 259.08 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "12d47ea7-5c03-49ae-8669-820b6e93d0a3")
+		)
+		(pin "2"
+			(uuid "972d9407-50d9-4bb4-81f7-d73687d44f1a")
+		)
+		(instances
+			(project "openautolab"
+				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
+					(reference "J10")
 					(unit 1)
 				)
 			)
@@ -7876,7 +8261,7 @@
 	)
 	(symbol
 		(lib_id "power:+12V")
-		(at 76.2 160.02 0)
+		(at 76.2 168.91 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -7884,7 +8269,7 @@
 		(dnp no)
 		(uuid "66de3438-7728-4a7b-a923-d8f7ea356607")
 		(property "Reference" "#PWR0136"
-			(at 76.2 163.83 0)
+			(at 76.2 172.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7893,7 +8278,7 @@
 			)
 		)
 		(property "Value" "+12V"
-			(at 76.2 154.94 0)
+			(at 76.2 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7901,7 +8286,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 76.2 160.02 0)
+			(at 76.2 168.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7910,7 +8295,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 76.2 160.02 0)
+			(at 76.2 168.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7919,7 +8304,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 76.2 160.02 0)
+			(at 76.2 168.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7966,7 +8351,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D8.0mm_P5.00mm"
+		(property "Footprint" "Capacitor_SMD:CP_Elec_6.3x7.7"
 			(at 150.8252 185.42 0)
 			(effects
 				(font
@@ -8003,6 +8388,81 @@
 			(project "openautolab"
 				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
 					(reference "C2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Switch:SW_DPST_x2")
+		(at 243.84 25.4 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6962c956-c832-4ed8-aede-12a017272c43")
+		(property "Reference" "SW3"
+			(at 236.22 23.622 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "SW_DPST_x2"
+			(at 229.87 25.908 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
+			(at 243.84 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 243.84 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 243.84 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a2529cc8-d3c2-4df0-8883-e6c5796b980c")
+		)
+		(pin "2"
+			(uuid "d963053b-0d17-48de-95fc-ddc339ebb646")
+		)
+		(pin "3"
+			(uuid "4c4898f3-ca76-4651-879e-10f65bbbba88")
+		)
+		(pin "4"
+			(uuid "84830f8a-7902-49cb-9096-c0ad30c021e2")
+		)
+		(instances
+			(project "openautolab"
+				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
+					(reference "SW3")
 					(unit 1)
 				)
 			)
@@ -8552,6 +9012,73 @@
 			(project "openautolab"
 				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
 					(reference "R3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 260.35 35.56 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "77d2983e-1e04-4924-8ed6-f9573cfcddd3")
+		(property "Reference" "R17"
+			(at 260.35 38.1 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100"
+			(at 260.35 40.64 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 260.35 37.338 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 260.35 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 260.35 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e9afed80-a5e3-4a6b-bc79-a6a910db7fcf")
+		)
+		(pin "2"
+			(uuid "9af73a96-bb4e-41f3-9e2e-4be5398dd21b")
+		)
+		(instances
+			(project "openautolab"
+				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
+					(reference "R17")
 					(unit 1)
 				)
 			)
@@ -9647,82 +10174,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Switch:SW_DPST_x2")
-		(at 44.45 175.26 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a24da372-bd45-495c-937f-db33e5c4b1f0")
-		(property "Reference" "SW3"
-			(at 46.99 173.9899 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "SW_DPST_x2"
-			(at 46.99 176.5299 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
-			(at 44.45 175.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 44.45 175.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 44.45 175.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "4f3a2444-5877-4843-b29a-14ff4871a9d0")
-		)
-		(pin "2"
-			(uuid "f1296f2a-0e48-41f8-ad14-0e7d55fc0f53")
-		)
-		(pin "3"
-			(uuid "4c4898f3-ca76-4651-879e-10f65bbbba88")
-		)
-		(pin "4"
-			(uuid "84830f8a-7902-49cb-9096-c0ad30c021e2")
-		)
-		(instances
-			(project "openautolab"
-				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
-					(reference "SW3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:+12V")
 		(at 78.74 19.05 0)
 		(unit 1)
@@ -9782,76 +10233,6 @@
 			(project "openautolab"
 				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
 					(reference "#PWR010")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D_Schottky")
-		(at 44.45 165.1 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a7971146-9c1d-40c4-a602-0580f4ccf5dc")
-		(property "Reference" "D10"
-			(at 46.99 163.5125 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "1N5819WS"
-			(at 46.99 166.0525 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Diode_THT:D_A-405_P7.62mm_Horizontal"
-			(at 44.45 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 44.45 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 44.45 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "00819794-45da-4bfd-b1fc-3d9b23c55596")
-		)
-		(pin "2"
-			(uuid "884f8a0a-155d-4a70-b55e-50a1f4ed95f4")
-		)
-		(instances
-			(project "openautolab"
-				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
-					(reference "D10")
 					(unit 1)
 				)
 			)
@@ -9920,140 +10301,6 @@
 			(project "openautolab"
 				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
 					(reference "J1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:Screw_Terminal_01x02")
-		(at 31.75 170.18 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "ad0483b1-1b65-49f3-b19d-4d31dfd676b8")
-		(property "Reference" "J10"
-			(at 33.02 172.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "FILTER_PUMP"
-			(at 34.29 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-3-2-5.08_1x02_P5.08mm_Horizontal"
-			(at 31.75 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 31.75 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 31.75 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "7179c6b7-e43c-4956-baec-39b782ca4567")
-		)
-		(pin "2"
-			(uuid "f9f9ce57-395f-41a0-bf08-8f111d408f46")
-		)
-		(instances
-			(project "openautolab"
-				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
-					(reference "J10")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+12V")
-		(at 44.45 158.75 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "aeb169b4-eb8e-449f-b0c7-b960cfd2345f")
-		(property "Reference" "#PWR0104"
-			(at 44.45 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+12V"
-			(at 44.45 153.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 44.45 158.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 44.45 158.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 44.45 158.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "cf5fb935-2c61-4ba9-b85e-549faf7bb75c")
-		)
-		(instances
-			(project "openautolab"
-				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
-					(reference "#PWR0104")
 					(unit 1)
 				)
 			)
@@ -10152,7 +10399,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Button_Switch_THT:SW_PUSH_6mm"
+		(property "Footprint" "Button_Switch_SMD:SW_SPST_B3S-1000"
 			(at 198.12 96.52 0)
 			(effects
 				(font
@@ -10354,7 +10601,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Button_Switch_THT:SW_PUSH_6mm"
+		(property "Footprint" "Button_Switch_SMD:SW_SPST_B3S-1000"
 			(at 177.8 88.9 0)
 			(effects
 				(font
@@ -10457,6 +10704,74 @@
 			(project "openautolab"
 				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
 					(reference "#PWR015")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:Screw_Terminal_01x02")
+		(at 233.68 33.02 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b526d488-6297-473e-b185-997a962d673f")
+		(property "Reference" "J11"
+			(at 233.68 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "FILTER_SENSOR"
+			(at 233.426 40.386 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-3-2-5.08_1x02_P5.08mm_Horizontal"
+			(at 233.68 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 233.68 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 233.68 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "011a824a-cf35-4c2c-8b2d-b834660f9be0")
+		)
+		(pin "2"
+			(uuid "52e2852c-e18e-4cc9-8539-06f9b8fadf0c")
+		)
+		(instances
+			(project "openautolab"
+				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
+					(reference "J11")
 					(unit 1)
 				)
 			)
@@ -10827,7 +11142,7 @@
 				)
 			)
 		)
-		(property "Footprint" "dev:RPi_Pico_SMD_TH"
+		(property "Footprint" "RP-Pico:RPi_Pico_SMD_TH"
 			(at 140.97 90.17 90)
 			(effects
 				(font
@@ -11084,7 +11399,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Diode_THT:D_A-405_P7.62mm_Horizontal"
+		(property "Footprint" "Diode_SMD:D_SOD-323"
 			(at 139.7 181.61 0)
 			(effects
 				(font
@@ -11783,7 +12098,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_THT:L_Radial_D12.0mm_P5.00mm_Fastron_11P"
+		(property "Footprint" "Inductor_SMD:L_12x12mm_H8mm"
 			(at 144.78 177.8 0)
 			(effects
 				(font
@@ -11909,7 +12224,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100"
+		(property "Value" "200"
 			(at 102.87 180.34 0)
 			(effects
 				(font
@@ -11918,7 +12233,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D8.0mm_P5.00mm"
+		(property "Footprint" "Capacitor_SMD:CP_Elec_10x10"
 			(at 110.1852 182.88 0)
 			(effects
 				(font
@@ -12492,79 +12807,6 @@
 			(project "openautolab"
 				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
 					(reference "#PWR04")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Switch:SW_DPST_x2")
-		(at 76.2 168.91 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "feaa2871-e808-41ab-8380-04a1f545b96f")
-		(property "Reference" "SW4"
-			(at 73.66 168.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SW_DPST_x2"
-			(at 80.01 168.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
-			(at 76.2 168.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 76.2 168.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 76.2 168.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "6d16bde9-7b58-49e6-80a3-9a17aefc102e")
-		)
-		(pin "2"
-			(uuid "bd82cc15-80a6-41e8-a202-49b54839b4ad")
-		)
-		(pin "3"
-			(uuid "4c4898f3-ca76-4651-879e-10f65bbbba89")
-		)
-		(pin "4"
-			(uuid "84830f8a-7902-49cb-9096-c0ad30c021e3")
-		)
-		(instances
-			(project "openautolab"
-				(path "/cfdd5521-a8c1-4ce8-a79b-bc50281bd389"
-					(reference "SW4")
 					(unit 1)
 				)
 			)
