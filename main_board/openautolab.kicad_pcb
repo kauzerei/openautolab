@@ -177,7 +177,7 @@
 	(net 56 "unconnected-(U3-GPIO8-Pad11)")
 	(net 57 "unconnected-(U3-SWCLK-Pad41)")
 	(net 58 "unconnected-(U3-GND-Pad3)")
-	(net 59 "unconnected-(U3-GND-Pad18)")
+	(net 59 "unconnected-(U3-GND-Pad42)")
 	(net 60 "unconnected-(U3-3V3-Pad36)")
 	(net 61 "unconnected-(U3-GND-Pad8)")
 	(net 62 "unconnected-(U3-GND-Pad13)")
@@ -196,7 +196,7 @@
 		(descr "Net tie, 2 pin, 0.5mm square SMD pads")
 		(tags "net tie")
 		(property "Reference" "NT1"
-			(at 0 -1.2 360)
+			(at 0 -1.2 0)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "a8142628-dce7-4960-8005-0a3f32dd5e27")
@@ -208,7 +208,7 @@
 			)
 		)
 		(property "Value" "NetTie_2"
-			(at 0 1.2 360)
+			(at 0 1.2 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "6cd00c0b-3daf-4c2a-b05c-2e97e15d0ad5")
@@ -5844,7 +5844,7 @@
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R15"
-			(at 0 -1.43 360)
+			(at 0 -1.43 0)
 			(layer "F.SilkS")
 			(uuid "05fcf467-dc86-44b7-a904-4fc52be3307e")
 			(effects
@@ -5855,7 +5855,7 @@
 			)
 		)
 		(property "Value" "100"
-			(at 0 1.43 360)
+			(at 0 1.43 0)
 			(layer "F.Fab")
 			(uuid "1396519d-4bdf-4b82-a890-2bf0f4c582b3")
 			(effects
@@ -6010,7 +6010,7 @@
 			(uuid "59f390a6-5c33-464a-84f1-c272ad3f40a8")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(uuid "a02721bc-81d0-44e6-a61e-895b7d54a77b")
 			(effects
@@ -8750,7 +8750,7 @@
 		(descr "SMD capacitor, aluminum electrolytic, Nichicon, 10.0x10.0mm")
 		(tags "capacitor electrolytic")
 		(property "Reference" "C1"
-			(at 0 -6.2 360)
+			(at 0 -6.2 0)
 			(layer "F.SilkS")
 			(uuid "1a673743-7c1e-4006-805d-8415476d83b3")
 			(effects
@@ -8761,7 +8761,7 @@
 			)
 		)
 		(property "Value" "200uf"
-			(at 0 6.2 360)
+			(at 0 6.2 0)
 			(layer "F.Fab")
 			(uuid "9012ea06-52a6-42a9-8f34-fabb509704f5")
 			(effects
@@ -8811,7 +8811,7 @@
 			)
 		)
 		(property "LCSC" "C125977"
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "49867efe-0256-4eb3-9ee5-99705a4b7cf5")
@@ -9159,7 +9159,7 @@
 			(uuid "b49151b8-09a9-400d-a3ee-1a537f8bcc76")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(uuid "c51fe70e-4a84-48da-b673-b384eb683584")
 			(effects
@@ -10025,7 +10025,7 @@
 		(descr "Through hole straight socket strip, 1x03, 2.54mm pitch, single row (from Kicad 4.0.7), script generated")
 		(tags "Through hole socket strip THT 1x03 2.54mm single row")
 		(property "Reference" "J14"
-			(at 0 -2.77 360)
+			(at 0 -2.77 0)
 			(layer "F.SilkS")
 			(uuid "9029427b-3cfd-48f4-a426-9628ae1c37b2")
 			(effects
@@ -10036,7 +10036,7 @@
 			)
 		)
 		(property "Value" "SERVO"
-			(at 0 7.85 360)
+			(at 0 7.85 0)
 			(layer "F.Fab")
 			(uuid "cc904def-ddaf-469f-8709-564e59e3e9ef")
 			(effects
@@ -11063,7 +11063,7 @@
 		(descr "Through hole straight socket strip, 1x04, 2.54mm pitch, single row (from Kicad 4.0.7), script generated")
 		(tags "Through hole socket strip THT 1x04 2.54mm single row")
 		(property "Reference" "J13"
-			(at 0 -2.77 360)
+			(at 0 -2.77 0)
 			(layer "F.SilkS")
 			(uuid "09517f4b-0d1a-42b2-ac04-c00d5fbbc530")
 			(effects
@@ -11074,7 +11074,7 @@
 			)
 		)
 		(property "Value" "HX711"
-			(at 0 10.39 360)
+			(at 0 10.39 0)
 			(layer "F.Fab")
 			(uuid "a08ead18-2b06-45aa-8ee6-124845e096ca")
 			(effects
@@ -13954,7 +13954,7 @@
 	(footprint "RP-Pico:RPi_Pico_SMD_TH"
 		(layer "F.Cu")
 		(uuid "9b5974b4-a21d-4170-a1f4-55dfff2d4982")
-		(at 68.11 64.89 90)
+		(at 68.11 66.39 90)
 		(descr "Through hole straight pin header, 2x20, 2.54mm pitch, double rows")
 		(tags "Through hole pin header THT 2x20 2.54mm double row")
 		(property "Reference" "U3"
@@ -15536,7 +15536,7 @@
 			(drill 1.02)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 59 "unconnected-(U3-GND-Pad18)")
+			(net 28 "GND")
 			(pinfunction "GND")
 			(pintype "power_in")
 			(uuid "9022313a-dc9a-4004-97c9-d80aee431601")
@@ -15548,7 +15548,7 @@
 				(offset -0.9 0)
 			)
 			(layers "F.Cu" "F.Mask")
-			(net 59 "unconnected-(U3-GND-Pad18)")
+			(net 28 "GND")
 			(pinfunction "GND")
 			(pintype "power_in")
 			(uuid "5a9c48ef-3dcc-4926-966f-4d611a3795d2")
@@ -16088,7 +16088,7 @@
 			(drill 1.02)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 28 "GND")
+			(net 59 "unconnected-(U3-GND-Pad42)")
 			(pinfunction "GND")
 			(pintype "power_in")
 			(uuid "8d133d82-d00c-4c3c-95aa-2b6e31fc8103")
@@ -16100,7 +16100,7 @@
 				(offset -0.9 0)
 			)
 			(layers "F.Cu" "F.Mask")
-			(net 28 "GND")
+			(net 59 "unconnected-(U3-GND-Pad42)")
 			(pinfunction "GND")
 			(pintype "power_in")
 			(uuid "c07c6104-0501-4ebf-ad9d-8e8c10cdc4f3")
@@ -17885,7 +17885,7 @@
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R16"
-			(at 0 -1.43 360)
+			(at 0 -1.43 0)
 			(layer "F.SilkS")
 			(uuid "6fa2aefb-659a-40da-92a1-5941b72cedfb")
 			(effects
@@ -17896,7 +17896,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 0 1.43 360)
+			(at 0 1.43 0)
 			(layer "F.Fab")
 			(uuid "3f5075e6-acd0-4599-b2a9-9ff5cd24ab99")
 			(effects
@@ -18051,7 +18051,7 @@
 			(uuid "24378665-8991-4455-ae95-80b6b1208463")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(uuid "667cfdcb-f620-40a5-9d90-11e04216fca8")
 			(effects
@@ -21264,7 +21264,7 @@
 			(uuid "7380e4ae-2c4d-445d-aff1-ff86e0e2db02")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 3.81 360)
+			(at 0 3.81 0)
 			(layer "F.Fab")
 			(uuid "a38f01b0-693b-4838-b0d2-d603126d97d0")
 			(effects

@@ -185,7 +185,7 @@
       "track_widths": [
         0.0,
         0.25,
-        2.0
+        1.4
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -223,8 +223,8 @@
           "drill": 0.5
         },
         {
-          "diameter": 2.0,
-          "drill": 1.0
+          "diameter": 1.4,
+          "drill": 0.7
         }
       ],
       "zones_allow_external_fillets": false,
@@ -477,14 +477,14 @@
         "name": "Default",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.25,
-        "via_diameter": 0.6,
-        "via_drill": 0.3,
+        "track_width": 0.5,
+        "via_diameter": 1.0,
+        "via_drill": 0.5,
         "wire_width": 6
       },
       {
         "bus_width": 12,
-        "clearance": 0.2,
+        "clearance": 0.4,
         "diff_pair_gap": 0.25,
         "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
@@ -494,9 +494,9 @@
         "name": "Power",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 2.0,
-        "via_diameter": 2.0,
-        "via_drill": 1.0,
+        "track_width": 1.4,
+        "via_diameter": 1.4,
+        "via_drill": 0.7,
         "wire_width": 6
       }
     ],
@@ -504,7 +504,18 @@
       "version": 3
     },
     "net_colors": null,
-    "netclass_assignments": null,
+    "netclass_assignments": {
+      "Net-(D11-A)": "Power",
+      "Net-(D3-A)": "Power",
+      "Net-(D4-A)": "Power",
+      "Net-(D5-A)": "Power",
+      "Net-(D6-A)": "Power",
+      "Net-(D7-A)": "Power",
+      "Net-(D8-A)": "Power",
+      "Net-(D9-A)": "Power",
+      "Net-(J9-Pin_1)": "Power",
+      "Net-(J9-Pin_2)": "Power"
+    },
     "netclass_patterns": [
       {
         "netclass": "Default",
