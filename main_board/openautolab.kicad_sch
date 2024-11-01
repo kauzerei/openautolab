@@ -8835,7 +8835,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "easyeda2kicad:SW-SMD_6P-L5.8-W5.8-P2.00-LS8.0_YTSPS-22E58LM"
+		(property "Footprint" "JLCPCB:SW-SMD_6P-L5.8-W5.8-P2.00-LS8.0_YTSPS-22E58LM"
 			(at 243.84 25.4 0)
 			(effects
 				(font
@@ -11634,7 +11634,7 @@
 				)
 			)
 		)
-		(property "Footprint" "RP-Pico:RPi_Pico_SMD_TH"
+		(property "Footprint" "RPi Pico:RPi_Pico_SMD_TH"
 			(at 140.97 90.17 90)
 			(effects
 				(font
