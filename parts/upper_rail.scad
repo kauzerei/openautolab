@@ -36,6 +36,7 @@ filter_wall=6;
 offset_v=20;
 offset_h=12;
 hole=9;
+spring_length=10;
 
 module hole(mount_hole=4.5) { //hole for clamping with threaded screw
   cylinder(d=mount_hole,h=100,center=true);
@@ -110,13 +111,31 @@ module filterpump(type) {
 }
 
 module filter_attachment() {
-  cube([part_thickness,2*hole,offset_v+part_thickness]);
+/*  cube([part_thickness,2*hole,offset_v+part_thickness]);
   tail=min(20,offset_v+part_thickness);
   translate([-part_thickness-filter_wall,0,offset_v+part_thickness-tail])cube([part_thickness,2*hole,tail]);
   translate([-filter_wall,0,offset_v])cube([filter_wall,2*hole,part_thickness]);
   difference() {
     cube([offset_h+hole ,2*hole,part_thickness]);
     translate([offset_h,hole,part_thickness/2])cylinder(h=part_thickness+bissl,d=hole,center=true);
+  }
+*/
+  module snek(coords) {
+    for (i=[0:1:len(coords)-2]) hull() {
+      translate(coords[i]) children();
+      translate(coords[i+1]) children();
+    }
+  }
+  
+  difference() {
+    linear_extrude(height=2*hole,convexity=8) union() {
+      square([offset_h+hole,part_thickness]);
+      square([part_thickness,offset_v+part_thickness]);
+      offset(r=-0.49*part_thickness) offset(r=0.98*part_thickness) offset(r=-0.49*part_thickness){
+        snek([[0,offset_v],[0,offset_v+spring_length],[-2*part_thickness,offset_v+spring_length],[-2*part_thickness,offset_v],[-4*part_thickness,offset_v],[-4*part_thickness,offset_v+spring_length],[-6*part_thickness,offset_v+spring_length],[-6*part_thickness,offset_v/2-part_thickness/2],[-part_thickness-0.5,offset_v/2-part_thickness/2]]) square([part_thickness,part_thickness]);
+      }
+    }
+    translate([offset_h,-bissl,hole])rotate([-90,0,0])cylinder(h=part_thickness+2*bissl,d=hole);
   }
 }
 

@@ -230,8 +230,8 @@ module wg_bracket() {
       translate([0,dbr/2,0])rotate([0,90,0])cylinder(d=nut_width, h=wgh_h, center=true);
       translate([0,-dbr/2,0])rotate([0,90,0])cylinder(d=nut_width, h=wgh_h, center=true);
     }
-    translate([0,dbr/2,0])rotate([0,90,0])cylinder(d=mount_hole, h=wg_ms_hole_distance+wg_width+2, center=true);
-    translate([0,-dbr/2,0])rotate([0,90,0])cylinder(d=mount_hole, h=wg_ms_hole_distance+wg_width+2, center=true);
+    translate([0,dbr/2,0])rotate([0,90,0])cylinder(d=rod_diameter, h=wg_ms_hole_distance+wg_width+2, center=true);
+    translate([0,-dbr/2,0])rotate([0,90,0])cylinder(d=rod_diameter, h=wg_ms_hole_distance+wg_width+2, center=true);
    hull() {
      translate([wg_ms_hole_distance/2,(dbr-nut_width-wg_ms_hole_size)/2,0])cylinder(h=nut_width+2,d=wg_ms_hole_size, center=true);
      translate([wg_ms_hole_distance/2,-(dbr-nut_width-wg_ms_hole_size)/2,0])cylinder(h=nut_width+2,d=wg_ms_hole_size, center=true);
@@ -240,7 +240,7 @@ module wg_bracket() {
      translate([-wg_ms_hole_distance/2,(dbr-nut_width-wg_ms_hole_size)/2,0])cylinder(h=nut_width+2,d=wg_ms_hole_size, center=true);
      translate([-wg_ms_hole_distance/2,-(dbr-nut_width-wg_ms_hole_size)/2,0])cylinder(h=nut_width+2,d=wg_ms_hole_size, center=true);
      }
-    translate([0,0,-nut_width/4-0.5])cube([wg_ms_hole_distance+wg_width+2,dbr+nut_width+2,nut_width/2+1],center=true);
+    translate([0,0,-nut_width/4-0.5])cube([wg_ms_hole_distance+wg_width+2,dbr+nut_width+2,nut_width/2+1+0.5],center=true);
   }
 }
 
