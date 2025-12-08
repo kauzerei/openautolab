@@ -7,3 +7,9 @@
 [submodule "main_board/KiCad-RP-Pico"]
 	path = main_board/KiCad-RP-Pico
 	url = https://github.com/ncarandini/KiCad-RP-Pico
+[submodule "pi_pico_code/pico-sdk"]
+	path = pi_pico_code/pico-sdk
+	url = https://github.com/raspberrypi/pico-sdk.git
+[submodule "pi_pico_code/pico-ssd1306"]
+	path = pi_pico_code/pico-ssd1306
+	url = https://github.com/daschr/pico-ssd1306

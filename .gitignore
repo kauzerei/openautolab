@@ -7,3 +7,4 @@ main_board/_autosave*
 docs/book
 parts/stl
 main_board/fabrication
+pi_pico_code/build
